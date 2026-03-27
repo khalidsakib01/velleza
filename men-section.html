@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Men Section | VELLEZA</title>
+
+  <!-- Tailwind & AOS -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    body {
+      font-family: 'Playfair Display', serif;
+    }
+
+    h2,
+    h3,
+    h4 {
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* Top Right Icons (Horizontal Row) */
+    .top-right-icons {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      z-index: 100;
+      display: flex;
+      gap: 1.5rem; /* Space between icons */
+      align-items: center;
+    }
+
+    .icon-btn {
+      padding: 8px;
+      color: white;
+    }
+
+    .icon-btn:hover {
+      background-color: rgba(255, 255, 255, 0.4); /* Subtle hover effect */
+    }
+ .menu-btn {
+      padding: 8px;
+      color: white;
+      z-index: 100;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-900 text-white">
+
+   <!-- ✅ Top Right Icons -->
+  <div class="absolute top-6 right-6 z-50 flex items-center gap-4 flex-row-reverse">
+    <button onclick="toggleMenuPanel()" class="flex items-center gap-1 px-3 py-2 rounded-full bg-white/10 hover:bg-white/20 transition text-sm font-semibold">
+      <i data-lucide="menu" class="w-5 h-5 text-white"></i>
+      <span class="text-white text-[14px]"></span>
+    </button>
+    <button class="p-2 rounded-full bg-white/10 hover:bg-white/20 transition">
+      <i data-lucide="search" class="w-5 h-5 text-white"></i>
+    </button>
+    <a href="login.html" class="p-2 rounded-full bg-white/10 hover:bg-white/20 transition">
+      <i data-lucide="user" class="w-5 h-5 text-white"></i>
+    </a>
+    <a href="cart.html" class="p-2 rounded-full bg-white/10 hover:bg-white/20 transition">
+      <i data-lucide="shopping-bag" class="w-5 h-5 text-white"></i>
+    </a>
+
+  </div>
+
+  <!-- ✅ Floating Contact Button -->
+  <div class="absolute top-6 left-6 z-50 group">
+    <button onclick="toggleContactPanel()" class="contact-floating-button">
+      <span class="plus-icon">+</span>
+      Contact Us
+    </button>
+  </div>
+
+
+  <!-- ✅ Cart Alert -->
+  <div id="cart-alert" class="fixed top-6 right-6 bg-green-600 text-white px-4 py-2 rounded shadow-lg opacity-0 transition-opacity duration-300 z-50">
+    Product added to cart!
+  </div>
+
+  <!-- Hero Section -->
+  <section class="relative h-screen">
+    <img src="cycle.jpg" alt="Hero Image" class="w-full h-full object-cover absolute inset-0">
+    <div class="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center">
+      <h1 class="text-5xl md:text-6xl font-semibold text-white text-center px-6 animate-fadeInLeft">MEN SECTION</h1>
+    </div>
+  </section>
+
+ <!-- Product Grid -->
+<section class="py-18 px-6 md:px-20 bg-black">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-10 justify-center">
+
+    <!-- Product Card -->
+    <div class="bg-gray-900 p-6 rounded-lg shadow max-w-5xl mx-auto text-center">
+      <img src="gucci3.png"
+           class="w-full h-64 object-cover rounded mb-4">
+      <h4 class="text-2xl font-semibold">Classic Trench</h4>
+      <p class="text-base text-gray-400">For men – Parisian winter coat.</p>
+      <p class="text-xl font-bold mt-3">1100 Tk</p>
+      <button onclick="addToCart('Classic Trench', 199)"
+              class="mt-3 bg-white text-black px-5 py-2 rounded hover:bg-gray-200 transition">
+        Add to Cart
+      </button>
+    </div>
+
+    <!-- Another Product -->
+    <div class="bg-gray-900 p-6 rounded-lg shadow max-w-5xl mx-auto text-center">
+      <img src="gucci4.png"
+           class="w-full h-64 object-cover rounded mb-4">
+      <h4 class="text-2xl font-semibold">Satin Gown</h4>
+      <p class="text-base text-gray-400">Elegant silk gown for women.</p>
+      <p class="text-xl font-bold mt-3">$299</p>
+      <button onclick="addToCart('Satin Gown', 299)"
+              class="mt-3 bg-white text-black px-5 py-2 rounded hover:bg-gray-200 transition">
+        Add to Cart
+      </button>
+    </div>
+
+    <!-- Another Product -->
+    <div class="bg-gray-900 p-6 rounded-lg shadow max-w-5xl mx-auto text-center">
+      <img src="mohamed-hamdi-JDrTqKyYPEY-unsplash.jpg"
+           class="w-full h-64 object-cover rounded mb-4">
+      <h4 class="text-2xl font-semibold">Satin Gown</h4>
+      <p class="text-base text-gray-400">Elegant silk gown for women.</p>
+      <p class="text-xl font-bold mt-3">$299</p>
+      <button onclick="addToCart('Satin Gown', 299)"
+              class="mt-3 bg-white text-black px-5 py-2 rounded hover:bg-gray-200 transition">
+        Add to Cart
+      </button>
+    </div>
+
+<!-- Another Product -->
+    <div class="bg-gray-900 p-6 rounded-lg shadow max-w-5xl mx-auto text-center">
+      <img src="mohamed-hamdi-JDrTqKyYPEY-unsplash.jpg"
+           class="w-full h-64 object-cover rounded mb-4">
+      <h4 class="text-2xl font-semibold">Satin Gown</h4>
+      <p class="text-base text-gray-400">Elegant silk gown for women.</p>
+      <p class="text-xl font-bold mt-3">$299</p>
+      <button onclick="addToCart('Satin Gown', 299)"
+              class="mt-3 bg-white text-black px-5 py-2 rounded hover:bg-gray-200 transition">
+        Add to Cart
+      </button>
+    </div>
+
+
+<!-- Another Product -->
+    <div class="bg-gray-900 p-6 rounded-lg shadow max-w-5xl mx-auto text-center">
+      <img src="mohamed-hamdi-JDrTqKyYPEY-unsplash.jpg"
+           class="w-full h-64 object-cover rounded mb-4">
+      <h4 class="text-2xl font-semibold">Satin Gown</h4>
+      <p class="text-base text-gray-400">Elegant silk gown for women.</p>
+      <p class="text-xl font-bold mt-3">$299</p>
+      <button onclick="addToCart('Satin Gown', 299)"
+              class="mt-3 bg-white text-black px-5 py-2 rounded hover:bg-gray-200 transition">
+        Add to Cart
+      </button>
+    </div>
+  
+    <!-- Another Product -->
+    <div class="bg-gray-900 p-6 rounded-lg shadow max-w-5xl mx-auto text-center">
+      <img src="mohamed-hamdi-JDrTqKyYPEY-unsplash.jpg"
+           class="w-full h-64 object-cover rounded mb-4">
+      <h4 class="text-2xl font-semibold">Satin Gown</h4>
+      <p class="text-base text-gray-400">Elegant silk gown for women.</p>
+      <p class="text-xl font-bold mt-3">$299</p>
+      <button onclick="addToCart('Satin Gown', 299)"
+              class="mt-3 bg-white text-black px-5 py-2 rounded hover:bg-gray-200 transition">
+        Add to Cart
+      </button>
+    </div>
+  
+    <!-- Another Product -->
+    <div class="bg-gray-900 p-6 rounded-lg shadow max-w-5xl mx-auto text-center">
+      <img src="mohamed-hamdi-JDrTqKyYPEY-unsplash.jpg"
+           class="w-full h-64 object-cover rounded mb-4">
+      <h4 class="text-2xl font-semibold">Satin Gown</h4>
+      <p class="text-base text-gray-400">Elegant silk gown for women.</p>
+      <p class="text-xl font-bold mt-3">$299</p>
+      <button onclick="addToCart('Satin Gown', 299)"
+              class="mt-3 bg-white text-black px-5 py-2 rounded hover:bg-gray-200 transition">
+        Add to Cart
+      </button>
+    </div>
+  
+    <!-- Another Product -->
+    <div class="bg-gray-900 p-6 rounded-lg shadow max-w-5xl mx-auto text-center">
+      <img src="mohamed-hamdi-JDrTqKyYPEY-unsplash.jpg"
+           class="w-full h-64 object-cover rounded mb-4">
+      <h4 class="text-2xl font-semibold">Satin Gown</h4>
+      <p class="text-base text-gray-400">Elegant silk gown for women.</p>
+      <p class="text-xl font-bold mt-3">$299</p>
+      <button onclick="addToCart('Satin Gown', 299)"
+              class="mt-3 bg-white text-black px-5 py-2 rounded hover:bg-gray-200 transition">
+        Add to Cart
+      </button>
+    </div>
+  
+
+    <!-- Another Product -->
+    <div class="bg-gray-900 p-6 rounded-lg shadow max-w-5xl mx-auto text-center">
+      <img src="mohamed-hamdi-JDrTqKyYPEY-unsplash.jpg"
+           class="w-full h-64 object-cover rounded mb-4">
+      <h4 class="text-2xl font-semibold">Satin Gown</h4>
+      <p class="text-base text-gray-400">Elegant silk gown for women.</p>
+      <p class="text-xl font-bold mt-3">$299</p>
+      <button onclick="addToCart('Satin Gown', 299)"
+              class="mt-3 bg-white text-black px-5 py-2 rounded hover:bg-gray-200 transition">
+        Add to Cart
+      </button>
+    </div>
+  
+
+    <!-- Another Product -->
+    <div class="bg-gray-900 p-6 rounded-lg shadow max-w-5xl mx-auto text-center">
+      <img src="mohamed-hamdi-JDrTqKyYPEY-unsplash.jpg"
+           class="w-full h-64 object-cover rounded mb-4">
+      <h4 class="text-2xl font-semibold">Satin Gown</h4>
+      <p class="text-base text-gray-400">Elegant silk gown for women.</p>
+      <p class="text-xl font-bold mt-3">$299</p>
+      <button onclick="addToCart('Satin Gown', 299)"
+              class="mt-3 bg-white text-black px-5 py-2 rounded hover:bg-gray-200 transition">
+        Add to Cart
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ✅ Newsletter + Footer -->
+  <section class="bg-white text-black py-12 px-6 md:px-20">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-sm text-gray-800">
+      <div class="py-8">
+        <h2 class="font-serif text-base mb-2 text-gray-500">VELLEZA Boutiques</h2>
+        <ul class="space-y-1">
+          <li><a href="#" class="hover:outline-none text-gray-400 hover:text-black">VELLEZA FOOTWEAR</a></li>
+        </ul>
+      </div>
+      <div class="py-8">
+        <h2 class="font-serif text-base mb-2 text-gray-500">Client Services</h2>
+        <ul class="space-y-1">
+          <li><a href="#" class="hover:outline-none text-gray-400 hover:text-black">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="py-8">
+        <h2 class="font-serif text-base mb-2 text-gray-500">The House of VELLEZA</h2>
+        <ul class="space-y-1">
+          <li><a href="#" class="hover:outline-none text-gray-400 hover:text-black">Sustainability</a></li>
+          <li><a href="#" class="hover:outline-none text-gray-400 hover:text-black">Ethics &amp; Compliance</a></li>
+          <li><a href="#" class="hover:outline-none text-gray-400 hover:text-black">Careers</a></li>
+        </ul>
+      </div>
+      <div class="py-8">
+        <h2 class="font-serif text-base mb-2 text-gray-500">Legal Terms</h2>
+        <ul class="space-y-1">
+          <li><a href="#" class="hover:outline-none text-gray-400 hover:text-black">Privacy Policy</a></li>
+          <li><a href="#" class="hover:outline-none text-gray-400 hover:text-black">Terms & Conditions</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ✅ Footer Bottom Bar -->
+    <div class="mt-12 w-full flex flex-col md:flex-row items-center justify-between text-xs text-gray-400 tracking-wide font-light uppercase">
+      <div class="flex flex-wrap items-center gap-4">
+        <img src="Bkash.png" alt="bKash" class="h-8 object-contain">
+        <img src="Nagad.png" alt="Nagad" class="h-8 object-contain">
+        <img src="DBB.png" alt="Dutch-Bangla Bank" class="h-8 object-contain">
+        <img src="visa.jpeg" alt="Visa" class="h-8 object-contain">
+        <img src="mc.png" alt="Mastercard" class="h-8 object-contain">
+        <img src="upay.png" alt="Upay" class="h-8 object-contain">
+        <img src="city bank.png" alt="City Bank" class="h-8 object-contain">
+        <img src="ucb.png" alt="UCB" class="h-8 object-contain">
+      </div>
+      <div class="flex flex-wrap items-center gap-4 mt-4 md:mt-0">
+        <a href="#" class="hover:font-semibold hover:text-black">Follow Us</a>
+        <a href="#" class="hover:font-semibold hover:text-black">Instagram</a>
+        <a href="#" class="hover:font-semibold hover:text-black">Facebook</a>
+        <a href="#" class="hover:font-semibold hover:text-black">X</a>
+        <a href="#" class="hover:font-semibold hover:text-black">Tiktok</a>
+        <a href="#" class="hover:font-semibold hover:text-black">LinkedIn</a>
+      </div>
+    </div>
+  </section>
+
+   <!-- ✅ Slide-in Contact Panel -->
+  <div id="contact-panel" class="fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-xl z-50 transform translate-x-full transition-transform duration-500 overflow-y-auto">
+    <div class="p-6 space-y-6">
+      <div class="flex justify-end">
+        <button onclick="toggleContactPanel()" class="text-gray-500 hover:text-black text-2xl">&times;</button>
+      </div>
+      <h2 class="text-2xl font-semibold text-black">CONTACT US</h2>
+      <div>
+        <a href="tel:+8801943869880" class="flex items-center text-black font-medium hover:underline">
+          <span class="mr-2 text-lg">📞</span> Call Us +8801943869880
+        </a>
+        <p class="text-gray-700 mt-2">Our Client Advisors are available Monday through Sunday from 10 AM to 8 PM.</p>
+      </div>
+      <div>
+        <a href="#" class="flex items-center text-black font-medium hover:underline">
+          <span class="mr-2 text-lg">🟢</span> Message Us
+        </a>
+        <p class="text-gray-700 mt-2">WhatsApp messages answered Monday to Sunday, 10 AM – 8 PM</p>
+      </div>
+      <div>
+        <div class="flex items-center text-gray-700 font-medium">
+          <span class="mr-2 text-yellow-400 text-lg">●</span>
+          <span class="text-gray-500 underline">LIVE CHAT</span>
+        </div>
+        <p class="text-gray-700 mt-2">Online Client Advisors available daily 10 AM to 8 PM.</p>
+      </div>
+      <div class="pt-8 border-t border-gray-200">
+        <p class="text-lg font-medium text-black mb-2">Need further help?</p>
+        <a href="#" class="text-black font-semibold underline hover:text-gray-800">Get in Contact with Us</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ Slide-In Menu Panel -->
+  <div id="menu-panel" class="fixed top-0 right-0 w-[420px] max-w-full h-full bg-white text-black z-50 transform translate-x-full transition-transform duration-500 p-8 shadow-lg overflow-y-auto">
+    <div class="absolute top-6 right-6">
+      <button onclick="toggleMenuPanel()" class="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center text-xl leading-none">&times;</button>
+    </div>
+    <ul class="mt-16 space-y-5 text-lg font-medium">
+      <li><a href="#" class="hover:text-gray-500">New In</a></li>
+      <li><a href="#" class="hover:text-gray-500">Handbags</a></li>
+      <li><a href="#" class="hover:text-gray-500">Women</a></li>
+      <li><a href="#" class="hover:text-gray-500">Men</a></li>
+      <li><a href="#" class="hover:text-gray-500">Children</a></li>
+      <li><a href="#" class="hover:text-gray-500">Travel</a></li>
+      <li><a href="#" class="hover:text-gray-500">Watches</a></li>
+      <li><a href="#" class="hover:text-gray-500">Fragrances</a></li>
+      <li><a href="#" class="hover:text-gray-500">Gifts</a></li>
+    </ul>
+    <ul class="mt-12 space-y-2 text-sm text-gray-600">
+      <li><a href="#" class="hover:text-black">Velleza Services</a></li>
+      <li><a href="#" class="hover:text-black">World of Velleza</a></li>
+      <li><a href="#" class="hover:text-black">Store Locator</a></li>
+    </ul>
+  </div>
+
+ <!-- ✅ Overlay -->
+  <div id="overlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 hidden" onclick="closePanels()"></div>
+
+  <!-- ✅ Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    function toggleContactPanel() {
+      const panel = document.getElementById("contact-panel");
+      const overlay = document.getElementById("overlay");
+      const isOpen = panel.classList.contains("translate-x-0");
+      panel.classList.toggle("translate-x-0");
+      panel.classList.toggle("translate-x-full");
+      overlay.classList.toggle("hidden");
+    }
+
+
+    
+    function toggleMenuPanel() {
+      const panel = document.getElementById("menu-panel");
+      const overlay = document.getElementById("overlay");
+      panel.classList.toggle("translate-x-full");
+      overlay.classList.toggle("hidden");
+    }
+
+    function closePanels() {
+      document.getElementById('menu-panel')?.classList.add('translate-x-full');
+      document.getElementById('contact-panel')?.classList.add('translate-x-full');
+      document.getElementById('overlay')?.classList.add('hidden');
+    }
+
+    function addToCart(productName) {
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const index = cart.findIndex(item => item.name === productName);
+      if (index !== -1) {
+        cart[index].quantity += 1;
+      } else {
+        cart.push({ name: productName, quantity: 1 });
+      }
+      localStorage.setItem("cart", JSON.stringify(cart));
+      updateCartCount();
+      const alertBox = document.getElementById("cart-alert");
+      alertBox.textContent = `✅ ${productName} added to cart!`;
+      alertBox.classList.replace("opacity-0", "opacity-100");
+      setTimeout(() => {
+        alertBox.classList.replace("opacity-100", "opacity-0");
+        window.location.href = "cart.html";
+      }, 1000);
+    }
+
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const total = cart.reduce((sum, item) => sum + item.quantity, 0);
+      const countEl = document.getElementById("cart-count");
+      if (countEl) countEl.textContent = total;
+    }
+
+    function checkAuth() {
+      const user = localStorage.getItem("user");
+      const authSection = document.getElementById("auth-section");
+      if (authSection) {
+        authSection.innerHTML = user
+          ? `<button id="logout-btn" class="bg-red-600 px-3 py-1 rounded text-xs font-semibold hover:bg-red-700">Log Out</button>`
+          : `<a href="login.html" class="bg-white text-black px-3 py-1 rounded text-xs font-semibold hover:bg-gray-200">Login</a>`;
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      updateCartCount();
+      checkAuth();
+      AOS.init({ duration: 800, once: true });
+
+      document.addEventListener("click", function (e) {
+        if (e.target && (e.target.id == "logout-btn")) {
+          localStorage.removeItem("user");
+          location.reload();
+        }
+      });
+
+      lucide.createIcons();
+    });
+  </script>
+</body>
+</html>

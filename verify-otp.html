@@ -1,0 +1,56 @@
+<!-- verify-otp.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Verify OTP</title>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      appId: "YOUR_APP_ID"
+    };
+    firebase.initializeApp(firebaseConfig);
+  </script>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 400px;
+      margin: 40px auto;
+    }
+    input, button {
+      display: block;
+      margin-top: 10px;
+      padding: 10px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Enter OTP</h2>
+  <input type="text" id="otp" placeholder="Enter the 6-digit OTP" />
+  <button onclick="verifyOTP()">Verify & Login</button>
+
+  <script>
+    const auth = firebase.auth();
+
+    function verifyOTP() {
+      const code = document.getElementById("otp").value;
+      window.confirmationResult.confirm(code)
+        .then((result) => {
+          const user = result.user;
+          alert("Login successful!");
+          console.log("User info:", user);
+          // Redirect to home page or dashboard
+        })
+        .catch((error) => {
+          console.error(error);
+          alert("Invalid OTP. Try again.");
+        });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VELLEZA</title>
+
+  <!-- Tailwind & AOS -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Include GSAP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.1/gsap.min.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&display=swap');
+
+    body {
+      font-family: 'Playfair Display', serif;
+    }
+
+    h2, h3, h4 {
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .overlay {
+      background-color: rgba(0, 0, 0, 0);
+    }
+
+    @keyframes fadeInLeft {
+      0% {
+        opacity: 0;
+        transform: translateX(-1rem);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .animate-fadeInLeft {
+      animation: fadeInLeft 1s ease-out 0.5s forwards;
+    }
+
+    .contact-floating-button {
+      font-family: 'Playfair Display', serif;
+      font-weight: 500;
+      font-size: 15px;
+      letter-spacing: 0.05em;
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: none;
+      padding: 0;
+      border: none;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .contact-floating-button:hover {
+      color: #d4d4d4;
+    }
+
+    .plus-icon {
+      display: inline-block;
+      transition: transform 0.8s ease;
+    }
+
+    .group:hover .plus-icon {
+      transform: rotate(180deg);
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    .shop-button {
+  position: relative;
+  display: inline-block;
+  color: white;
+}
+
+.shop-loop-button {
+  position: relative;
+  display: inline-block;
+  color: white;
+}
+
+.shop-loop-button .underline-loop {
+  position: absolute;
+  bottom: 0.5rem; /* distance from text */
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: white;
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+/* 🔁 Looping animation only on hover */
+.shop-loop-button:hover .underline-loop {
+  animation: underline-slide 1.2s ease-in-out infinite;
+}
+
+/* 🎞️ Keyframes for loop */
+@keyframes underline-slide {
+  0% {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  50% {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  51% {
+    transform-origin: right;
+  }
+  100% {
+    transform: scaleX(0);
+    transform-origin: right;
+  }
+}
+/* Subtle border color change on hover */
+a:hover {
+  border-color: #14e6dfa1; /* Elegant gold border color on hover */
+  transition: border-color 0.3s ease;
+}
+
+/* Hover scale effect */
+a:hover {
+  transform: scale(1.05); /* Slightly increase the size of the button on hover */
+}
+
+  </style>
+
+  <!-- ✅ SEO & Social Meta Tags -->
+<meta name="description" content="VELLEZA - Luxury fashion, handbags, shoes and accessories for men and women. Shop exclusive collections online.">
+<meta name="keywords" content="Velleza, fashion, luxury, handbags, shoes, men, women, accessories">
+<meta name="author" content="VELLEZA">
+
+<!-- OpenGraph (Social Sharing) -->
+<meta property="og:title" content="VELLEZA - Luxury Fashion">
+<meta property="og:description" content="Discover luxury handbags, shoes, and accessories.">
+<meta property="og:image" content="preview.jpg"> <!-- replace with your image -->
+<meta property="og:url" content="https://velleza.com">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- Favicon -->
+<link rel="icon" type="image/png" href="favicon.png">
+</head>
+
+<body class="bg-gray-900 text-white">
+
+  <!-- ✅ Floating Contact Button -->
+  <div class="absolute top-6 left-6 z-50 group">
+    <button onclick="toggleContactPanel()" class="contact-floating-button">
+      <span class="plus-icon">+</span>
+      Contact Us
+    </button>
+  </div>
+
+  <!-- ✅ Top Right Icons -->
+  <div class="absolute top-6 right-6 z-50 flex items-center gap-4 flex-row-reverse">
+    <button onclick="toggleMenuPanel()" class="flex items-center gap-1 px-3 py-2 rounded-full bg-white/10 hover:bg-white/20 transition text-sm font-semibold">
+      <i data-lucide="menu" class="w-5 h-5 text-white"></i>
+      <span class="text-white text-[14px]"></span>
+    </button>
+    <button class="p-2 rounded-full bg-white/10 hover:bg-white/20 transition">
+      <i data-lucide="search" class="w-5 h-5 text-white"></i>
+    </button>
+    <a href="login.html" class="p-2 rounded-full bg-white/10 hover:bg-white/20 transition">
+      <i data-lucide="user" class="w-5 h-5 text-white"></i>
+    </a>
+    <a href="cart.html" class="p-2 rounded-full bg-white/10 hover:bg-white/20 transition">
+      <i data-lucide="shopping-bag" class="w-5 h-5 text-white"></i>
+    </a>
+  </div>
+
+<section id="dual-hero" class="relative h-screen font-serif">
+    <!-- ✅ Background Video -->
+  <div class="absolute inset-0 z-10 overflow-hidden">
+   <video id="hero-video" autoplay muted loop playsinline class="w-full h-[120vh] object-cover"> <!-- or h-[calc(100vw/2)] -->
+      <source src="video1.mp4" type="video/mp4" />
+    </video>
+    <!-- ✅ Dynamic Dim Overlay -->
+<div id="video-dim-overlay" class="absolute inset-0 bg-black opacity-60 transition-opacity duration-500 pointer-events-none"></div>
+  </div>
+
+  <!-- ✅ Centered Brand + Circle Pause Button -->
+  <div class="absolute inset-0 z-20 flex flex-col items-center justify-center text-center space-y-6">
+    <h1 class="text-white text-6xl md:text-8xl font-bold tracking-[0.3em]">V E L L E Z A</h1>
+
+    <button id="video-center-toggle"
+      class="w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white text-2xl hover:bg-white/30 transition">
+      ❚❚
+    </button>
+  </div>
+
+  <!-- ✅ Bottom Control Bar (full width) -->
+  <div class="absolute bottom-0 left-0 w-full z-30 px-6 py-4 bg-black/40 backdrop-blur-sm flex items-center justify-between text-white text-sm">
+
+    <!-- Left Controls -->
+    <div class="flex items-center gap-4">
+      <button id="video-bottom-toggle" class="text-xl hover:text-gray-300">❚❚</button>
+      <button id="sound-toggle" class="text-xl hover:text-gray-300">🔇</button>
+      <span id="video-time-left" class="text-xs w-12">00:00</span>
+    </div>
+
+    <!-- Progress Bar -->
+    <input type="range" id="video-progress" class="flex-1 mx-4 h-1 accent-white bg-white/20 rounded-full cursor-pointer" min="0" max="100" value="0">
+
+    <!-- Right Controls -->
+    <div class="flex items-center gap-4">
+      <span id="video-time-right" class="text-xs w-12 text-right">-00:00</span>
+      <button id="fullscreen-toggle" class="text-xl hover:text-gray-300">⛶</button>
+    </div>
+  </div>
+
+  <script>
+  const video = document.getElementById("hero-video");
+  const centerBtn = document.getElementById("video-center-toggle");
+  const bottomBtn = document.getElementById("video-bottom-toggle");
+  const soundBtn = document.getElementById("sound-toggle");
+  const fullscreenBtn = document.getElementById("fullscreen-toggle");
+  const progress = document.getElementById("video-progress");
+  const timeLeft = document.getElementById("video-time-left");
+  const timeRight = document.getElementById("video-time-right");
+
+ function toggleVideoPlay() {
+  const overlay = document.getElementById("video-dim-overlay");
+
+  if (video.paused) {
+    video.play();
+    centerBtn.textContent = bottomBtn.textContent = "❚❚";
+    overlay.style.opacity = "0.6"; // normal brightness
+  } else {
+    video.pause();
+    centerBtn.textContent = bottomBtn.textContent = "▶";
+    overlay.style.opacity = "0.85"; // dimmed when paused
+  }
+}
+
+  // Mute toggle
+  function toggleSound() {
+    video.muted = !video.muted;
+    soundBtn.textContent = video.muted ? "🔇" : "🔊";
+  }
+
+  // Fullscreen toggle
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+      video.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+  }
+
+  // Format time helper
+  function formatTime(sec) {
+    const m = Math.floor(sec / 60);
+    const s = Math.floor(sec % 60).toString().padStart(2, '0');
+    return `${m}:${s}`;
+  }
+
+  // Update time + progress
+  function updateTime() {
+    const current = video.currentTime;
+    const duration = video.duration;
+    if (!isNaN(duration)) {
+      const remaining = duration - current;
+      const percent = (current / duration) * 100;
+      progress.value = percent;
+      timeLeft.textContent = formatTime(current);
+      timeRight.textContent = `-${formatTime(remaining)}`;
+    }
+  }
+
+  // Seek with slider
+  progress.addEventListener("input", () => {
+    video.currentTime = (progress.value / 100) * video.duration;
+  });
+
+  // Events
+  video.addEventListener("timeupdate", updateTime);
+  video.addEventListener("loadedmetadata", updateTime);
+
+  centerBtn.onclick = toggleVideoPlay;
+  bottomBtn.onclick = toggleVideoPlay;
+  soundBtn.onclick = toggleSound;
+  fullscreenBtn.onclick = toggleFullscreen;
+</script>
+</section>
+
+<section class="bg-black text-white py-20 px-6 md:px-20">
+    <div class="max-w-screen-xl mx-auto text-center">
+        <!-- Header -->
+        <h2 class="text-4xl md:text-5xl font-serif font-semibold uppercase tracking-wide mb-12">Preseted by Velleza</h2>
+
+        <!-- Categories Grid with Larger Images -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+            <!-- Women's Handbags -->
+            <div class="relative group transform transition-transform duration-300">
+                <a href="/womens-handbags" class="block">
+                    <img src="gucci1.png" alt="Women's Handbags" class="w-full h-[300px] object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="mt-6">
+                        <p class="text-lg font-sans font-semibold uppercase tracking-wide">Women's Handbags</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Women's Shoes -->
+            <div class="relative group transform transition-transform duration-300">
+                <a href="/womens-shoes" class="block">
+                    <img src="gucci2.png" alt="Women's Shoes" class="w-full h-[300px] object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="mt-6">
+                        <p class="text-lg font-sans font-semibold uppercase tracking-wide">Women's Shoes</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Men's Shoes -->
+            <div class="relative group transform transition-transform duration-300">
+                <a href="/mens-shoes" class="block">
+                    <img src="gucci3.png" alt="Men's Shoes" class="w-full h-[300px] object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="mt-6">
+                        <p class="text-lg font-sans font-semibold uppercase tracking-wide">Men's Shoes</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Men's Bags -->
+            <div class="relative group transform transition-transform duration-300">
+                <a href="/mens-bags" class="block">
+                    <img src="gucci4.png" alt="Men's Bags" class="w-full h-[300px] object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="mt-6">
+                        <p class="text-lg font-sans font-semibold uppercase tracking-wide">Men's Bags</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ✅ VELLEZA Shop Now Campaign – Black Background -->
+<section class="bg-black text-white py-20 px-6 md:px-0 text-left">
+  <div class="max-w-3xl ml-56 flex justify-start gap-10 flex-wrap">
+    
+    <!-- ALL Button -->
+    <a href="all.html"
+      class="inline-block px-6 py-3 text-lg font-medium text-white bg-transparent border-2 border-white transform transition-transform duration-300 hover:scale-105 hover:border-[#d4af37]">
+      ALL
+    </a>
+
+    <!-- MEN SECTION Button -->
+    <a href="men-section.html"
+      class="inline-block px-6 py-3 text-lg font-medium text-white bg-transparent border-2 border-white transform transition-transform duration-300 hover:scale-105 hover:border-[#d4af37]">
+      MEN SECTION
+    </a>
+
+    <!-- WOMEN SECTION Button -->
+    <a href="women.html"
+      class="inline-block px-6 py-3 text-lg font-medium text-white bg-transparent border-2 border-white transform transition-transform duration-300 hover:scale-105 hover:border-[#d4af37]">
+      WOMEN SECTION
+    </a>
+
+  </div>
+</section>
+
+<section class="bg-black text-white py-0 px-0 md:px-0">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-screen-xl mx-auto min-h-screen">
+    <!-- Image Block 1 (New for Men) -->
+    <div class="relative w-full h-full overflow-hidden" id="image-block-1">
+      <img src="pic2.jpg" alt="New for Men" class="w-full h-full object-cover" id="img1"/>
+      <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center" id="text-1">
+        <h3 class="text-2xl font-semibold mb-4">New In for Men</h3>
+       <a href="#" class="inline-block px-6 py-3 text-lg font-medium text-white bg-transparent border-2 border-white transform transition-transform duration-300 hover:scale-105">
+  SHOP THE SELECTION
+</a>
+      </div>
+    </div>
+
+    <!-- Image Block 2 (New for Women) -->
+    <div class="relative w-full h-full overflow-hidden" id="image-block-2">
+      <img src="pic1.jpg" alt="New for Women" class="w-full h-full object-cover" id="img2"/>
+      <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center" id="text-2">
+        <h3 class="text-2xl font-semibold mb-4">New In for Women</h3>
+        <a href="#" class="inline-block px-6 py-3 text-lg font-medium text-white bg-transparent border-2 border-white transform transition-transform duration-300 hover:scale-105">
+  SHOP THE SELECTION
+</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+  <!-- ✅ Newsletter + Footer -->
+  <section class="bg-white text-black py-12 px-6 md:px-20">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-sm text-gray-800">
+      <div class="py-8">
+        <h2 class="font-serif text-base mb-2 text-gray-500">VELLEZA Boutiques</h2>
+        <ul class="space-y-1">
+          <li><a href="#" class="hover:outline-none text-gray-400 hover:text-black">VELLEZA FOOTWEAR</a></li>
+        </ul>
+      </div>
+      <div class="py-8">
+        <h2 class="font-serif text-base mb-2 text-gray-500">Client Services</h2>
+        <ul class="space-y-1">
+          <li><a href="#" class="hover:outline-none text-gray-400 hover:text-black">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="py-8">
+        <h2 class="font-serif text-base mb-2 text-gray-500">The House of VELLEZA</h2>
+        <ul class="space-y-1">
+          <li><a href="#" class="hover:outline-none text-gray-400 hover:text-black">Sustainability</a></li>
+          <li><a href="#" class="hover:outline-none text-gray-400 hover:text-black">Ethics &amp; Compliance</a></li>
+          <li><a href="#" class="hover:outline-none text-gray-400 hover:text-black">Careers</a></li>
+        </ul>
+      </div>
+      <div class="py-8">
+        <h2 class="font-serif text-base mb-2 text-gray-500">Legal Terms</h2>
+        <ul class="space-y-1">
+          <li><a href="#" class="hover:outline-none text-gray-400 hover:text-black">Privacy Policy</a></li>
+          <li><a href="#" class="hover:outline-none text-gray-400 hover:text-black">Terms & Conditions</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ✅ Footer Bottom Bar -->
+    <div class="mt-12 w-full flex flex-col md:flex-row items-center justify-between text-xs text-gray-400 tracking-wide font-light uppercase">
+      <div class="flex flex-wrap items-center gap-4">
+        <img src="Bkash.png" alt="bKash" class="h-8 object-contain">
+        <img src="Nagad.png" alt="Nagad" class="h-8 object-contain">
+        <img src="DBB.png" alt="Dutch-Bangla Bank" class="h-8 object-contain">
+        <img src="visa.jpeg" alt="Visa" class="h-8 object-contain">
+        <img src="mc.png" alt="Mastercard" class="h-8 object-contain">
+        <img src="upay.png" alt="Upay" class="h-8 object-contain">
+        <img src="city bank.png" alt="City Bank" class="h-8 object-contain">
+        <img src="ucb.png" alt="UCB" class="h-8 object-contain">
+      </div>
+      <div class="flex flex-wrap items-center gap-4 mt-4 md:mt-0">
+        <a href="#" class="hover:font-semibold hover:text-black">Follow Us</a>
+        <a href="#" class="hover:font-semibold hover:text-black">Instagram</a>
+        <a href="#" class="hover:font-semibold hover:text-black">Facebook</a>
+        <a href="#" class="hover:font-semibold hover:text-black">X</a>
+        <a href="#" class="hover:font-semibold hover:text-black">Tiktok</a>
+        <a href="#" class="hover:font-semibold hover:text-black">LinkedIn</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ✅ Slide-in Contact Panel -->
+  <div id="contact-panel" class="fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-xl z-50 transform translate-x-full transition-transform duration-500 overflow-y-auto">
+    <div class="p-6 space-y-6">
+      <div class="flex justify-end">
+        <button onclick="toggleContactPanel()" class="text-gray-500 hover:text-black text-2xl">&times;</button>
+      </div>
+      <h2 class="text-2xl font-semibold text-black">CONTACT US</h2>
+      <div>
+        <a href="tel:+8801943869880" class="flex items-center text-black font-medium hover:underline">
+          <span class="mr-2 text-lg">📞</span> Call Us +8801943869880
+        </a>
+        <p class="text-gray-700 mt-2">Our Client Advisors are available Monday through Sunday from 10 AM to 8 PM.</p>
+      </div>
+      <div>
+        <a href="#" class="flex items-center text-black font-medium hover:underline">
+          <span class="mr-2 text-lg">🟢</span> Message Us
+        </a>
+        <p class="text-gray-700 mt-2">WhatsApp messages answered Monday to Sunday, 10 AM – 8 PM</p>
+      </div>
+      <div>
+        <div class="flex items-center text-gray-700 font-medium">
+          <span class="mr-2 text-yellow-400 text-lg">●</span>
+          <span class="text-gray-500 underline">LIVE CHAT</span>
+        </div>
+        <p class="text-gray-700 mt-2">Online Client Advisors available daily 10 AM to 8 PM.</p>
+      </div>
+      <div class="pt-8 border-t border-gray-200">
+        <p class="text-lg font-medium text-black mb-2">Need further help?</p>
+        <a href="#" class="text-black font-semibold underline hover:text-gray-800">Get in Contact with Us</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ Slide-In Menu Panel -->
+  <div id="menu-panel" class="fixed top-0 right-0 w-[420px] max-w-full h-full bg-white text-black z-50 transform translate-x-full transition-transform duration-500 p-8 shadow-lg overflow-y-auto">
+    <div class="absolute top-6 right-6">
+      <button onclick="toggleMenuPanel()" class="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center text-xl leading-none">&times;</button>
+    </div>
+    <ul class="mt-16 space-y-5 text-lg font-medium">
+      <li><a href="#" class="hover:text-gray-500">New In</a></li>
+      <li><a href="#" class="hover:text-gray-500">Handbags</a></li>
+      <li><a href="#" class="hover:text-gray-500">Women</a></li>
+      <li><a href="#" class="hover:text-gray-500">Men</a></li>
+      <li><a href="#" class="hover:text-gray-500">Children</a></li>
+      <li><a href="#" class="hover:text-gray-500">Travel</a></li>
+      <li><a href="#" class="hover:text-gray-500">Watches</a></li>
+      <li><a href="#" class="hover:text-gray-500">Fragrances</a></li>
+      <li><a href="#" class="hover:text-gray-500">Gifts</a></li>
+    </ul>
+    <ul class="mt-12 space-y-2 text-sm text-gray-600">
+      <li><a href="#" class="hover:text-black">Velleza Services</a></li>
+      <li><a href="#" class="hover:text-black">World of Velleza</a></li>
+      <li><a href="#" class="hover:text-black">Store Locator</a></li>
+    </ul>
+  </div>
+
+  <!-- ✅ Overlay -->
+  <div id="overlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 hidden" onclick="closePanels()"></div>
+
+  <!-- ✅ Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    function toggleContactPanel() {
+      const panel = document.getElementById("contact-panel");
+      const overlay = document.getElementById("overlay");
+      const isOpen = panel.classList.contains("translate-x-0");
+      panel.classList.toggle("translate-x-0");
+      panel.classList.toggle("translate-x-full");
+      overlay.classList.toggle("hidden");
+    }
+
+
+    
+    function toggleMenuPanel() {
+      const panel = document.getElementById("menu-panel");
+      const overlay = document.getElementById("overlay");
+      panel.classList.toggle("translate-x-full");
+      overlay.classList.toggle("hidden");
+    }
+
+    function closePanels() {
+      document.getElementById('menu-panel')?.classList.add('translate-x-full');
+      document.getElementById('contact-panel')?.classList.add('translate-x-full');
+      document.getElementById('overlay')?.classList.add('hidden');
+    }
+
+    function addToCart(productName) {
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const index = cart.findIndex(item => item.name === productName);
+      if (index !== -1) {
+        cart[index].quantity += 1;
+      } else {
+        cart.push({ name: productName, quantity: 1 });
+      }
+      localStorage.setItem("cart", JSON.stringify(cart));
+      updateCartCount();
+      const alertBox = document.getElementById("cart-alert");
+      alertBox.textContent = `✅ ${productName} added to cart!`;
+      alertBox.classList.replace("opacity-0", "opacity-100");
+      setTimeout(() => {
+        alertBox.classList.replace("opacity-100", "opacity-0");
+        window.location.href = "cart.html";
+      }, 1000);
+    }
+
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const total = cart.reduce((sum, item) => sum + item.quantity, 0);
+      const countEl = document.getElementById("cart-count");
+      if (countEl) countEl.textContent = total;
+    }
+
+    function checkAuth() {
+      const user = localStorage.getItem("user");
+      const authSection = document.getElementById("auth-section");
+      if (authSection) {
+        authSection.innerHTML = user
+          ? `<button id="logout-btn" class="bg-red-600 px-3 py-1 rounded text-xs font-semibold hover:bg-red-700">Log Out</button>`
+          : `<a href="login.html" class="bg-white text-black px-3 py-1 rounded text-xs font-semibold hover:bg-gray-200">Login</a>`;
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      updateCartCount();
+      checkAuth();
+      AOS.init({ duration: 800, once: true });
+
+      document.addEventListener("click", function (e) {
+        if (e.target && (e.target.id == "logout-btn")) {
+          localStorage.removeItem("user");
+          location.reload();
+        }
+      });
+
+      lucide.createIcons();
+    });
+  </script>
+</body>
+</html>

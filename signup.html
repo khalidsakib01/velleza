@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Up - VELLEGA</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+  <!-- Firebase SDKs (compat version) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&display=swap');
+    body { font-family: 'Playfair Display', serif; }
+  </style>
+</head>
+
+<body class="bg-black text-white min-h-screen flex items-center justify-center px-4">
+  <div class="w-full max-w-md bg-gray-900 p-8 rounded-lg shadow-lg">
+    <h2 class="text-3xl font-bold mb-6 text-center">Sign Up for VELLEGA</h2>
+
+    <form id="signup-form">
+      <div class="mb-4">
+        <label for="name" class="block text-sm font-semibold mb-2">Full Name</label>
+        <input type="text" id="name" class="w-full px-4 py-2 bg-black border border-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-white" required>
+      </div>
+
+      <div class="mb-4">
+        <label for="phone" class="block text-sm font-semibold mb-2">Phone Number</label>
+        <input type="tel" id="phone" class="w-full px-4 py-2 bg-black border border-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-white" required>
+      </div>
+
+      <div class="mb-4">
+        <label for="email" class="block text-sm font-semibold mb-2">Gmail</label>
+        <input type="email" id="email" class="w-full px-4 py-2 bg-black border border-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-white" required>
+      </div>
+
+      <div class="mb-4">
+        <label for="password" class="block text-sm font-semibold mb-2">Password</label>
+        <input type="password" id="password" class="w-full px-4 py-2 bg-black border border-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-white" required>
+      </div>
+
+      <div class="mb-6">
+        <label for="verification" class="block text-sm font-semibold mb-2">Verification Code</label>
+        <input type="text" id="verification" placeholder="" class="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100 text-gray-600 cursor-not-allowed" disabled>
+        <p class="text-xs text-gray-400 mt-1">Verification feature coming soon. You can skip this field for now.</p>
+      </div>
+
+      <button type="submit" class="w-full bg-white text-black font-semibold py-2 px-4 rounded hover:bg-gray-200 transition">Sign Up</button>
+    </form>
+
+    <!-- Loader below form -->
+    <div id="loader" class="hidden text-center mt-4 text-gray-400">Signing up...</div>
+  </div>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCcmnhjA05Xj3oHo8m3AS6EiOPXu-ewn0g",
+      authDomain: "vellega-auth.firebaseapp.com",
+      projectId: "vellega-auth",
+      storageBucket: "vellega-auth.firebasestorage.app",
+      messagingSenderId: "422298524460",
+      appId: "1:422298524460:web:c4bb023f1301bfe16bea89",
+      measurementId: "G-LHMJRCS07C"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    const loader = document.getElementById("loader");
+
+    document.getElementById("signup-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+      loader.classList.remove("hidden");
+
+      const name = document.getElementById("name").value;
+      const phone = document.getElementById("phone").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      auth.createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+
+          // Send verification email
+          user.sendEmailVerification()
+            .then(() => {
+              alert("📧 Verification email sent. Check your inbox.");
+            });
+
+          // Save profile to Firestore
+          return db.collection("users").doc(user.uid).set({
+            name: name,
+            phone: phone,
+            email: email,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        })
+        .then(() => {
+          loader.classList.add("hidden");
+          alert("✅ Signed up successfully! Redirecting...");
+          window.location.href = "index.html";
+        })
+        .catch((error) => {
+          loader.classList.add("hidden");
+          console.error(error);
+          alert("❌ " + error.message);
+        });
+    });
+  </script>
+</body>
+</html>

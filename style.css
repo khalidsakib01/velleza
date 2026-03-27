@@ -1,0 +1,190 @@
+/* ✅ Import Playfair Display Font */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&display=swap');
+
+/* ✅ General Body Styling */
+body {
+  font-family: 'Playfair Display', serif;
+  background-color: #000000;
+  color: #ffffff;
+  scroll-behavior: smooth;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+/* ✅ Default (when toggle is OFF) */
+.lighten-text {
+  font-weight: normal;
+  color: #9ca3af; /* Tailwind's text-gray-400 */
+}
+
+/* ✅ High contrast mode: only affect .lighten-text elements */
+.lighten-text {
+  transition: all 0.3s ease;
+}
+
+body.high-contrast .lighten-text {
+  font-weight: bold !important;
+  color: black !important;
+}
+
+/* ✅ (Optional) Bold buttons too, only if needed */
+body.high-contrast .btn {
+  font-weight: bold;
+}
+
+body.high-contrast button,
+body.high-contrast input,
+body.high-contrast select {
+  background-color: #000000; /* Black background */
+  color: #ffffff; /* White text */
+  border: 1px solid #ffffff; /* White borders for visibility */
+}
+
+/* ✅ Navbar */
+header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ✅ Links */
+a {
+  transition: all 0.3s ease-in-out;
+  text-decoration: none; /* Removed underline */
+}
+
+a:hover {
+  color: #d4d4d4;
+  /* Removed text-decoration: underline to avoid double underline */
+}
+
+.contact-floating-button {
+  font-family: 'Playfair Display', serif;
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: 0.05em;
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: none;
+  padding: 0;
+  border: none;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.contact-floating-button:hover {
+  color: #d4d4d4;
+}
+
+.plus-icon {
+  display: inline-block;
+  transition: transform 0.8s ease;
+}
+
+/* 🔁 Spin 180° (2x right) on hover */
+.group:hover .plus-icon {
+  transform: rotate(180deg);
+}
+
+/* ✅ Fade In Left Animation for Contact Us */
+@keyframes contactFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-contactFadeIn {
+  opacity: 0;
+  animation: contactFadeIn 1s ease-out 0.5s forwards;
+}
+
+/* ✅ Hero Section Text */
+.hero-text {
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+/* ✅ Floating Brand Name Animation */
+.floating-name {
+  font-size: 5rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: white;
+  animation: float 4s ease-in-out infinite;
+  z-index: 10;
+  text-align: center;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@media (max-width: 768px) {
+  .floating-name {
+    font-size: 2.5rem;
+  }
+}
+
+/* ✅ Main Button (Shop Now, etc.) */
+.btn {
+  background-color: #ffffff;
+  color: #000000;
+  padding: 0.75rem 2rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #e5e5e5;
+}
+
+/* ✅ Add to Cart Button */
+.add-to-cart {
+  padding: 10px 20px;
+  background-color: #111111;
+  color: #ffffff;
+  border: none;
+  font-weight: bold;
+  font-size: 14px;
+  text-transform: uppercase;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-to-cart:hover {
+  background-color: #333333;
+}
+
+/* ✅ Product Card */
+.card {
+  background-color: #ffffff;
+  color: #000000;
+  border-radius: 1rem;
+  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+/* ✅ Footer */
+footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: #a0a0a0;
+}
