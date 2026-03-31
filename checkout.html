@@ -364,7 +364,6 @@
     const orderButtons = document.querySelectorAll('.js-place-order');
     const sslNote = document.getElementById('ssl-note');
  
-    // ✅ Detect if running on Vercel/live or localhost
     const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
       ? 'http://localhost:4000'
       : '';
@@ -503,8 +502,7 @@
       const timeoutId = setTimeout(() => controller.abort(), 15000);
       let response;
       try {
-        // ✅ FIXED: Uses API_BASE which is empty on Vercel, localhost:4000 locally
-        response = await fetch(`${API_BASE}/api/initiate-payment`, {
+        response = await fetch(`${API_BASE}/api/payment?action=initiate`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(orderData),
