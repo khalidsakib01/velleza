@@ -2,87 +2,258 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login - VELLEGA</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
- <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&display=swap');
-    body { font-family: 'Playfair Display', serif; }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - VELLEZA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+
+  <link rel="stylesheet" href="auth-shared.css" />
 </head>
+<body>
+  <nav id="navbar">
+    <div class="nav-left">
+      <a href="index.html" class="pill-btn">Home</a>
+      <button class="pill-btn" type="button" onclick="openPanel('contact-panel')">Contact</button>
+    </div>
 
-<body class="bg-black text-white min-h-screen flex items-center justify-center px-4">
-  <div class="w-full max-w-md bg-gray-900 p-8 rounded-lg shadow-lg">
-    <h2 class="text-3xl font-bold mb-6 text-center">Login to VELLEGA</h2>
+    <a href="index.html" class="nav-logo">VELLEZA</a>
 
-    <form id="login-form">
-      <div class="mb-4">
-        <label for="email" class="block text-sm font-semibold mb-2">Email Address</label>
-        <input type="email" id="email" class="w-full px-4 py-2 bg-black border border-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-white" required>
+    <div class="nav-right">
+      <div class="search-container">
+        <button class="nav-btn search-toggle" aria-label="Search"><i data-lucide="search"></i></button>
+        <div class="search-dropdown">
+          <input type="text" class="search-input" placeholder="Search products..." />
+          <div class="search-results"></div>
+        </div>
       </div>
 
-      <div class="mb-6">
-        <label for="password" class="block text-sm font-semibold mb-2">Password</label>
-        <input type="password" id="password" class="w-full px-4 py-2 bg-black border border-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-white" required>
+      <a href="login.html" class="nav-btn" aria-label="Account"><i data-lucide="user"></i></a>
+      <a href="cart.html" class="nav-btn" aria-label="Cart">
+        <i data-lucide="shopping-bag"></i>
+        <span class="cart-badge" id="cart-count">0</span>
+      </a>
+      <button class="nav-btn" onclick="openPanel('menu-panel')" aria-label="Menu"><i data-lucide="menu"></i></button>
+    </div>
+  </nav>
+
+  <main class="auth-wrapper">
+    <section class="auth-shell two-col">
+      <section class="brand-pane">
+        <p class="brand-kicker">Velleza Private Access</p>
+        <h1 class="brand-title">Welcome Back</h1>
+        <p class="brand-copy">Sign in to continue your curated shopping journey, track orders, and access your saved selections.</p>
+      </section>
+
+      <section class="form-pane">
+        <p class="form-head">Login</p>
+
+        <form id="login-form">
+          <div>
+            <label for="email">Email Address</label>
+            <input id="email" type="email" required autocomplete="email" />
+          </div>
+
+          <div>
+            <label for="password">Password</label>
+            <input id="password" type="password" required autocomplete="current-password" />
+          </div>
+
+          <button id="submit-btn" class="btn" type="submit">Sign In</button>
+        </form>
+
+        <div class="meta-row">
+          <a href="#" id="forgot-password">Forgot password?</a>
+          <span>No account yet? <a href="signup.html">Create one</a></span>
+        </div>
+
+        <div class="meta-row" style="margin-top: 8px;">
+          <span>Prefer OTP?</span>
+          <a href="phone-login.html">Continue with phone</a>
+        </div>
+
+        <p id="status" class="status" aria-live="polite"></p>
+      </section>
+    </section>
+  </main>
+
+  <footer class="footer-section">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div>
+          <p class="footer-col-heading">VELLEZA Boutiques</p>
+          <a href="#" class="footer-col-link">VELLEZA FOOTWEAR</a>
+        </div>
+        <div>
+          <p class="footer-col-heading">Client Services</p>
+          <a href="#" class="footer-col-link">FAQ</a>
+        </div>
+        <div>
+          <p class="footer-col-heading">The House of VELLEZA</p>
+          <a href="#" class="footer-col-link">Sustainability</a>
+          <a href="#" class="footer-col-link">Ethics &amp; Compliance</a>
+          <a href="#" class="footer-col-link">Careers</a>
+        </div>
+        <div>
+          <p class="footer-col-heading">Legal Terms</p>
+          <a href="#" class="footer-col-link">Privacy Policy</a>
+          <a href="#" class="footer-col-link">Terms &amp; Conditions</a>
+        </div>
       </div>
 
-      <button type="submit" class="w-full bg-white text-black font-semibold py-2 px-4 rounded hover:bg-gray-200 transition">Login</button>
-    </form>
+      <div class="footer-bottom-bar">
+        <div class="footer-payment-icons">
+          <img src="Bkash.png" alt="bKash" />
+          <img src="Nagad.png" alt="Nagad" />
+          <img src="DBB.png" alt="Dutch-Bangla Bank" />
+          <img src="visa.jpeg" alt="Visa" />
+          <img src="mc.png" alt="Mastercard" />
+          <img src="upay.png" alt="Upay" />
+          <img src="city bank.png" alt="City Bank" />
+          <img src="ucb.png" alt="UCB" />
+        </div>
 
-    <p class="mt-6 text-sm text-center text-gray-400">
-      Don't have an account?
-      <a href="signup.html" class="underline hover:text-white">Sign Up</a>
-    </p>
+        <div class="footer-social-links">
+          <a href="#" class="footer-social-link">Instagram</a>
+          <a href="#" class="footer-social-link">Facebook</a>
+          <a href="#" class="footer-social-link">X</a>
+          <a href="#" class="footer-social-link">TikTok</a>
+          <a href="#" class="footer-social-link">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div id="contact-panel" class="panel">
+    <button class="panel-close" onclick="closePanel('contact-panel')">&times;</button>
+    <p class="panel-label">Client Services</p>
+    <h2 class="panel-title">Contact Us</h2>
+    <div class="panel-rule"></div>
+
+    <div class="contact-row">
+      <div>
+        <a href="tel:+8801943869880">+880 1943 869 880</a>
+        <p>Monday - Sunday, 10 AM - 8 PM</p>
+      </div>
+    </div>
+
+    <div class="contact-row">
+      <div>
+        <a href="#">WhatsApp Support</a>
+        <p>Monday - Sunday, 10 AM - 8 PM</p>
+      </div>
+    </div>
   </div>
 
+  <div id="menu-panel" class="panel">
+    <button class="panel-close" onclick="closePanel('menu-panel')">&times;</button>
+    <p class="panel-label">Navigation</p>
+    <div style="width:28px;height:1px;background:linear-gradient(90deg,var(--gold),transparent);margin-bottom:36px"></div>
+
+    <ul class="menu-nav">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="women-section.html">Women</a></li>
+      <li><a href="men-section.html">Men</a></li>
+      <li><a href="cart.html">Cart</a></li>
+      <li><a href="login.html">Account</a></li>
+    </ul>
+
+    <ul class="menu-sub-nav">
+      <li><a href="#">Velleza Services</a></li>
+      <li><a href="#">World of Velleza</a></li>
+      <li><a href="#">Store Locator</a></li>
+    </ul>
+  </div>
+
+  <div id="overlay" onclick="closePanels()"></div>
+
+  <script src="products.js"></script>
+  <script src="auth-shared.js"></script>
+
   <script>
-    document.getElementById("login-form").addEventListener("submit", function(e) {
-      e.preventDefault();
-      const email = document.getElementById("email").value;
-      localStorage.setItem("user", email);
-      window.location.href = "index.html";
+    const firebaseConfig = {
+      apiKey: "AIzaSyCcmnhjA05Xj3oHo8m3AS6EiOPXu-ewn0g",
+      authDomain: "vellega-auth.firebaseapp.com",
+      projectId: "vellega-auth",
+      storageBucket: "vellega-auth.firebasestorage.app",
+      messagingSenderId: "422298524460",
+      appId: "1:422298524460:web:c4bb023f1301bfe16bea89",
+      measurementId: "G-LHMJRCS07C"
+    };
+
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+
+    const auth = firebase.auth();
+
+    const form = document.getElementById("login-form");
+    const submitBtn = document.getElementById("submit-btn");
+    const statusEl = document.getElementById("status");
+    const forgotBtn = document.getElementById("forgot-password");
+
+    function setStatus(message, type) {
+      statusEl.textContent = message;
+      statusEl.className = "status" + (type ? " " + type : "");
+    }
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Signing In...";
+      setStatus("Authenticating...", "");
+
+      try {
+        const credential = await auth.signInWithEmailAndPassword(email, password);
+
+        if (!credential.user.emailVerified) {
+          await credential.user.sendEmailVerification();
+          await auth.signOut();
+          throw new Error("Please verify your email first. A new verification email has been sent.");
+        }
+
+        localStorage.setItem("user", JSON.stringify({
+          uid: credential.user.uid,
+          email: credential.user.email,
+          name: credential.user.displayName || ""
+        }));
+
+        setStatus("Login successful. Redirecting...", "success");
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 900);
+      } catch (error) {
+        setStatus(error.message, "error");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Sign In";
+      }
+    });
+
+    forgotBtn.addEventListener("click", async (event) => {
+      event.preventDefault();
+      const email = document.getElementById("email").value.trim();
+
+      if (!email) {
+        setStatus("Enter your email first, then click forgot password.", "error");
+        return;
+      }
+
+      try {
+        await auth.sendPasswordResetEmail(email);
+        setStatus("Password reset email sent.", "success");
+      } catch (error) {
+        setStatus(error.message, "error");
+      }
     });
   </script>
 </body>
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyCcmnhjA05Xj3oHo8m3AS6EiOPXu-ewn0g",
-    authDomain: "vellega-auth.firebaseapp.com",
-    projectId: "vellega-auth",
-    storageBucket: "vellega-auth.firebasestorage.app",
-    messagingSenderId: "422298524460",
-    appId: "1:422298524460:web:c4bb023f1301bfe16bea89",
-    measurementId: "G-LHMJRCS07C"
-  };
-
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-
-  // Signup Handler
-  document.getElementById("signup-form").addEventListener("submit", function(e) {
-    e.preventDefault();
-    const name = document.getElementById("name").value;
-    const phone = document.getElementById("phone").value;
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-
-    auth.createUserWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-
-        // Optional: Save name and phone locally
-        localStorage.setItem("user", JSON.stringify({ name, phone, email }));
-
-        // Redirect to homepage
-        window.location.href = "index.html";
-      })
-      .catch((error) => {
-        alert(error.message);
-        console.error(error);
-      });
-  });
-</script>
 </html>

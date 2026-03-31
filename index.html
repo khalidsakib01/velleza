@@ -4,591 +4,1122 @@
   <meta name="google-site-verification" content="yEeQDt0L6ysZWlnL2zORR8JRbFBnTY8N0iHOYmgiy2E" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VELLEZA</title>
+  <title>VELLEZA - Luxury Fashion</title>
 
-  <!-- Tailwind & AOS -->
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css">
-
-  <!-- Lucide Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@200;300;400;500&family=Playfair+Display:wght@400;500;700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
 
-  <!-- Include GSAP -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.1/gsap.min.js"></script>
+  <meta name="description" content="VELLEZA - Luxury fashion, handbags, shoes and accessories for men and women.">
+  <meta name="keywords" content="Velleza, fashion, luxury, handbags, shoes, men, women, accessories">
+  <meta property="og:title" content="VELLEZA - Luxury Fashion">
+  <meta property="og:description" content="Discover luxury handbags, shoes, and accessories.">
+  <meta property="og:image" content="preview.jpg">
+  <meta property="og:url" content="https://khalidsakib01.github.io/velleza">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/png" href="favicon.png">
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&display=swap');
+    :root {
+      --gold: #b8975a;
+      --gold-light: #d4b483;
+      --gold-pale: #e8d5b0;
+      --obsidian: #080808;
+      --charcoal: #111111;
+      --smoke: #1a1a1a;
+      --ash: #2a2a2a;
+      --ivory: #f5f0e8;
+      --cream: #ede8de;
+      --warm-white: #faf8f4;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
 
     body {
-      font-family: 'Playfair Display', serif;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      background: var(--obsidian);
+      color: var(--ivory);
+      cursor: none;
+      overflow-x: hidden;
     }
 
-    h2, h3, h4 {
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9000;
+      opacity: 0.45;
     }
 
-    .overlay {
-      background-color: rgba(0, 0, 0, 0);
+    #cursor-dot {
+      width: 6px; height: 6px;
+      background: var(--gold);
+      border-radius: 50%;
+      position: fixed; pointer-events: none; z-index: 99999;
+      transform: translate(-50%, -50%);
+      transition: width .2s, height .2s, background .2s;
     }
 
-    @keyframes fadeInLeft {
-      0% {
-        opacity: 0;
-        transform: translateX(-1rem);
-      }
-      100% {
-        opacity: 1;
-        transform: translateX(0);
-      }
+    #cursor-ring {
+      width: 36px; height: 36px;
+      border: 1px solid rgba(184,151,90,0.45);
+      border-radius: 50%;
+      position: fixed; pointer-events: none; z-index: 99998;
+      transform: translate(-50%, -50%);
+      transition: left .1s ease, top .1s ease, width .3s, height .3s, border-color .3s;
     }
 
-    .animate-fadeInLeft {
-      animation: fadeInLeft 1s ease-out 0.5s forwards;
+    body.hovering #cursor-dot { width: 10px; height: 10px; background: var(--gold-light); }
+    body.hovering #cursor-ring { width: 52px; height: 52px; border-color: var(--gold); }
+
+    #top-bar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 22px 28px;
+      pointer-events: none;
+      transition: opacity .35s ease, transform .35s ease;
     }
+
+    #top-bar > * { pointer-events: all; }
+
+    #top-bar.hidden {
+      opacity: 0;
+      transform: translateY(-14px);
+      pointer-events: none;
+    }
+
+    #top-bar.hidden > * { pointer-events: none; }
 
     .contact-floating-button {
       font-family: 'Playfair Display', serif;
-      font-weight: 500;
-      font-size: 15px;
-      letter-spacing: 0.05em;
-      color: white;
-      display: inline-flex;
+      font-weight: 500; font-size: 15px; letter-spacing: 0.05em;
+      color: white; display: inline-flex; align-items: center; gap: 0.4rem;
+      background: none; padding: 0; border: none;
+      text-decoration: none; transition: color 0.3s ease; cursor: none;
+    }
+
+    .contact-floating-button:hover { color: #d4d4d4; }
+
+    .plus-icon { display: inline-block; transition: transform 0.8s ease; }
+
+    #top-bar:hover .plus-icon { transform: rotate(180deg); }
+
+    .top-icons {
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    #navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 499;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
       align-items: center;
-      gap: 0.4rem;
-      background: none;
-      padding: 0;
-      border: none;
+      padding: 0 28px;
+      height: 68px;
+      background: rgba(8,8,8,0.97);
+      border-bottom: 1px solid rgba(184,151,90,0.1);
+      backdrop-filter: blur(12px);
+      transform: translateY(-100%);
+      transition: transform .45s cubic-bezier(0.23,1,0.32,1);
+    }
+
+    #navbar.scrolled { transform: translateY(0); }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem; letter-spacing: 0.45em;
+      text-transform: uppercase; color: var(--ivory);
+      text-decoration: none; font-weight: 500;
+      text-align: center;
+      transition: color .3s;
+    }
+
+    .nav-logo:hover { color: var(--gold-light); }
+
+    .nav-left {
+      display: flex; align-items: center; gap: 8px;
+      justify-content: flex-start;
+    }
+
+    .nav-right {
+      display: flex; align-items: center; gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .nav-btn {
+      width: 38px; height: 38px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--ivory); cursor: none;
+      transition: background .3s, border-color .3s, color .3s;
       text-decoration: none;
-      transition: color 0.3s ease;
+      position: relative;
     }
 
-    .contact-floating-button:hover {
-      color: #d4d4d4;
+    .nav-btn:hover { background: rgba(184,151,90,0.15); border-color: rgba(184,151,90,0.4); color: var(--gold-light); }
+    .nav-btn svg { width: 16px; height: 16px; }
+
+    .contact-btn {
+      font-family: 'Montserrat', sans-serif; font-weight: 300;
+      font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase;
+      color: rgba(245,240,232,0.7); background: none; border: none; cursor: none;
+      padding: 6px 0; transition: color .3s;
     }
 
-    .plus-icon {
-      display: inline-block;
-      transition: transform 0.8s ease;
+    .contact-btn:hover { color: var(--gold); }
+
+    .cart-badge {
+      position: absolute; top: -3px; right: -3px;
+      width: 16px; height: 16px;
+      background: var(--gold); color: var(--obsidian);
+      border-radius: 50%; font-size: 8px; font-weight: 500;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Montserrat', sans-serif;
+      opacity: 0; transform: scale(0);
+      transition: opacity .3s, transform .3s;
     }
 
-    .group:hover .plus-icon {
-      transform: rotate(180deg);
+    .cart-badge.visible { opacity: 1; transform: scale(1); }
+
+    .search-container { position: relative; }
+
+    .search-dropdown {
+      position: absolute; right: 0; top: calc(100% + 10px);
+      width: 320px; max-height: 400px;
+      background: var(--warm-white); color: #1a1a1a;
+      border: 1px solid rgba(184,151,90,0.2);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+      overflow: hidden; z-index: 600;
+      display: none;
     }
 
-    a {
-      text-decoration: none;
+    .search-dropdown.open { display: block; }
+
+    .search-input {
+      width: 100%; padding: 14px 16px;
+      font-family: 'Montserrat', sans-serif; font-size: 11px;
+      letter-spacing: 0.1em; color: #1a1a1a;
+      border: none; border-bottom: 1px solid #e5e0d8;
+      background: transparent; outline: none;
     }
 
-    .shop-button {
-  position: relative;
-  display: inline-block;
-  color: white;
-}
+    .search-results { max-height: 320px; overflow-y: auto; }
 
-.shop-loop-button {
-  position: relative;
-  display: inline-block;
-  color: white;
-}
+    .search-result-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 14px; text-decoration: none; color: #1a1a1a;
+      border-bottom: 1px solid #f5f0e8;
+      transition: background .2s;
+    }
 
-.shop-loop-button .underline-loop {
-  position: absolute;
-  bottom: 0.5rem; /* distance from text */
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background-color: white;
-  transform: scaleX(0);
-  transform-origin: left;
-}
+    .search-result-item:hover { background: #faf8f4; }
+    .search-result-item img { width: 38px; height: 38px; object-fit: cover; }
+    .search-result-name { font-family: 'Cormorant Garamond', serif; font-size: 15px; }
+    .search-result-meta { font-size: 9px; letter-spacing: 0.1em; color: #999; margin-top: 2px; }
 
-/* 🔁 Looping animation only on hover */
-.shop-loop-button:hover .underline-loop {
-  animation: underline-slide 1.2s ease-in-out infinite;
-}
+    #dual-hero { position: relative; height: 100vh; font-family: 'Playfair Display', serif; }
+    .hero-video-wrap { position: absolute; inset: 0; z-index: 10; overflow: hidden; }
+    .hero-video-wrap video { width: 100%; height: 120vh; object-fit: cover; }
 
-/* 🎞️ Keyframes for loop */
-@keyframes underline-slide {
-  0% {
-    transform: scaleX(0);
-    transform-origin: left;
-  }
-  50% {
-    transform: scaleX(1);
-    transform-origin: left;
-  }
-  51% {
-    transform-origin: right;
-  }
-  100% {
-    transform: scaleX(0);
-    transform-origin: right;
-  }
-}
-/* Subtle border color change on hover */
-a:hover {
-  border-color: #14e6dfa1; /* Elegant gold border color on hover */
-  transition: border-color 0.3s ease;
-}
+    #video-dim-overlay {
+      position: absolute; inset: 0;
+      background: black; opacity: 0.6;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+    }
 
-/* Hover scale effect */
-a:hover {
-  transform: scale(1.05); /* Slightly increase the size of the button on hover */
-}
+    .hero-pause-btn {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      backdrop-filter: blur(4px);
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 1.4rem;
+      border: none; transition: background 0.3s; cursor: none;
+    }
 
+    .hero-pause-btn:hover { background: rgba(255,255,255,0.3); }
+
+    .brand-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 8vw, 5.6rem);
+      letter-spacing: 0.65em;
+      color: var(--ivory);
+      text-transform: uppercase;
+      text-indent: 0.65em;
+    }
+
+    .video-controls-bar {
+      position: absolute; bottom: 0; left: 0; width: 100%;
+      z-index: 30; padding: 16px 24px;
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(4px);
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    }
+
+    .vc-btn { font-size: 1.25rem; color: white; background: none; border: none; transition: color 0.2s; cursor: none; }
+    .vc-btn:hover { color: #d4d4d4; }
+    .vc-time { font-size: 0.75rem; color: white; min-width: 48px; }
+
+    #video-progress {
+      flex: 1; -webkit-appearance: none;
+      height: 4px; background: rgba(255,255,255,0.2);
+      border-radius: 2px; cursor: none;
+      accent-color: white; outline: none;
+    }
+
+    .section-head { text-align: center; margin-bottom: 56px; }
+
+    .section-label {
+      font-size: 9px; letter-spacing: 0.5em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 14px;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif; font-weight: 300;
+      font-size: clamp(1.8rem, 3vw, 2.8rem); letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--ivory);
+    }
+
+    .gold-rule {
+      width: 40px; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 18px auto 0;
+    }
+
+    .categories-section {
+      background: var(--obsidian);
+      padding: 100px 52px;
+      position: relative;
+    }
+
+    .categories-section::before {
+      content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 1px; height: 56px;
+      background: linear-gradient(to bottom, transparent, var(--gold));
+    }
+
+    .categories-grid {
+      max-width: 1400px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+    }
+
+    .cat-card {
+      position: relative; overflow: hidden;
+      cursor: none; aspect-ratio: 3/4;
+    }
+
+    .cat-card img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 1s cubic-bezier(0.23,1,0.32,1), filter .9s ease;
+      filter: brightness(0.72) saturate(0.8);
+    }
+
+    .cat-card:hover img { transform: scale(1.07); filter: brightness(0.55) saturate(0.65); }
+
+    .cat-card::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(8,8,8,0.75) 0%, transparent 55%);
+      pointer-events: none;
+    }
+
+    .cat-border {
+      position: absolute; inset: 0; z-index: 2;
+      border: 1px solid transparent;
+      transition: border-color .4s; pointer-events: none;
+    }
+
+    .cat-card:hover .cat-border { border-color: rgba(184,151,90,0.3); }
+
+    .cat-label {
+      position: absolute; bottom: 0; left: 0; right: 0; z-index: 3;
+      padding: 20px 16px; text-align: center;
+    }
+
+    .cat-label p {
+      font-size: 9px; letter-spacing: 0.4em; text-transform: uppercase;
+      color: var(--ivory); transition: color .3s, letter-spacing .3s;
+    }
+
+    .cat-card:hover .cat-label p { color: var(--gold-light); letter-spacing: 0.5em; }
+
+    .filter-strip {
+      background: var(--charcoal);
+      padding: 40px 52px;
+      border-top: 1px solid var(--ash);
+      border-bottom: 1px solid var(--ash);
+    }
+
+    .filter-inner {
+      max-width: 1400px; margin: 0 auto;
+      display: flex; justify-content: center; gap: 24px; flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 44px;
+      font-family: 'Montserrat', sans-serif; font-weight: 300;
+      font-size: 9px; letter-spacing: 0.4em; text-transform: uppercase;
+      color: rgba(245,240,232,0.75);
+      border: 1px solid rgba(245,240,232,0.15);
+      text-decoration: none; cursor: none;
+      transition: color .4s, border-color .4s, background .4s;
+      position: relative; overflow: hidden;
+    }
+
+    .filter-btn::before {
+      content: ''; position: absolute; inset: 0;
+      background: rgba(184,151,90,0.06);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform .4s cubic-bezier(0.23,1,0.32,1);
+    }
+
+    .filter-btn:hover { color: var(--gold-light); border-color: rgba(184,151,90,0.5); }
+    .filter-btn:hover::before { transform: scaleX(1); }
+
+    .split-section {
+      display: grid; grid-template-columns: 1fr 1fr;
+    }
+
+    .split-block {
+      position: relative; overflow: hidden;
+      min-height: 85vh; cursor: none;
+    }
+
+    .split-block img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform 1.3s cubic-bezier(0.23,1,0.32,1), filter .9s;
+      filter: brightness(0.6) saturate(0.8);
+    }
+
+    .split-block:hover img { transform: scale(1.05); filter: brightness(0.45) saturate(0.6); }
+
+    .split-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(8,8,8,0.85) 0%, rgba(8,8,8,0.1) 45%, transparent 100%);
+      pointer-events: none;
+    }
+
+    .split-text {
+      position: absolute; bottom: 48px; left: 0; right: 0;
+      text-align: center; z-index: 2; padding: 0 2rem;
+    }
+
+    .split-text h3 {
+      font-family: 'Cormorant Garamond', serif; font-weight: 300;
+      font-size: clamp(1.8rem, 3vw, 2.6rem); letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--ivory);
+      margin-bottom: 20px; transition: color .3s;
+    }
+
+    .split-block:hover .split-text h3 { color: var(--gold-pale); }
+
+    .split-cta {
+      display: inline-block; padding: 11px 32px;
+      font-family: 'Montserrat', sans-serif; font-weight: 300;
+      font-size: 9px; letter-spacing: 0.4em; text-transform: uppercase;
+      color: var(--ivory);
+      border: 1px solid rgba(245,240,232,0.4);
+      text-decoration: none; cursor: none;
+      transition: border-color .4s, color .4s, background .4s;
+    }
+
+    .split-cta:hover { border-color: var(--gold); color: var(--gold-light); background: rgba(184,151,90,0.08); }
+
+    .footer-section {
+      background: #ffffff;
+      color: #1a1a1a;
+      padding: 3rem 5rem;
+    }
+
+    .footer-col-heading {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 400; font-size: 0.7rem;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      color: #999; margin-bottom: 1rem;
+    }
+
+    .footer-col-link {
+      display: block; font-family: 'Montserrat', sans-serif;
+      font-size: 0.8rem; letter-spacing: 0.05em;
+      color: #666; text-decoration: none;
+      padding: 4px 0; transition: color .3s;
+    }
+
+    .footer-col-link:hover { color: #1a1a1a; }
+
+    .footer-bottom-bar {
+      margin-top: 3rem; padding-top: 1.5rem;
+      border-top: 1px solid #e5e5e5;
+      display: flex; flex-wrap: wrap;
+      align-items: center; justify-content: space-between; gap: 1rem;
+    }
+
+    .footer-payment-icons { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+    .footer-payment-icons img { height: 30px; object-fit: contain; }
+
+    .footer-social-links { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+
+    .footer-social-link {
+      font-family: 'Montserrat', sans-serif; font-weight: 300;
+      font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase;
+      color: #aaa; text-decoration: none; transition: color .3s;
+    }
+
+    .footer-social-link:hover { color: #1a1a1a; }
+
+    .panel {
+      position: fixed; top: 0; right: 0; height: 100%; z-index: 600;
+      transform: translateX(100%); transition: transform .5s cubic-bezier(0.23,1,0.32,1);
+      overflow-y: auto;
+    }
+
+    .panel.open { transform: translateX(0); }
+
+    #contact-panel {
+      width: 420px; max-width: 100%;
+      background: var(--warm-white); color: #1a1a1a;
+      padding: 52px 44px;
+    }
+
+    #menu-panel {
+      width: 380px; max-width: 100%;
+      background: var(--obsidian); color: var(--ivory);
+      padding: 52px 44px;
+      border-left: 1px solid rgba(184,151,90,0.12);
+    }
+
+    .panel-close {
+      position: absolute; top: 20px; right: 20px;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: none; border: 1px solid rgba(0,0,0,0.12);
+      color: #888; font-size: 1.1rem;
+      display: flex; align-items: center; justify-content: center;
+      cursor: none; transition: border-color .3s, color .3s;
+    }
+
+    #menu-panel .panel-close { border-color: rgba(184,151,90,0.25); color: var(--ivory); }
+    .panel-close:hover { border-color: currentColor; color: #1a1a1a; }
+    #menu-panel .panel-close:hover { color: var(--gold); border-color: var(--gold); }
+
+    .panel-label { font-size: 8px; letter-spacing: 0.45em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+
+    .panel-title {
+      font-family: 'Cormorant Garamond', serif; font-weight: 300;
+      font-size: 1.6rem; letter-spacing: 0.15em; text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+
+    #contact-panel .panel-title { color: #1a1a1a; }
+
+    .panel-rule { width: 100%; height: 1px; background: linear-gradient(90deg, var(--gold), transparent); margin-bottom: 32px; }
+
+    .contact-row {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 20px 0; border-bottom: 1px solid #f0ebe3;
+    }
+
+    .contact-row-icon { font-size: 1.2rem; margin-top: 2px; }
+    .contact-row a { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: #1a1a1a; text-decoration: none; }
+    .contact-row p { font-size: 10px; letter-spacing: 0.1em; color: #999; margin-top: 6px; line-height: 1.7; }
+
+    .menu-nav { list-style: none; padding: 0; margin: 0 0 40px; }
+    .menu-nav li { margin-bottom: 6px; }
+
+    .menu-nav a {
+      font-family: 'Cormorant Garamond', serif; font-weight: 300;
+      font-size: 1.6rem; letter-spacing: 0.08em;
+      color: var(--ivory); text-decoration: none;
+      display: block; padding: 8px 0;
+      border-bottom: 1px solid rgba(184,151,90,0.08);
+      transition: color .3s, letter-spacing .3s, padding-left .3s;
+    }
+
+    .menu-nav a:hover { color: var(--gold-light); letter-spacing: 0.12em; padding-left: 8px; }
+
+    .menu-sub-nav { list-style: none; padding: 0; margin: 0; }
+    .menu-sub-nav li { margin-bottom: 4px; }
+
+    .menu-sub-nav a {
+      font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase;
+      color: rgba(245,240,232,0.35); text-decoration: none;
+      display: block; padding: 6px 0;
+      transition: color .3s;
+    }
+
+    .menu-sub-nav a:hover { color: var(--gold); }
+
+    #overlay {
+      position: fixed; inset: 0; z-index: 550;
+      background: rgba(8,8,8,0.7); backdrop-filter: blur(4px);
+      opacity: 0; pointer-events: none;
+      transition: opacity .4s;
+    }
+
+    #overlay.active { opacity: 1; pointer-events: all; }
+
+    #toast {
+      position: fixed; bottom: 36px; left: 50%; transform: translateX(-50%);
+      background: var(--ivory); color: var(--obsidian);
+      padding: 14px 36px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase;
+      border-left: 3px solid var(--gold);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+      opacity: 0; transition: opacity .4s; z-index: 9999;
+      pointer-events: none; white-space: nowrap;
+    }
+
+    #toast.show { opacity: 1; }
+
+    a { text-decoration: none; }
+    * { cursor: none !important; }
+
+    @media (max-width: 900px) {
+      .categories-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+      .split-section { grid-template-columns: 1fr; }
+
+      #top-bar,
+      #navbar {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      #navbar {
+        grid-template-columns: auto 1fr auto;
+        gap: 12px;
+      }
+
+      .nav-logo {
+        justify-self: center;
+        font-size: 0.8rem;
+        letter-spacing: 0.28em;
+      }
+
+      .contact-btn {
+        font-size: 9px;
+        letter-spacing: 0.18em;
+      }
+
+      .search-dropdown {
+        right: -8px;
+        width: min(320px, calc(100vw - 32px));
+      }
+
+      .footer-section {
+        padding: 2.5rem 1.2rem;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .categories-grid { grid-template-columns: 1fr; }
+      .brand-title { letter-spacing: 0.35em; text-indent: 0.35em; }
+      .video-controls-bar { flex-wrap: wrap; }
+    }
   </style>
-
-  <!-- ✅ SEO & Social Meta Tags -->
-<meta name="description" content="VELLEZA - Luxury fashion, handbags, shoes and accessories for men and women. Shop exclusive collections online.">
-<meta name="keywords" content="Velleza, fashion, luxury, handbags, shoes, men, women, accessories">
-<meta name="author" content="VELLEZA">
-
-<!-- OpenGraph (Social Sharing) -->
-<meta property="og:title" content="VELLEZA - Luxury Fashion">
-<meta property="og:description" content="Discover luxury handbags, shoes, and accessories.">
-<meta property="og:image" content="preview.jpg"> <!-- replace with your image -->
-<meta property="og:url" content="https://velleza.com">
-<meta name="twitter:card" content="summary_large_image">
-
-<!-- Favicon -->
-<link rel="icon" type="image/png" href="favicon.png">
 </head>
+<body>
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
+  <div id="toast"></div>
 
-<body class="bg-gray-900 text-white">
-
-  <!-- ✅ Floating Contact Button -->
-  <div class="absolute top-6 left-6 z-50 group">
-    <button onclick="toggleContactPanel()" class="contact-floating-button">
-      <span class="plus-icon">+</span>
-      Contact Us
+  <div id="top-bar">
+    <button onclick="openPanel('contact-panel')" class="contact-floating-button">
+      <span class="plus-icon">+</span> Contact Us
     </button>
-  </div>
 
-  <!-- ✅ Top Right Icons -->
-  <div class="absolute top-6 right-6 z-50 flex items-center gap-4 flex-row-reverse">
-    <button onclick="toggleMenuPanel()" class="flex items-center gap-1 px-3 py-2 rounded-full bg-white/10 hover:bg-white/20 transition text-sm font-semibold">
-      <i data-lucide="menu" class="w-5 h-5 text-white"></i>
-      <span class="text-white text-[14px]"></span>
-    </button>
-    <button class="p-2 rounded-full bg-white/10 hover:bg-white/20 transition">
-      <i data-lucide="search" class="w-5 h-5 text-white"></i>
-    </button>
-    <a href="login.html" class="p-2 rounded-full bg-white/10 hover:bg-white/20 transition">
-      <i data-lucide="user" class="w-5 h-5 text-white"></i>
-    </a>
-    <a href="cart.html" class="p-2 rounded-full bg-white/10 hover:bg-white/20 transition">
-      <i data-lucide="shopping-bag" class="w-5 h-5 text-white"></i>
-    </a>
-  </div>
-
-<section id="dual-hero" class="relative h-screen font-serif">
-    <!-- ✅ Background Video -->
-  <div class="absolute inset-0 z-10 overflow-hidden">
-   <video id="hero-video" autoplay muted loop playsinline class="w-full h-[120vh] object-cover"> <!-- or h-[calc(100vw/2)] -->
-      <source src="video1.mp4" type="video/mp4" />
-    </video>
-    <!-- ✅ Dynamic Dim Overlay -->
-<div id="video-dim-overlay" class="absolute inset-0 bg-black opacity-60 transition-opacity duration-500 pointer-events-none"></div>
-  </div>
-
-  <!-- ✅ Centered Brand + Circle Pause Button -->
-  <div class="absolute inset-0 z-20 flex flex-col items-center justify-center text-center space-y-6">
-    <h1 class="text-white text-6xl md:text-8xl font-bold tracking-[0.3em]">V E L L E Z A</h1>
-
-    <button id="video-center-toggle"
-      class="w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white text-2xl hover:bg-white/30 transition">
-      ❚❚
-    </button>
-  </div>
-
-  <!-- ✅ Bottom Control Bar (full width) -->
-  <div class="absolute bottom-0 left-0 w-full z-30 px-6 py-4 bg-black/40 backdrop-blur-sm flex items-center justify-between text-white text-sm">
-
-    <!-- Left Controls -->
-    <div class="flex items-center gap-4">
-      <button id="video-bottom-toggle" class="text-xl hover:text-gray-300">❚❚</button>
-      <button id="sound-toggle" class="text-xl hover:text-gray-300">🔇</button>
-      <span id="video-time-left" class="text-xs w-12">00:00</span>
-    </div>
-
-    <!-- Progress Bar -->
-    <input type="range" id="video-progress" class="flex-1 mx-4 h-1 accent-white bg-white/20 rounded-full cursor-pointer" min="0" max="100" value="0">
-
-    <!-- Right Controls -->
-    <div class="flex items-center gap-4">
-      <span id="video-time-right" class="text-xs w-12 text-right">-00:00</span>
-      <button id="fullscreen-toggle" class="text-xl hover:text-gray-300">⛶</button>
-    </div>
-  </div>
-
-  <script>
-  const video = document.getElementById("hero-video");
-  const centerBtn = document.getElementById("video-center-toggle");
-  const bottomBtn = document.getElementById("video-bottom-toggle");
-  const soundBtn = document.getElementById("sound-toggle");
-  const fullscreenBtn = document.getElementById("fullscreen-toggle");
-  const progress = document.getElementById("video-progress");
-  const timeLeft = document.getElementById("video-time-left");
-  const timeRight = document.getElementById("video-time-right");
-
- function toggleVideoPlay() {
-  const overlay = document.getElementById("video-dim-overlay");
-
-  if (video.paused) {
-    video.play();
-    centerBtn.textContent = bottomBtn.textContent = "❚❚";
-    overlay.style.opacity = "0.6"; // normal brightness
-  } else {
-    video.pause();
-    centerBtn.textContent = bottomBtn.textContent = "▶";
-    overlay.style.opacity = "0.85"; // dimmed when paused
-  }
-}
-
-  // Mute toggle
-  function toggleSound() {
-    video.muted = !video.muted;
-    soundBtn.textContent = video.muted ? "🔇" : "🔊";
-  }
-
-  // Fullscreen toggle
-  function toggleFullscreen() {
-    if (!document.fullscreenElement) {
-      video.requestFullscreen();
-    } else {
-      document.exitFullscreen();
-    }
-  }
-
-  // Format time helper
-  function formatTime(sec) {
-    const m = Math.floor(sec / 60);
-    const s = Math.floor(sec % 60).toString().padStart(2, '0');
-    return `${m}:${s}`;
-  }
-
-  // Update time + progress
-  function updateTime() {
-    const current = video.currentTime;
-    const duration = video.duration;
-    if (!isNaN(duration)) {
-      const remaining = duration - current;
-      const percent = (current / duration) * 100;
-      progress.value = percent;
-      timeLeft.textContent = formatTime(current);
-      timeRight.textContent = `-${formatTime(remaining)}`;
-    }
-  }
-
-  // Seek with slider
-  progress.addEventListener("input", () => {
-    video.currentTime = (progress.value / 100) * video.duration;
-  });
-
-  // Events
-  video.addEventListener("timeupdate", updateTime);
-  video.addEventListener("loadedmetadata", updateTime);
-
-  centerBtn.onclick = toggleVideoPlay;
-  bottomBtn.onclick = toggleVideoPlay;
-  soundBtn.onclick = toggleSound;
-  fullscreenBtn.onclick = toggleFullscreen;
-</script>
-</section>
-
-<section class="bg-black text-white py-20 px-6 md:px-20">
-    <div class="max-w-screen-xl mx-auto text-center">
-        <!-- Header -->
-        <h2 class="text-4xl md:text-5xl font-serif font-semibold uppercase tracking-wide mb-12">Preseted by Velleza</h2>
-
-        <!-- Categories Grid with Larger Images -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-            <!-- Women's Handbags -->
-            <div class="relative group transform transition-transform duration-300">
-                <a href="/womens-handbags" class="block">
-                    <img src="gucci1.png" alt="Women's Handbags" class="w-full h-[300px] object-cover transition-transform duration-500 group-hover:scale-110">
-                    <div class="mt-6">
-                        <p class="text-lg font-sans font-semibold uppercase tracking-wide">Women's Handbags</p>
-                    </div>
-                </a>
-            </div>
-
-            <!-- Women's Shoes -->
-            <div class="relative group transform transition-transform duration-300">
-                <a href="/womens-shoes" class="block">
-                    <img src="gucci2.png" alt="Women's Shoes" class="w-full h-[300px] object-cover transition-transform duration-500 group-hover:scale-110">
-                    <div class="mt-6">
-                        <p class="text-lg font-sans font-semibold uppercase tracking-wide">Women's Shoes</p>
-                    </div>
-                </a>
-            </div>
-
-            <!-- Men's Shoes -->
-            <div class="relative group transform transition-transform duration-300">
-                <a href="/mens-shoes" class="block">
-                    <img src="gucci3.png" alt="Men's Shoes" class="w-full h-[300px] object-cover transition-transform duration-500 group-hover:scale-110">
-                    <div class="mt-6">
-                        <p class="text-lg font-sans font-semibold uppercase tracking-wide">Men's Shoes</p>
-                    </div>
-                </a>
-            </div>
-
-            <!-- Men's Bags -->
-            <div class="relative group transform transition-transform duration-300">
-                <a href="/mens-bags" class="block">
-                    <img src="gucci4.png" alt="Men's Bags" class="w-full h-[300px] object-cover transition-transform duration-500 group-hover:scale-110">
-                    <div class="mt-6">
-                        <p class="text-lg font-sans font-semibold uppercase tracking-wide">Men's Bags</p>
-                    </div>
-                </a>
-            </div>
+    <div class="top-icons">
+      <div class="search-container">
+        <button class="nav-btn search-toggle" aria-label="Search">
+          <i data-lucide="search"></i>
+        </button>
+        <div class="search-dropdown">
+          <input type="text" class="search-input" placeholder="Search products...">
+          <div class="search-results"></div>
         </div>
-    </div>
-</section>
-
-<!-- ✅ VELLEZA Shop Now Campaign – Black Background -->
-<section class="bg-black text-white py-20 px-6 md:px-0 text-left">
-  <div class="max-w-3xl ml-56 flex justify-start gap-10 flex-wrap">
-    
-    <!-- ALL Button -->
-    <a href="all.html"
-      class="inline-block px-6 py-3 text-lg font-medium text-white bg-transparent border-2 border-white transform transition-transform duration-300 hover:scale-105 hover:border-[#d4af37]">
-      ALL
-    </a>
-
-    <!-- MEN SECTION Button -->
-    <a href="men-section.html"
-      class="inline-block px-6 py-3 text-lg font-medium text-white bg-transparent border-2 border-white transform transition-transform duration-300 hover:scale-105 hover:border-[#d4af37]">
-      MEN SECTION
-    </a>
-
-    <!-- WOMEN SECTION Button -->
-    <a href="women.html"
-      class="inline-block px-6 py-3 text-lg font-medium text-white bg-transparent border-2 border-white transform transition-transform duration-300 hover:scale-105 hover:border-[#d4af37]">
-      WOMEN SECTION
-    </a>
-
-  </div>
-</section>
-
-<section class="bg-black text-white py-0 px-0 md:px-0">
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-screen-xl mx-auto min-h-screen">
-    <!-- Image Block 1 (New for Men) -->
-    <div class="relative w-full h-full overflow-hidden" id="image-block-1">
-      <img src="pic2.jpg" alt="New for Men" class="w-full h-full object-cover" id="img1"/>
-      <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center" id="text-1">
-        <h3 class="text-2xl font-semibold mb-4">New In for Men</h3>
-       <a href="#" class="inline-block px-6 py-3 text-lg font-medium text-white bg-transparent border-2 border-white transform transition-transform duration-300 hover:scale-105">
-  SHOP THE SELECTION
-</a>
       </div>
-    </div>
 
-    <!-- Image Block 2 (New for Women) -->
-    <div class="relative w-full h-full overflow-hidden" id="image-block-2">
-      <img src="pic1.jpg" alt="New for Women" class="w-full h-full object-cover" id="img2"/>
-      <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center" id="text-2">
-        <h3 class="text-2xl font-semibold mb-4">New In for Women</h3>
-        <a href="#" class="inline-block px-6 py-3 text-lg font-medium text-white bg-transparent border-2 border-white transform transition-transform duration-300 hover:scale-105">
-  SHOP THE SELECTION
-</a>
-      </div>
+      <a href="login.html" class="nav-btn" aria-label="Account">
+        <i data-lucide="user"></i>
+      </a>
+
+      <a href="cart.html" class="nav-btn" id="cart-btn" aria-label="Cart">
+        <i data-lucide="shopping-bag"></i>
+        <span class="cart-badge" id="cart-count">0</span>
+      </a>
+
+      <button class="nav-btn" onclick="openPanel('menu-panel')" aria-label="Menu">
+        <i data-lucide="menu"></i>
+      </button>
     </div>
   </div>
-</section>
 
-  <!-- ✅ Newsletter + Footer -->
-  <section class="bg-white text-black py-12 px-6 md:px-20">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-sm text-gray-800">
-      <div class="py-8">
-        <h2 class="font-serif text-base mb-2 text-gray-500">VELLEZA Boutiques</h2>
-        <ul class="space-y-1">
-          <li><a href="#" class="hover:outline-none text-gray-400 hover:text-black">VELLEZA FOOTWEAR</a></li>
-        </ul>
-      </div>
-      <div class="py-8">
-        <h2 class="font-serif text-base mb-2 text-gray-500">Client Services</h2>
-        <ul class="space-y-1">
-          <li><a href="#" class="hover:outline-none text-gray-400 hover:text-black">FAQ</a></li>
-        </ul>
-      </div>
-      <div class="py-8">
-        <h2 class="font-serif text-base mb-2 text-gray-500">The House of VELLEZA</h2>
-        <ul class="space-y-1">
-          <li><a href="#" class="hover:outline-none text-gray-400 hover:text-black">Sustainability</a></li>
-          <li><a href="#" class="hover:outline-none text-gray-400 hover:text-black">Ethics &amp; Compliance</a></li>
-          <li><a href="#" class="hover:outline-none text-gray-400 hover:text-black">Careers</a></li>
-        </ul>
-      </div>
-      <div class="py-8">
-        <h2 class="font-serif text-base mb-2 text-gray-500">Legal Terms</h2>
-        <ul class="space-y-1">
-          <li><a href="#" class="hover:outline-none text-gray-400 hover:text-black">Privacy Policy</a></li>
-          <li><a href="#" class="hover:outline-none text-gray-400 hover:text-black">Terms & Conditions</a></li>
-        </ul>
-      </div>
+  <nav id="navbar">
+    <div class="nav-left">
+      <button onclick="openPanel('contact-panel')" class="contact-btn">+ Contact Us</button>
     </div>
 
-    <!-- ✅ Footer Bottom Bar -->
-    <div class="mt-12 w-full flex flex-col md:flex-row items-center justify-between text-xs text-gray-400 tracking-wide font-light uppercase">
-      <div class="flex flex-wrap items-center gap-4">
-        <img src="Bkash.png" alt="bKash" class="h-8 object-contain">
-        <img src="Nagad.png" alt="Nagad" class="h-8 object-contain">
-        <img src="DBB.png" alt="Dutch-Bangla Bank" class="h-8 object-contain">
-        <img src="visa.jpeg" alt="Visa" class="h-8 object-contain">
-        <img src="mc.png" alt="Mastercard" class="h-8 object-contain">
-        <img src="upay.png" alt="Upay" class="h-8 object-contain">
-        <img src="city bank.png" alt="City Bank" class="h-8 object-contain">
-        <img src="ucb.png" alt="UCB" class="h-8 object-contain">
+    <a href="index.html" class="nav-logo">VELLEZA</a>
+
+    <div class="nav-right">
+      <div class="search-container">
+        <button class="nav-btn search-toggle" aria-label="Search">
+          <i data-lucide="search"></i>
+        </button>
+        <div class="search-dropdown">
+          <input type="text" class="search-input" placeholder="Search products...">
+          <div class="search-results"></div>
+        </div>
       </div>
-      <div class="flex flex-wrap items-center gap-4 mt-4 md:mt-0">
-        <a href="#" class="hover:font-semibold hover:text-black">Follow Us</a>
-        <a href="#" class="hover:font-semibold hover:text-black">Instagram</a>
-        <a href="#" class="hover:font-semibold hover:text-black">Facebook</a>
-        <a href="#" class="hover:font-semibold hover:text-black">X</a>
-        <a href="#" class="hover:font-semibold hover:text-black">Tiktok</a>
-        <a href="#" class="hover:font-semibold hover:text-black">LinkedIn</a>
+
+      <a href="login.html" class="nav-btn" aria-label="Account">
+        <i data-lucide="user"></i>
+      </a>
+
+      <a href="cart.html" class="nav-btn" aria-label="Cart">
+        <i data-lucide="shopping-bag"></i>
+        <span class="cart-badge" id="cart-count-nav">0</span>
+      </a>
+
+      <button class="nav-btn" onclick="openPanel('menu-panel')" aria-label="Menu">
+        <i data-lucide="menu"></i>
+      </button>
+    </div>
+  </nav>
+
+  <section id="dual-hero">
+    <div class="hero-video-wrap">
+      <video id="hero-video" autoplay muted loop playsinline>
+        <source src="video1.mp4" type="video/mp4" />
+      </video>
+      <div id="video-dim-overlay"></div>
+    </div>
+
+    <div style="position:absolute;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:1.5rem;">
+      <h1 class="brand-title">V E L L E Z A</h1>
+      <button id="video-center-toggle" class="hero-pause-btn">❚❚</button>
+    </div>
+
+    <div class="video-controls-bar">
+      <div style="display:flex;align-items:center;gap:1rem;">
+        <button id="video-bottom-toggle" class="vc-btn">❚❚</button>
+        <button id="sound-toggle" class="vc-btn">🔇</button>
+        <span id="video-time-left" class="vc-time">0:00</span>
+      </div>
+
+      <input type="range" id="video-progress" min="0" max="100" value="0">
+
+      <div style="display:flex;align-items:center;gap:1rem;">
+        <span id="video-time-right" class="vc-time">-0:00</span>
+        <button id="fullscreen-toggle" class="vc-btn">⛶</button>
       </div>
     </div>
   </section>
 
-  <!-- ✅ Slide-in Contact Panel -->
-  <div id="contact-panel" class="fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-xl z-50 transform translate-x-full transition-transform duration-500 overflow-y-auto">
-    <div class="p-6 space-y-6">
-      <div class="flex justify-end">
-        <button onclick="toggleContactPanel()" class="text-gray-500 hover:text-black text-2xl">&times;</button>
+  <section class="categories-section">
+    <div style="max-width:1400px;margin:0 auto">
+      <div class="section-head" data-aos="fade-up">
+        <p class="section-label">The Collection</p>
+        <h2 class="section-title">Presented by Velleza</h2>
+        <div class="gold-rule"></div>
       </div>
-      <h2 class="text-2xl font-semibold text-black">CONTACT US</h2>
-      <div>
-        <a href="tel:+8801943869880" class="flex items-center text-black font-medium hover:underline">
-          <span class="mr-2 text-lg">📞</span> Call Us +8801943869880
-        </a>
-        <p class="text-gray-700 mt-2">Our Client Advisors are available Monday through Sunday from 10 AM to 8 PM.</p>
-      </div>
-      <div>
-        <a href="#" class="flex items-center text-black font-medium hover:underline">
-          <span class="mr-2 text-lg">🟢</span> Message Us
-        </a>
-        <p class="text-gray-700 mt-2">WhatsApp messages answered Monday to Sunday, 10 AM – 8 PM</p>
-      </div>
-      <div>
-        <div class="flex items-center text-gray-700 font-medium">
-          <span class="mr-2 text-yellow-400 text-lg">●</span>
-          <span class="text-gray-500 underline">LIVE CHAT</span>
+
+      <div class="categories-grid">
+        <div class="cat-card" data-aos="fade-up" data-aos-delay="0">
+          <img src="gucci1.png" alt="Women's Handbags">
+          <div class="cat-border"></div>
+          <div class="cat-label"><p>Women's Handbags</p></div>
         </div>
-        <p class="text-gray-700 mt-2">Online Client Advisors available daily 10 AM to 8 PM.</p>
+
+        <div class="cat-card" data-aos="fade-up" data-aos-delay="80">
+          <img src="gucci2.png" alt="Women's Shoes">
+          <div class="cat-border"></div>
+          <div class="cat-label"><p>Women's Shoes</p></div>
+        </div>
+
+        <div class="cat-card" data-aos="fade-up" data-aos-delay="160">
+          <img src="gucci3.png" alt="Men's Shoes">
+          <div class="cat-border"></div>
+          <div class="cat-label"><p>Men's Shoes</p></div>
+        </div>
+
+        <div class="cat-card" data-aos="fade-up" data-aos-delay="240">
+          <img src="gucci4.png" alt="Men's Bags">
+          <div class="cat-border"></div>
+          <div class="cat-label"><p>Men's Bags</p></div>
+        </div>
       </div>
-      <div class="pt-8 border-t border-gray-200">
-        <p class="text-lg font-medium text-black mb-2">Need further help?</p>
-        <a href="#" class="text-black font-semibold underline hover:text-gray-800">Get in Contact with Us</a>
+    </div>
+  </section>
+
+  <div class="filter-strip">
+    <div class="filter-inner">
+      <a href="men-section.html" class="filter-btn">
+        <i data-lucide="briefcase" style="width:12px;height:12px"></i>
+        Men's Section
+      </a>
+
+      <a href="women-section.html" class="filter-btn">
+        <i data-lucide="sparkles" style="width:12px;height:12px"></i>
+        Women's Section
+      </a>
+    </div>
+  </div>
+
+  <div class="split-section">
+    <div class="split-block" data-aos="fade-right">
+      <img src="pic2.jpg" alt="New for Men">
+      <div class="split-overlay"></div>
+      <div class="split-text">
+        <h3>New In for Men</h3>
+        <a href="men-section.html" class="split-cta">Shop the Selection</a>
+      </div>
+    </div>
+
+    <div class="split-block" data-aos="fade-left">
+      <img src="pic1.jpg" alt="New for Women">
+      <div class="split-overlay"></div>
+      <div class="split-text">
+        <h3>New In for Women</h3>
+        <a href="women-section.html" class="split-cta">Shop the Selection</a>
       </div>
     </div>
   </div>
 
-  <!-- ✅ Slide-In Menu Panel -->
-  <div id="menu-panel" class="fixed top-0 right-0 w-[420px] max-w-full h-full bg-white text-black z-50 transform translate-x-full transition-transform duration-500 p-8 shadow-lg overflow-y-auto">
-    <div class="absolute top-6 right-6">
-      <button onclick="toggleMenuPanel()" class="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center text-xl leading-none">&times;</button>
+  <section class="footer-section">
+    <div style="max-width:1400px;margin:0 auto">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:3rem;padding-bottom:2rem">
+        <div>
+          <p class="footer-col-heading">VELLEZA Boutiques</p>
+          <a href="#" class="footer-col-link">VELLEZA FOOTWEAR</a>
+        </div>
+        <div>
+          <p class="footer-col-heading">Client Services</p>
+          <a href="#" class="footer-col-link">FAQ</a>
+        </div>
+        <div>
+          <p class="footer-col-heading">The House of VELLEZA</p>
+          <a href="#" class="footer-col-link">Sustainability</a>
+          <a href="#" class="footer-col-link">Ethics &amp; Compliance</a>
+          <a href="#" class="footer-col-link">Careers</a>
+        </div>
+        <div>
+          <p class="footer-col-heading">Legal Terms</p>
+          <a href="#" class="footer-col-link">Privacy Policy</a>
+          <a href="#" class="footer-col-link">Terms &amp; Conditions</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom-bar">
+        <div class="footer-payment-icons">
+          <img src="Bkash.png" alt="bKash">
+          <img src="Nagad.png" alt="Nagad">
+          <img src="DBB.png" alt="Dutch-Bangla Bank">
+          <img src="visa.jpeg" alt="Visa">
+          <img src="mc.png" alt="Mastercard">
+          <img src="upay.png" alt="Upay">
+          <img src="city bank.png" alt="City Bank">
+          <img src="ucb.png" alt="UCB">
+        </div>
+
+        <div class="footer-social-links">
+          <a href="#" class="footer-social-link">Instagram</a>
+          <a href="#" class="footer-social-link">Facebook</a>
+          <a href="#" class="footer-social-link">X</a>
+          <a href="#" class="footer-social-link">TikTok</a>
+          <a href="#" class="footer-social-link">LinkedIn</a>
+        </div>
+      </div>
     </div>
-    <ul class="mt-16 space-y-5 text-lg font-medium">
-      <li><a href="#" class="hover:text-gray-500">New In</a></li>
-      <li><a href="#" class="hover:text-gray-500">Handbags</a></li>
-      <li><a href="#" class="hover:text-gray-500">Women</a></li>
-      <li><a href="#" class="hover:text-gray-500">Men</a></li>
-      <li><a href="#" class="hover:text-gray-500">Children</a></li>
-      <li><a href="#" class="hover:text-gray-500">Travel</a></li>
-      <li><a href="#" class="hover:text-gray-500">Watches</a></li>
-      <li><a href="#" class="hover:text-gray-500">Fragrances</a></li>
-      <li><a href="#" class="hover:text-gray-500">Gifts</a></li>
+  </section>
+
+  <div id="contact-panel" class="panel">
+    <button class="panel-close" onclick="closePanel('contact-panel')">&times;</button>
+    <p class="panel-label">Client Services</p>
+    <h2 class="panel-title">Contact Us</h2>
+    <div class="panel-rule"></div>
+
+    <div class="contact-row">
+      <span class="contact-row-icon">📞</span>
+      <div>
+        <a href="tel:+8801943869880">+880 1943 869 880</a>
+        <p>Monday - Sunday, 10 AM - 8 PM</p>
+      </div>
+    </div>
+
+    <div class="contact-row">
+      <span class="contact-row-icon">🟢</span>
+      <div>
+        <a href="#">WhatsApp</a>
+        <p>Monday - Sunday, 10 AM - 8 PM</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="menu-panel" class="panel">
+    <button class="panel-close" onclick="closePanel('menu-panel')">&times;</button>
+    <p class="panel-label">Navigation</p>
+    <div style="width:28px;height:1px;background:linear-gradient(90deg,var(--gold),transparent);margin-bottom:36px"></div>
+
+    <ul class="menu-nav">
+      <li><a href="#">New In</a></li>
+      <li><a href="#">Handbags</a></li>
+      <li><a href="women-section.html">Women</a></li>
+      <li><a href="men-section.html">Men</a></li>
+      <li><a href="#">Watches</a></li>
+      <li><a href="#">Fragrances</a></li>
+      <li><a href="#">Gifts</a></li>
     </ul>
-    <ul class="mt-12 space-y-2 text-sm text-gray-600">
-      <li><a href="#" class="hover:text-black">Velleza Services</a></li>
-      <li><a href="#" class="hover:text-black">World of Velleza</a></li>
-      <li><a href="#" class="hover:text-black">Store Locator</a></li>
+
+    <ul class="menu-sub-nav">
+      <li><a href="#">Velleza Services</a></li>
+      <li><a href="#">World of Velleza</a></li>
+      <li><a href="#">Store Locator</a></li>
     </ul>
   </div>
 
-  <!-- ✅ Overlay -->
-  <div id="overlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 hidden" onclick="closePanels()"></div>
+  <div id="overlay" onclick="closePanels()"></div>
 
-  <!-- ✅ Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script src="products.js"></script>
+
   <script>
-    function toggleContactPanel() {
-      const panel = document.getElementById("contact-panel");
-      const overlay = document.getElementById("overlay");
-      const isOpen = panel.classList.contains("translate-x-0");
-      panel.classList.toggle("translate-x-0");
-      panel.classList.toggle("translate-x-full");
-      overlay.classList.toggle("hidden");
+    const dot = document.getElementById('cursor-dot');
+    const ring = document.getElementById('cursor-ring');
+
+    document.addEventListener('mousemove', e => {
+      dot.style.left = e.clientX + 'px';
+      dot.style.top = e.clientY + 'px';
+      ring.style.left = e.clientX + 'px';
+      ring.style.top = e.clientY + 'px';
+    });
+
+    function bindCursorHover() {
+      document.querySelectorAll('a, button, input, [data-hover]').forEach(el => {
+        el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+        el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+      });
     }
 
+    function handleNavbarScroll() {
+      const past = window.scrollY > window.innerHeight * 0.6;
+      document.getElementById('navbar').classList.toggle('scrolled', past);
+      document.getElementById('top-bar').classList.toggle('hidden', past);
+    }
 
-    
-    function toggleMenuPanel() {
-      const panel = document.getElementById("menu-panel");
-      const overlay = document.getElementById("overlay");
-      panel.classList.toggle("translate-x-full");
-      overlay.classList.toggle("hidden");
+    window.addEventListener('scroll', handleNavbarScroll);
+
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const total = cart.reduce((s, i) => s + (i.quantity || i.qty || 1), 0);
+
+      ['cart-count', 'cart-count-nav'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.textContent = total;
+          el.classList.toggle('visible', total > 0);
+        }
+      });
+    }
+
+    const video = document.getElementById('hero-video');
+    const centerBtn = document.getElementById('video-center-toggle');
+    const bottomBtn = document.getElementById('video-bottom-toggle');
+    const soundBtn = document.getElementById('sound-toggle');
+    const fullBtn = document.getElementById('fullscreen-toggle');
+    const progress = document.getElementById('video-progress');
+    const tLeft = document.getElementById('video-time-left');
+    const tRight = document.getElementById('video-time-right');
+
+    function toggleVideoPlay() {
+      if (video.paused) {
+        video.play();
+        centerBtn.textContent = '❚❚';
+        bottomBtn.textContent = '❚❚';
+      } else {
+        video.pause();
+        centerBtn.textContent = '▶';
+        bottomBtn.textContent = '▶';
+      }
+    }
+
+    function toggleSound() {
+      video.muted = !video.muted;
+      soundBtn.textContent = video.muted ? '🔇' : '🔊';
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        video.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    function formatTime(sec) {
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60).toString().padStart(2, '0');
+      return m + ':' + s;
+    }
+
+    function updateTime() {
+      const cur = video.currentTime;
+      const dur = video.duration;
+
+      if (!isNaN(dur) && dur > 0) {
+        progress.value = (cur / dur) * 100;
+        tLeft.textContent = formatTime(cur);
+        tRight.textContent = '-' + formatTime(dur - cur);
+      }
+    }
+
+    progress.addEventListener('input', () => {
+      video.currentTime = (progress.value / 100) * video.duration;
+    });
+
+    video.addEventListener('timeupdate', updateTime);
+    video.addEventListener('loadedmetadata', updateTime);
+
+    centerBtn.onclick = toggleVideoPlay;
+    bottomBtn.onclick = toggleVideoPlay;
+    soundBtn.onclick = toggleSound;
+    fullBtn.onclick = toggleFullscreen;
+
+    function openPanel(id) {
+      document.getElementById(id).classList.add('open');
+      document.getElementById('overlay').classList.add('active');
+    }
+
+    function closePanel(id) {
+      document.getElementById(id).classList.remove('open');
+      if (!document.querySelector('.panel.open')) {
+        document.getElementById('overlay').classList.remove('active');
+      }
     }
 
     function closePanels() {
-      document.getElementById('menu-panel')?.classList.add('translate-x-full');
-      document.getElementById('contact-panel')?.classList.add('translate-x-full');
-      document.getElementById('overlay')?.classList.add('hidden');
+      document.querySelectorAll('.panel.open').forEach(p => p.classList.remove('open'));
+      document.getElementById('overlay').classList.remove('active');
     }
 
     function addToCart(productName) {
-      let cart = JSON.parse(localStorage.getItem("cart")) || [];
-      const index = cart.findIndex(item => item.name === productName);
-      if (index !== -1) {
-        cart[index].quantity += 1;
-      } else {
-        cart.push({ name: productName, quantity: 1 });
-      }
-      localStorage.setItem("cart", JSON.stringify(cart));
-      updateCartCount();
-      const alertBox = document.getElementById("cart-alert");
-      alertBox.textContent = `✅ ${productName} added to cart!`;
-      alertBox.classList.replace("opacity-0", "opacity-100");
-      setTimeout(() => {
-        alertBox.classList.replace("opacity-100", "opacity-0");
-        window.location.href = "cart.html";
-      }, 1000);
-    }
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const product = (typeof products !== 'undefined' && Array.isArray(products))
+        ? products.find(p => p.name === productName)
+        : null;
 
-    function updateCartCount() {
-      const cart = JSON.parse(localStorage.getItem("cart")) || [];
-      const total = cart.reduce((sum, item) => sum + item.quantity, 0);
-      const countEl = document.getElementById("cart-count");
-      if (countEl) countEl.textContent = total;
-    }
+      const idx = cart.findIndex(i => i.name === productName);
 
-    function checkAuth() {
-      const user = localStorage.getItem("user");
-      const authSection = document.getElementById("auth-section");
-      if (authSection) {
-        authSection.innerHTML = user
-          ? `<button id="logout-btn" class="bg-red-600 px-3 py-1 rounded text-xs font-semibold hover:bg-red-700">Log Out</button>`
-          : `<a href="login.html" class="bg-white text-black px-3 py-1 rounded text-xs font-semibold hover:bg-gray-200">Login</a>`;
-      }
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      updateCartCount();
-      checkAuth();
-      AOS.init({ duration: 800, once: true });
-
-      document.addEventListener("click", function (e) {
-        if (e.target && (e.target.id == "logout-btn")) {
-          localStorage.removeItem("user");
-          location.reload();
+      if (idx !== -1) {
+        cart[idx].quantity += 1;
+        if (product) {
+          cart[idx] = {
+            ...cart[idx],
+            price: product.price,
+            currency: product.currency,
+            image: product.image,
+            category: product.category
+          };
         }
+      } else {
+        cart.push({
+          name: productName,
+          quantity: 1,
+          price: product?.price ?? 0,
+          currency: product?.currency ?? 'BDT',
+          image: product?.image ?? 'gucci1.png',
+          category: product?.category ?? 'Item',
+          size: product?.size ?? '-'
+        });
+      }
+
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartCount();
+      showToast(productName + ' added to cart');
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      clearTimeout(t._timer);
+      t._timer = setTimeout(() => t.classList.remove('show'), 2400);
+    }
+
+    function closeSearchDropdowns() {
+      document.querySelectorAll('.search-dropdown.open').forEach(dropdown => {
+        dropdown.classList.remove('open');
+      });
+    }
+
+    function filterProducts(q, resultsEl) {
+      if (typeof products === 'undefined' || !resultsEl) return;
+
+      const list = q.trim() === ''
+        ? products
+        : products.filter(p =>
+            p.name.toLowerCase().includes(q.toLowerCase()) ||
+            p.category.toLowerCase().includes(q.toLowerCase())
+          );
+
+      if (list.length === 0) {
+        resultsEl.innerHTML = '<p style="padding:14px 16px;font-size:11px;color:#aaa;letter-spacing:0.1em">No results found.</p>';
+        return;
+      }
+
+      resultsEl.innerHTML = list.map(p => `
+        <a href="${p.page}" class="search-result-item">
+          <img src="${p.image}" alt="${p.name}" onerror="this.src='gucci1.png'">
+          <div>
+            <p class="search-result-name">${p.name}</p>
+            <p class="search-result-meta">${p.currency}${p.price} - ${p.category}</p>
+          </div>
+        </a>
+      `).join('');
+    }
+
+    function initSearchDropdowns() {
+      document.querySelectorAll('.search-container').forEach(container => {
+        const toggle = container.querySelector('.search-toggle');
+        const dropdown = container.querySelector('.search-dropdown');
+        const input = container.querySelector('.search-input');
+        const results = container.querySelector('.search-results');
+
+        if (!toggle || !dropdown || !input || !results) return;
+
+        toggle.addEventListener('click', e => {
+          e.stopPropagation();
+          const willOpen = !dropdown.classList.contains('open');
+          closeSearchDropdowns();
+          dropdown.classList.toggle('open', willOpen);
+
+          if (willOpen) {
+            input.focus();
+            filterProducts('', results);
+          }
+        });
+
+        dropdown.addEventListener('click', e => e.stopPropagation());
+        input.addEventListener('input', () => filterProducts(input.value, results));
       });
 
+      document.addEventListener('click', closeSearchDropdowns);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      AOS.init({ duration: 1000, once: true, easing: 'ease-out-quart' });
       lucide.createIcons();
+      bindCursorHover();
+      updateCartCount();
+      initSearchDropdowns();
+      handleNavbarScroll();
     });
   </script>
 </body>

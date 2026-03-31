@@ -1,66 +1,516 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VELLEZA | Cart</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cart — VELLEZA</title>
+ 
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Montserrat:wght@200;300;400;500&family=Playfair+Display:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+ 
+  <style>
+    :root {
+      --gold: #b8975a;
+      --gold-light: #d4b483;
+      --gold-pale: #e8d5b0;
+      --obsidian: #080808;
+      --charcoal: #111111;
+      --smoke: #1a1a1a;
+      --ash: #2a2a2a;
+      --ivory: #f5f0e8;
+      --cream: #ede8de;
+    }
+ 
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+ 
+    body {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      background: var(--obsidian);
+      color: var(--ivory);
+      min-height: 100vh;
+      cursor: none;
+    }
+ 
+    /* ── Grain ── */
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 9000; opacity: 0.45;
+    }
+ 
+    /* ── Cursor ── */
+    #cursor-dot {
+      width: 6px; height: 6px;
+      background: var(--gold); border-radius: 50%;
+      position: fixed; pointer-events: none; z-index: 99999;
+      transform: translate(-50%, -50%);
+      transition: width .2s, height .2s;
+    }
+    #cursor-ring {
+      width: 36px; height: 36px;
+      border: 1px solid rgba(184,151,90,0.4);
+      border-radius: 50%;
+      position: fixed; pointer-events: none; z-index: 99998;
+      transform: translate(-50%, -50%);
+      transition: left .1s ease, top .1s ease, width .3s, height .3s, border-color .3s;
+    }
+    body.hovering #cursor-dot { width: 10px; height: 10px; }
+    body.hovering #cursor-ring { width: 52px; height: 52px; border-color: var(--gold); }
+ 
+    /* ── Navbar ── */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 52px; height: 68px;
+      background: rgba(8,8,8,0.97);
+      border-bottom: 1px solid rgba(184,151,90,0.1);
+      backdrop-filter: blur(12px);
+    }
+    .navbar-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem; letter-spacing: 0.4em;
+      color: var(--ivory); text-decoration: none; font-weight: 500;
+      position: absolute; left: 50%; transform: translateX(-50%);
+      transition: color .3s;
+    }
+    .navbar-logo:hover { color: var(--gold-light); }
+    .navbar-back {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase;
+      color: rgba(245,240,232,0.45); text-decoration: none;
+      transition: color .3s;
+    }
+    .navbar-back:hover { color: var(--gold); }
+    .navbar-back svg { width: 13px; height: 13px; }
+    .navbar-items-count {
+      font-size: 9px; letter-spacing: 0.2em;
+      color: rgba(245,240,232,0.3);
+    }
+ 
+    /* ── Layout ── */
+    .page-wrap {
+      max-width: 1280px; margin: 0 auto;
+      padding: 120px 52px 80px;
+      display: grid; grid-template-columns: 1fr 400px;
+      gap: 64px; align-items: start;
+    }
+    @media (max-width: 960px) {
+      .page-wrap { grid-template-columns: 1fr; padding: 110px 28px 60px; }
+    }
+ 
+    /* ── Page header ── */
+    .page-header { margin-bottom: 52px; }
+    .page-label {
+      font-size: 9px; letter-spacing: 0.5em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 12px;
+    }
+    .page-title {
+      font-family: 'Cormorant Garamond', serif; font-weight: 300;
+      font-size: clamp(2rem, 4vw, 3.2rem); letter-spacing: 0.12em;
+    }
+    .page-divider {
+      width: 36px; height: 1px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+      margin-top: 16px;
+    }
+ 
+    /* ── Empty state ── */
+    .empty-state {
+      text-align: center; padding: 80px 40px;
+      grid-column: 1 / -1;
+    }
+    .empty-icon {
+      width: 72px; height: 72px; border-radius: 50%;
+      border: 1px solid var(--ash);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 28px;
+      color: rgba(245,240,232,0.2);
+    }
+    .empty-state h3 {
+      font-family: 'Cormorant Garamond', serif; font-weight: 300;
+      font-size: 1.8rem; letter-spacing: 0.1em; margin-bottom: 12px;
+    }
+    .empty-state p {
+      font-size: 10px; letter-spacing: 0.12em;
+      color: rgba(245,240,232,0.35); margin-bottom: 36px;
+    }
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 13px 36px;
+      font-size: 9px; letter-spacing: 0.4em; text-transform: uppercase;
+      color: var(--gold); border: 1px solid rgba(184,151,90,0.35);
+      text-decoration: none; cursor: none;
+      transition: border-color .3s, color .3s, background .3s;
+    }
+    .btn-ghost:hover { border-color: var(--gold); background: rgba(184,151,90,0.07); }
+ 
+    /* ── Cart items ── */
+    .cart-items { display: flex; flex-direction: column; }
+ 
+    .cart-item {
+      display: grid;
+      grid-template-columns: 96px 1fr auto;
+      gap: 28px; align-items: center;
+      padding: 32px 0;
+      border-bottom: 1px solid rgba(42,42,42,0.8);
+      animation: slideIn .35s ease forwards;
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: none; }
+    }
+ 
+    .cart-item-img {
+      width: 96px; height: 116px; object-fit: cover;
+      filter: brightness(0.92);
+      transition: filter .4s;
+    }
+    .cart-item:hover .cart-item-img { filter: brightness(1); }
+ 
+    .cart-item-cat {
+      font-size: 8px; letter-spacing: 0.4em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 7px;
+    }
+    .cart-item-name {
+      font-family: 'Cormorant Garamond', serif; font-weight: 400;
+      font-size: 1.2rem; letter-spacing: 0.06em; margin-bottom: 6px;
+    }
+    .cart-item-size {
+      font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(245,240,232,0.35); margin-bottom: 18px;
+    }
+ 
+    /* Qty control */
+    .qty-control {
+      display: inline-flex; align-items: center;
+      border: 1px solid var(--ash);
+    }
+    .qty-btn {
+      width: 34px; height: 34px;
+      background: none; border: none;
+      color: var(--ivory); font-size: 1rem;
+      display: flex; align-items: center; justify-content: center;
+      cursor: none; transition: background .2s, color .2s;
+    }
+    .qty-btn:hover { background: var(--ash); color: var(--gold); }
+    .qty-num {
+      width: 42px; text-align: center;
+      font-size: 12px; letter-spacing: 0.1em;
+      border-left: 1px solid var(--ash); border-right: 1px solid var(--ash);
+      padding: 6px 0; user-select: none;
+    }
+ 
+    .cart-item-right {
+      display: flex; flex-direction: column;
+      align-items: flex-end; gap: 18px;
+    }
+    .cart-item-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem; letter-spacing: 0.1em;
+    }
+    .cart-remove {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 8px; letter-spacing: 0.25em; text-transform: uppercase;
+      color: rgba(245,240,232,0.25); background: none; border: none;
+      cursor: none; transition: color .3s;
+    }
+    .cart-remove:hover { color: #d97070; }
+    .cart-remove svg { width: 10px; height: 10px; }
+ 
+    /* ── Summary panel ── */
+    .summary-panel {
+      background: var(--charcoal);
+      border: 1px solid var(--ash);
+      padding: 40px;
+      position: sticky; top: 88px;
+    }
+    .summary-title {
+      font-family: 'Cormorant Garamond', serif; font-weight: 300;
+      font-size: 1.3rem; letter-spacing: 0.18em; text-transform: uppercase;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--ash);
+      margin-bottom: 24px;
+    }
+    .summary-row {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 10px; letter-spacing: 0.1em;
+      color: rgba(245,240,232,0.5);
+      padding: 9px 0;
+    }
+    .summary-row.total {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem; letter-spacing: 0.15em;
+      color: var(--ivory);
+      border-top: 1px solid var(--ash);
+      margin-top: 14px; padding-top: 22px;
+    }
+ 
+    /* Checkout button */
+    .checkout-btn {
+      display: block; width: 100%;
+      margin-top: 32px; padding: 16px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 9px; letter-spacing: 0.45em; text-transform: uppercase;
+      background: var(--gold); color: var(--obsidian);
+      border: none; text-align: center; text-decoration: none;
+      cursor: none; font-weight: 500;
+      transition: background .3s, letter-spacing .3s;
+    }
+    .checkout-btn:hover { background: var(--gold-light); letter-spacing: 0.55em; }
+ 
+    .continue-btn {
+      display: block; width: 100%;
+      margin-top: 12px; padding: 14px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase;
+      color: rgba(245,240,232,0.4);
+      background: transparent; border: 1px solid var(--ash);
+      text-align: center; text-decoration: none; cursor: none;
+      transition: border-color .3s, color .3s;
+    }
+    .continue-btn:hover { border-color: rgba(184,151,90,0.4); color: var(--ivory); }
+ 
+    /* Payment strip */
+    .payment-strip {
+      margin-top: 32px; padding-top: 24px;
+      border-top: 1px solid var(--ash);
+    }
+    .payment-strip-label {
+      font-size: 8px; letter-spacing: 0.35em; text-transform: uppercase;
+      color: rgba(245,240,232,0.25); text-align: center; margin-bottom: 14px;
+    }
+    .payment-logos {
+      display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; align-items: center;
+    }
+    .payment-logos img {
+      height: 22px; object-fit: contain;
+      filter: grayscale(1) brightness(0.5);
+      transition: filter .3s;
+    }
+    .payment-logos img:hover { filter: grayscale(0) brightness(1); }
+ 
+    /* ── Toast ── */
+    #toast {
+      position: fixed; bottom: 36px; left: 50%; transform: translateX(-50%);
+      background: var(--ivory); color: var(--obsidian);
+      padding: 14px 36px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase;
+      border-left: 3px solid var(--gold);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+      opacity: 0; transition: opacity .4s; z-index: 9999;
+      pointer-events: none; white-space: nowrap;
+    }
+    #toast.show { opacity: 1; }
+ 
+    * { cursor: none !important; }
+    a { text-decoration: none; }
+  </style>
 </head>
-<body class="bg-gray-100 text-gray-900">
-
-  <div class="max-w-4xl mx-auto py-10 px-6">
-    <h1 class="text-3xl font-bold mb-6">Shopping Cart</h1>
-    <div id="cart-items" class="space-y-4"></div>
-
-    <div class="mt-6 flex justify-between items-center">
-      <span class="text-xl font-semibold">Total: $<span id="total">0</span></span>
-      <a href="checkout.html" class="bg-black text-white px-6 py-3 rounded hover:bg-gray-800">Checkout</a>
+<body>
+ 
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
+  <div id="toast"></div>
+ 
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="index.html" class="navbar-back">
+      <i data-lucide="arrow-left"></i>
+      Continue Shopping
+    </a>
+    <a href="index.html" class="navbar-logo">VELLEZA</a>
+    <span class="navbar-items-count" id="items-count"></span>
+  </nav>
+ 
+  <!-- Page -->
+  <div class="page-wrap" id="page-wrap">
+    <div>
+      <div class="page-header">
+        <p class="page-label">Your Selection</p>
+        <h1 class="page-title">Shopping Cart</h1>
+        <div class="page-divider"></div>
+      </div>
+      <div id="cart-container"></div>
     </div>
+    <div id="summary-container"></div>
   </div>
-
+ 
+  <script src="products.js"></script>
   <script>
-    function renderCart() {
-      let cart = JSON.parse(localStorage.getItem("cart")) || [];
-      let container = document.getElementById("cart-items");
-      container.innerHTML = "";
-      let total = 0;
-
-      cart.forEach((item, index) => {
-        total += item.price * item.qty;
-        container.innerHTML += `
-          <div class="flex justify-between items-center bg-white p-4 rounded shadow">
-            <div>
-              <p class="font-semibold">${item.name}</p>
-              <p class="text-sm text-gray-600">Size: ${item.size}</p>
-              <p class="text-sm text-gray-600">Price: $${item.price}</p>
+    /* ── Cursor ── */
+    const dot = document.getElementById('cursor-dot');
+    const ring = document.getElementById('cursor-ring');
+    document.addEventListener('mousemove', e => {
+      dot.style.left = e.clientX + 'px';
+      dot.style.top = e.clientY + 'px';
+      ring.style.left = e.clientX + 'px';
+      ring.style.top = e.clientY + 'px';
+    });
+    function bindHover() {
+      document.querySelectorAll('a, button').forEach(el => {
+        el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+        el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+      });
+    }
+ 
+    /* ── Toast ── */
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      clearTimeout(t._t);
+      t._t = setTimeout(() => t.classList.remove('show'), 2400);
+    }
+ 
+    /* ── Cart helpers ── */
+    function getCart() {
+      const raw = JSON.parse(localStorage.getItem('cart')) || [];
+      const catalog = (typeof products !== 'undefined' && Array.isArray(products)) ? products : [];
+      return raw.map(item => {
+        const match = catalog.find(p => p.name === item.name) || {};
+        return {
+          ...match, ...item,
+          name:     item.name || match.name || 'Unnamed',
+          price:    parseFloat(item.price ?? match.price) || 0,
+          currency: item.currency || match.currency || 'BDT',
+          size:     item.size || match.size || '—',
+          image:    item.image || match.image || 'gucci1.png',
+          category: item.category || match.category || 'Item',
+          quantity: parseInt(item.quantity ?? item.qty ?? 1, 10)
+        };
+      });
+    }
+ 
+    function saveCart(cart) {
+      localStorage.setItem('cart', JSON.stringify(cart));
+    }
+ 
+    function fmtPrice(item) {
+      const sym = (item.currency === 'Tk' || item.currency === 'BDT') ? 'BDT ' : (item.currency || '$');
+      return `${sym}${(item.price * item.quantity).toLocaleString()}`;
+    }
+ 
+    /* ── Render ── */
+    function render() {
+      const cart = getCart();
+      const container = document.getElementById('cart-container');
+      const summary = document.getElementById('summary-container');
+      const countEl = document.getElementById('items-count');
+ 
+      const totalItems = cart.reduce((s, i) => s + i.quantity, 0);
+      if (countEl) countEl.textContent = totalItems > 0 ? `${totalItems} item${totalItems > 1 ? 's' : ''}` : '';
+ 
+      if (cart.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">
+              <i data-lucide="shopping-bag" style="width:30px;height:30px"></i>
             </div>
-            <div class="flex items-center space-x-2">
-              <input type="number" value="${item.qty}" min="1" onchange="updateQty(${index}, this.value)" class="w-16 border rounded p-1">
-              <button onclick="removeItem(${index})" class="text-red-600 hover:underline">Remove</button>
+            <h3>Your cart is empty</h3>
+            <p>Discover our curated collections and add pieces to your selection.</p>
+            <a href="index.html" class="btn-ghost">
+              <i data-lucide="arrow-left" style="width:12px;height:12px"></i>
+              Explore Collection
+            </a>
+          </div>`;
+        summary.innerHTML = '';
+        lucide.createIcons();
+        bindHover();
+        return;
+      }
+ 
+      container.innerHTML = `
+        <div class="cart-items">
+          ${cart.map((item, i) => `
+            <div class="cart-item" id="item-${i}" style="animation-delay:${i * 0.06}s">
+              <img class="cart-item-img" src="${item.image}" alt="${item.name}" onerror="this.src='gucci1.png'">
+              <div>
+                <p class="cart-item-cat">${item.category}</p>
+                <h3 class="cart-item-name">${item.name}</h3>
+                <p class="cart-item-size">Size: ${item.size}</p>
+                <div class="qty-control">
+                  <button class="qty-btn" onclick="changeQty(${i}, -1)">−</button>
+                  <span class="qty-num">${item.quantity}</span>
+                  <button class="qty-btn" onclick="changeQty(${i}, 1)">+</button>
+                </div>
+              </div>
+              <div class="cart-item-right">
+                <p class="cart-item-price">${fmtPrice(item)}</p>
+                <button class="cart-remove" onclick="removeItem(${i})">
+                  <i data-lucide="x"></i>
+                  Remove
+                </button>
+              </div>
+            </div>
+          `).join('')}
+        </div>`;
+ 
+      /* Totals */
+      let bdt = 0, usd = 0;
+      cart.forEach(item => {
+        if (item.currency === 'Tk' || item.currency === 'BDT') bdt += item.price * item.quantity;
+        else usd += item.price * item.quantity;
+      });
+ 
+      let subtotalsHTML = '';
+      if (usd > 0) subtotalsHTML += `<div class="summary-row"><span>Subtotal (USD)</span><span>$${usd.toLocaleString()}</span></div>`;
+      if (bdt > 0) subtotalsHTML += `<div class="summary-row"><span>Subtotal (BDT)</span><span>BDT ${bdt.toLocaleString()}</span></div>`;
+      subtotalsHTML += `<div class="summary-row"><span>Shipping</span><span>Calculated at checkout</span></div>`;
+ 
+      const totalLine = (usd > 0 && bdt > 0)
+        ? `<div class="summary-row total"><span>Total</span><span>$${usd.toLocaleString()} + BDT ${bdt.toLocaleString()}</span></div>`
+        : usd > 0
+          ? `<div class="summary-row total"><span>Total</span><span>$${usd.toLocaleString()}</span></div>`
+          : `<div class="summary-row total"><span>Total</span><span>BDT ${bdt.toLocaleString()}</span></div>`;
+ 
+      summary.innerHTML = `
+        <div class="summary-panel">
+          <h2 class="summary-title">Order Summary</h2>
+          <div class="summary-row"><span>Items</span><span>${totalItems}</span></div>
+          ${subtotalsHTML}
+          ${totalLine}
+          <a href="checkout.html" class="checkout-btn">Proceed to Checkout</a>
+          <a href="index.html" class="continue-btn">Continue Shopping</a>
+          <div class="payment-strip">
+            <p class="payment-strip-label">Secure Payment Via</p>
+            <div class="payment-logos">
+              <img src="Bkash.png" alt="bKash">
+              <img src="Nagad.png" alt="Nagad">
+              <img src="visa.jpeg" alt="Visa">
+              <img src="mc.png" alt="Mastercard">
+              <img src="DBB.png" alt="DBBL">
             </div>
           </div>
-        `;
-      });
-
-      document.getElementById("total").textContent = total.toFixed(2);
+        </div>`;
+ 
+      lucide.createIcons();
+      bindHover();
     }
-
-    function updateQty(index, qty) {
-      let cart = JSON.parse(localStorage.getItem("cart")) || [];
-      cart[index].qty = parseInt(qty);
-      localStorage.setItem("cart", JSON.stringify(cart));
-      renderCart();
+ 
+    function changeQty(i, delta) {
+      const cart = getCart();
+      cart[i].quantity = Math.max(1, cart[i].quantity + delta);
+      saveCart(cart);
+      render();
     }
-
-    function removeItem(index) {
-      let cart = JSON.parse(localStorage.getItem("cart")) || [];
-      cart.splice(index, 1);
-      localStorage.setItem("cart", JSON.stringify(cart));
-      renderCart();
+ 
+    function removeItem(i) {
+      const cart = getCart();
+      const name = cart[i].name;
+      cart.splice(i, 1);
+      saveCart(cart);
+      render();
+      showToast(`${name} removed`);
     }
-
-    renderCart();
+ 
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      render();
+    });
   </script>
-
 </body>
 </html>

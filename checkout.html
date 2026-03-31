@@ -1,50 +1,1010 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VELLEZA | Checkout</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Checkout | VELLEZA</title>
+  <!-- FIXED VERSION 2026-03-30 -->
+
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="products.js"></script>
+
+  <style>
+    :root {
+      --gold: #b8975a;
+      --gold-light: #d4b483;
+      --obsidian: #080808;
+      --charcoal: #111111;
+      --smoke: #1a1a1a;
+      --ash: #2a2a2a;
+      --ivory: #f5f0e8;
+      --error: #e06060;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      background: var(--obsidian);
+      color: var(--ivory);
+      min-height: 100vh;
+      cursor: none;
+    }
+
+    #cursor-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--gold);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 99999;
+      transform: translate(-50%, -50%);
+    }
+
+    #cursor-ring {
+      width: 34px;
+      height: 34px;
+      border: 1px solid rgba(184,151,90,0.5);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 99998;
+      transform: translate(-50%, -50%);
+      transition: left 0.12s ease, top 0.12s ease, width 0.3s, height 0.3s, border-color 0.3s;
+    }
+
+    body.hovering #cursor-ring {
+      width: 50px;
+      height: 50px;
+      border-color: var(--gold);
+    }
+
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 48px;
+      background: rgba(8,8,8,0.98);
+      border-bottom: 1px solid rgba(184,151,90,0.1);
+    }
+
+    .topbar-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      letter-spacing: 0.4em;
+      color: var(--ivory);
+      text-decoration: none;
+      font-weight: 400;
+    }
+
+    .topbar-back {
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.4);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.3s;
+    }
+
+    .topbar-back:hover {
+      color: var(--gold);
+    }
+
+    .secure-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 9px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.3);
+    }
+
+    .page-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 130px 48px 80px;
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 60px;
+      align-items: start;
+    }
+
+    @media (max-width: 860px) {
+      .page-wrap {
+        grid-template-columns: 1fr;
+        padding: 110px 24px 60px;
+      }
+    }
+
+    .section-label {
+      font-size: 9px;
+      letter-spacing: 0.45em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      margin-bottom: 6px;
+    }
+
+    .section-divider {
+      width: 36px;
+      height: 1px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+      margin-bottom: 40px;
+    }
+
+    .form-block {
+      background: var(--charcoal);
+      border: 1px solid var(--ash);
+      padding: 32px;
+      margin-bottom: 20px;
+    }
+
+    .form-block-title {
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.5);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .form-block-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--ash);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-row.single {
+      grid-template-columns: 1fr;
+    }
+
+    @media (max-width: 600px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 9px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.4);
+      margin-bottom: 8px;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      padding: 12px 14px;
+      background: var(--smoke);
+      border: 1px solid var(--ash);
+      color: var(--ivory);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      outline: none;
+      transition: border-color 0.3s;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: var(--gold);
+    }
+
+    .field input.error,
+    .field select.error,
+    .field textarea.error {
+      border-color: var(--error);
+    }
+
+    .field .err-msg {
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      color: var(--error);
+      margin-top: 5px;
+      display: none;
+    }
+
+    .field.has-error .err-msg {
+      display: block;
+    }
+
+    .field select option {
+      background: var(--smoke);
+    }
+
+    .field textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .phone-wrap {
+      display: flex;
+    }
+
+    .phone-prefix {
+      padding: 12px 14px;
+      background: var(--ash);
+      border: 1px solid var(--ash);
+      border-right: none;
+      color: rgba(245,240,232,0.5);
+      font-size: 12px;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+    }
+
+    .phone-wrap input {
+      flex: 1;
+    }
+
+    .payment-methods {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .payment-option {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 18px;
+      border: 1px solid var(--ash);
+      cursor: none;
+      transition: border-color 0.3s, background 0.3s;
+      position: relative;
+    }
+
+    .payment-option:hover {
+      border-color: rgba(184,151,90,0.3);
+      background: rgba(184,151,90,0.04);
+    }
+
+    .payment-option.selected {
+      border-color: var(--gold);
+      background: rgba(184,151,90,0.07);
+    }
+
+    .payment-option input[type="radio"] {
+      display: none;
+    }
+
+    .radio-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 1px solid var(--ash);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.3s;
+    }
+
+    .payment-option.selected .radio-dot {
+      border-color: var(--gold);
+    }
+
+    .radio-dot::after {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--gold);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .payment-option.selected .radio-dot::after {
+      opacity: 1;
+    }
+
+    .payment-option-label {
+      flex: 1;
+    }
+
+    .payment-option-label strong {
+      display: block;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 500;
+      margin-bottom: 3px;
+    }
+
+    .payment-option-label span {
+      font-size: 10px;
+      color: rgba(245,240,232,0.4);
+      letter-spacing: 0.05em;
+    }
+
+    .ssl-note {
+      font-size: 10px;
+      letter-spacing: 0.05em;
+      color: rgba(245,240,232,0.35);
+      line-height: 1.7;
+      padding: 14px;
+      background: var(--smoke);
+      border-left: 2px solid var(--gold);
+      margin-top: 12px;
+    }
+
+    .summary-panel {
+      background: var(--charcoal);
+      border: 1px solid var(--ash);
+      padding: 32px;
+      position: sticky;
+      top: 100px;
+    }
+
+    .summary-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--ash);
+    }
+
+    .summary-items {
+      margin-bottom: 16px;
+    }
+
+    .summary-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(42,42,42,0.5);
+    }
+
+    .summary-item img {
+      width: 48px;
+      height: 56px;
+      object-fit: cover;
+    }
+
+    .summary-item-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .summary-item-name {
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 3px;
+    }
+
+    .summary-item-qty {
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      color: rgba(245,240,232,0.35);
+    }
+
+    .summary-item-price {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      white-space: nowrap;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      color: rgba(245,240,232,0.5);
+      padding: 7px 0;
+    }
+
+    .summary-row.total {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      color: var(--ivory);
+      letter-spacing: 0.12em;
+      border-top: 1px solid var(--ash);
+      margin-top: 12px;
+      padding-top: 18px;
+    }
+
+    .place-order-btn {
+      width: 100%;
+      margin-top: 24px;
+      padding: 16px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      background: var(--gold);
+      color: var(--obsidian);
+      border: none;
+      cursor: none;
+      font-weight: 500;
+      transition: background 0.3s, letter-spacing 0.4s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .place-order-btn:hover:not(:disabled) {
+      background: var(--gold-light);
+      letter-spacing: 0.5em;
+    }
+
+    .place-order-btn:disabled {
+      opacity: 0.5;
+    }
+
+    #loading-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(8,8,8,0.85);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    #loading-overlay.show {
+      display: flex;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--ash);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.5);
+    }
+
+    #toast {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--ivory);
+      color: var(--obsidian);
+      padding: 14px 24px;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      border-left: 3px solid var(--gold);
+      opacity: 0;
+      transition: opacity 0.4s;
+      z-index: 9998;
+      pointer-events: none;
+      max-width: min(92vw, 700px);
+      white-space: normal;
+      text-align: center;
+    }
+
+    #toast.show {
+      opacity: 1;
+    }
+
+    .security-strip {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 16px;
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.25);
+    }
+  </style>
 </head>
-<body class="bg-gray-100 text-gray-900">
+<body>
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
+  <div id="toast"></div>
 
-  <div class="max-w-3xl mx-auto py-10 px-6">
-    <h1 class="text-3xl font-bold mb-6">Checkout</h1>
-    <form id="checkout-form" class="space-y-6 bg-white p-6 rounded shadow">
-      <!-- Name -->
-      <div>
-        <label class="block mb-1 font-medium">Full Name</label>
-        <input type="text" required class="w-full border rounded p-2">
-      </div>
-      <!-- Address -->
-      <div>
-        <label class="block mb-1 font-medium">Shipping Address</label>
-        <textarea required class="w-full border rounded p-2"></textarea>
-      </div>
-      <!-- Payment -->
-      <div>
-        <label class="block mb-1 font-medium">Payment Method</label>
-        <select required class="w-full border rounded p-2">
-          <option value="cod">Cash on Delivery</option>
-          <option value="bkash">bKash</option>
-          <option value="card">Credit/Debit Card</option>
-        </select>
-      </div>
+  <div id="loading-overlay">
+    <div class="spinner"></div>
+    <p class="loading-text">Redirecting to payment...</p>
+  </div>
 
-      <button type="submit" class="bg-black text-white px-6 py-3 rounded hover:bg-gray-800">
-        Place Order
-      </button>
-    </form>
+  <div class="topbar">
+    <a href="cart.html" class="topbar-back">
+      <i data-lucide="arrow-left" style="width:14px;height:14px;"></i>
+      Back to Cart
+    </a>
+    <a href="index.html" class="topbar-logo">Velleza</a>
+    <div class="secure-badge">
+      <i data-lucide="lock" style="width:12px;height:12px;"></i>
+      Secure Checkout
+    </div>
+  </div>
+
+  <div class="page-wrap">
+    <div>
+      <p class="section-label">Step 1 of 2</p>
+      <h1 class="section-title">Checkout</h1>
+      <div class="section-divider"></div>
+
+      <form id="checkout-form" novalidate>
+        <div class="form-block">
+          <p class="form-block-title">Contact Information</p>
+          <div class="form-row">
+            <div class="field" id="field-name">
+              <label for="name">Full Name *</label>
+              <input type="text" id="name" placeholder="e.g. Rahman Ahmed">
+              <p class="err-msg">Please enter your full name</p>
+            </div>
+
+            <div class="field" id="field-email">
+              <label for="email">Email Address *</label>
+              <input type="email" id="email" placeholder="you@example.com">
+              <p class="err-msg">Please enter a valid email</p>
+            </div>
+          </div>
+
+          <div class="field" id="field-phone">
+            <label for="phone">Phone Number *</label>
+            <div class="phone-wrap">
+              <span class="phone-prefix">+880</span>
+              <input type="tel" id="phone" placeholder="017XXXXXXXX or 17XXXXXXXX" maxlength="11">
+            </div>
+            <p class="err-msg">Please enter a valid BD phone number</p>
+          </div>
+        </div>
+
+        <div class="form-block">
+          <p class="form-block-title">Shipping Address</p>
+          <div class="form-row">
+            <div class="field" id="field-city">
+              <label for="city">City *</label>
+              <select id="city">
+                <option value="">Select city</option>
+                <option value="Dhaka">Dhaka</option>
+                <option value="Chittagong">Chittagong</option>
+                <option value="Sylhet">Sylhet</option>
+                <option value="Rajshahi">Rajshahi</option>
+                <option value="Khulna">Khulna</option>
+                <option value="Barisal">Barisal</option>
+                <option value="Rangpur">Rangpur</option>
+                <option value="Mymensingh">Mymensingh</option>
+                <option value="Comilla">Comilla</option>
+                <option value="Other">Other</option>
+              </select>
+              <p class="err-msg">Please select your city</p>
+            </div>
+
+            <div class="field">
+              <label for="district">District</label>
+              <input type="text" id="district" placeholder="e.g. Gulshan">
+            </div>
+          </div>
+
+          <div class="field form-row single" id="field-address">
+            <label for="address">Street Address *</label>
+            <textarea id="address" placeholder="House no, road no, area..."></textarea>
+            <p class="err-msg">Please enter your shipping address</p>
+          </div>
+
+          <div class="field">
+            <label for="postal">Postal Code</label>
+            <input type="text" id="postal" placeholder="e.g. 1212" maxlength="6">
+          </div>
+        </div>
+
+        <div class="form-block">
+          <p class="form-block-title">Payment Method</p>
+
+          <div class="payment-methods">
+            <label class="payment-option selected">
+              <input type="radio" name="payment" value="sslcommerz" checked>
+              <div class="radio-dot"></div>
+              <div class="payment-option-label">
+                <strong>bKash / Nagad / Cards / Net Banking</strong>
+                <span>Powered by SSLCommerz - all BD payment methods in one</span>
+              </div>
+            </label>
+
+            <label class="payment-option">
+              <input type="radio" name="payment" value="cod">
+              <div class="radio-dot"></div>
+              <div class="payment-option-label">
+                <strong>Cash on Delivery</strong>
+                <span>Pay when your order arrives</span>
+              </div>
+            </label>
+          </div>
+
+          <div class="ssl-note" id="ssl-note">
+            You'll be redirected to SSLCommerz's secure payment page where you can pay via bKash, Nagad, Rocket, Visa, Mastercard, DBBL, City Bank, or any other supported method.
+            <br><br>
+            <strong style="color:rgba(245,240,232,0.6);">Currently in Sandbox (test) mode.</strong>
+            Use test card <strong style="color:var(--gold);">4111 1111 1111 1111</strong> / exp: any future date / CVV: any 3 digits.
+            For bKash test: number <strong style="color:var(--gold);">01711111111</strong>, OTP: <strong style="color:var(--gold);">123456</strong>.
+          </div>
+        </div>
+
+        <div class="form-block">
+          <p class="form-block-title">Order Note</p>
+          <div class="field">
+            <label for="note">Special Instructions (optional)</label>
+            <textarea id="note" placeholder="Any note for delivery..."></textarea>
+          </div>
+        </div>
+
+        <button type="button" class="place-order-btn js-place-order">
+          Place Order & Pay
+        </button>
+
+        <div class="security-strip">
+          <i data-lucide="shield-check" style="width:12px;height:12px;"></i>
+          256-bit SSL encrypted · Secured by SSLCommerz
+        </div>
+      </form>
+    </div>
+
+    <div>
+      <div class="summary-panel" id="summary-panel">
+        <h2 class="summary-title">Your Order</h2>
+        <div class="summary-items" id="summary-items">
+          <p style="font-size:11px;color:rgba(245,240,232,0.3);">Loading...</p>
+        </div>
+        <div id="summary-totals"></div>
+        <button type="button" class="place-order-btn js-place-order" style="margin-top:20px;">
+          Place Order & Pay
+        </button>
+      </div>
+    </div>
   </div>
 
   <script>
-    document.getElementById("checkout-form").addEventListener("submit", (e) => {
+    const dot = document.getElementById('cursor-dot');
+    const ring = document.getElementById('cursor-ring');
+    const toastEl = document.getElementById('toast');
+    const loadingOverlay = document.getElementById('loading-overlay');
+    const checkoutForm = document.getElementById('checkout-form');
+    const paymentOptions = document.querySelectorAll('.payment-option');
+    const orderButtons = document.querySelectorAll('.js-place-order');
+    const sslNote = document.getElementById('ssl-note');
+
+    document.addEventListener('mousemove', (e) => {
+      dot.style.left = e.clientX + 'px';
+      dot.style.top = e.clientY + 'px';
+      ring.style.left = e.clientX + 'px';
+      ring.style.top = e.clientY + 'px';
+    });
+
+    function addCursorEvents() {
+      document.querySelectorAll('a, button, label, select, input, textarea').forEach((el) => {
+        el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+        el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+      });
+    }
+
+    function showToast(message) {
+      toastEl.textContent = message;
+      toastEl.classList.add('show');
+      clearTimeout(showToast._timer);
+      showToast._timer = setTimeout(() => {
+        toastEl.classList.remove('show');
+      }, 3500);
+    }
+
+    function getCart() {
+      try {
+        const raw = JSON.parse(localStorage.getItem('cart') || '[]');
+        if (!Array.isArray(raw)) return [];
+        const catalog = Array.isArray(products) ? products : [];
+        return raw.map((item) => ({
+          ...(catalog.find((product) => product.name === item.name) || {}),
+          ...item,
+          name: item.name || 'Item',
+          price: Number(item.price ?? catalog.find((product) => product.name === item.name)?.price) || 0,
+          currency: item.currency || catalog.find((product) => product.name === item.name)?.currency || 'BDT',
+          size: item.size || '-',
+          image: item.image || catalog.find((product) => product.name === item.name)?.image || 'gucci1.png',
+          category: item.category || catalog.find((product) => product.name === item.name)?.category || '',
+          quantity: Number.parseInt(item.quantity ?? item.qty ?? 1, 10) || 1
+        }));
+      } catch {
+        return [];
+      }
+    }
+
+    function renderSummary() {
+      const cart = getCart();
+      const itemsEl = document.getElementById('summary-items');
+      const totalsEl = document.getElementById('summary-totals');
+
+      if (cart.length === 0) {
+        itemsEl.innerHTML = '<p style="font-size:11px;color:rgba(245,240,232,0.3);">Your cart is empty. <a href="index.html" style="color:var(--gold);">Shop now</a></p>';
+        totalsEl.innerHTML = '';
+        return;
+      }
+
+      itemsEl.innerHTML = cart.map((item) => `
+        <div class="summary-item">
+          <img src="${item.image}" alt="${item.name}" onerror="this.src='gucci1.png'">
+          <div class="summary-item-info">
+            <p class="summary-item-name">${item.name}</p>
+            <p class="summary-item-qty">Qty: ${item.quantity} | Size: ${item.size}</p>
+          </div>
+          <span class="summary-item-price">BDT ${(item.price * item.quantity).toLocaleString()}</span>
+        </div>
+      `).join('');
+
+      const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+      totalsEl.innerHTML = `
+        <div class="summary-row"><span>Shipping</span><span>TBD</span></div>
+        <div class="summary-row total"><span>Total</span><span>BDT ${total.toLocaleString()}</span></div>
+      `;
+    }
+
+    paymentOptions.forEach((option) => {
+      option.addEventListener('click', () => {
+        paymentOptions.forEach((item) => {
+          item.classList.remove('selected');
+          item.querySelector('input[type="radio"]').checked = false;
+        });
+
+        option.classList.add('selected');
+        option.querySelector('input[type="radio"]').checked = true;
+
+        const method = option.querySelector('input[type="radio"]').value;
+        const buttonText = method === 'cod' ? 'Confirm Order (COD)' : 'Place Order & Pay';
+
+        orderButtons.forEach((btn) => {
+          btn.textContent = buttonText;
+        });
+
+        sslNote.style.display = method === 'sslcommerz' ? 'block' : 'none';
+      });
+    });
+
+    function normalizePhone(phone) {
+      const digits = String(phone).replace(/\D/g, '');
+      if (/^01[3-9]\d{8}$/.test(digits)) return digits.slice(1);
+      if (/^1[3-9]\d{8}$/.test(digits)) return digits;
+      return '';
+    }
+
+    function setFieldState(inputId, wrapperId, isValid) {
+      const input = document.getElementById(inputId);
+      const wrapper = document.getElementById(wrapperId);
+      if (!input || !wrapper) return;
+      wrapper.classList.toggle('has-error', !isValid);
+      input.classList.toggle('error', !isValid);
+    }
+
+    function validateForm() {
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = normalizePhone(document.getElementById('phone').value);
+      const city = document.getElementById('city').value.trim();
+      const address = document.getElementById('address').value.trim();
+
+      const errors = [];
+
+      const nameOk = name.length >= 2;
+      setFieldState('name', 'field-name', nameOk);
+      if (!nameOk) errors.push('full name');
+
+      const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      setFieldState('email', 'field-email', emailOk);
+      if (!emailOk) errors.push('email');
+
+      const phoneOk = phone.length === 10;
+      setFieldState('phone', 'field-phone', phoneOk);
+      if (!phoneOk) errors.push('phone number');
+
+      const cityOk = city !== '';
+      setFieldState('city', 'field-city', cityOk);
+      if (!cityOk) errors.push('city');
+
+      const addressOk = address.length >= 10;
+      setFieldState('address', 'field-address', addressOk);
+      if (!addressOk) errors.push('street address');
+
+      return {
+        ok: errors.length === 0,
+        errors,
+        normalizedPhone: phone
+      };
+    }
+
+    async function initiateSSLCommerz(orderData) {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 15000);
+
+      let response;
+      try {
+        response = await fetch('http://localhost:4000/api/initiate-payment', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(orderData),
+          signal: controller.signal
+        });
+      } catch (error) {
+        if (error.name === 'AbortError') {
+          throw new Error('Payment server timed out. Please try again.');
+        }
+        throw new Error('Could not reach the payment server.');
+      } finally {
+        clearTimeout(timeoutId);
+      }
+
+      let data;
+      try {
+        data = await response.json();
+      } catch {
+        throw new Error('Server returned an invalid response');
+      }
+
+      if (!response.ok || data.status !== 'success' || !data.gatewayUrl) {
+        throw new Error(data.message || 'Could not get payment gateway URL');
+      }
+
+      return data.gatewayUrl;
+    }
+
+    function setButtonsDisabled(disabled) {
+      orderButtons.forEach((btn) => {
+        btn.disabled = disabled;
+      });
+    }
+
+    async function handleCheckout() {
+      const cart = getCart();
+      if (cart.length === 0) {
+        showToast('Your cart is empty');
+        return;
+      }
+
+      const validation = validateForm();
+      if (!validation.ok) {
+        showToast('Check: ' + validation.errors.join(', '));
+        return;
+      }
+
+      const paymentInput = document.querySelector('input[name="payment"]:checked');
+      const paymentMethod = paymentInput ? paymentInput.value : 'sslcommerz';
+      const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+      if (totalAmount <= 0) {
+        showToast('Cart total is invalid. Please re-add the product.');
+        setButtonsDisabled(false);
+        renderSummary();
+        return;
+      }
+
+      const orderData = {
+        tran_id: 'VLZ_' + Date.now(),
+        total_amount: totalAmount,
+        currency: 'BDT',
+         customer: {
+            name: document.getElementById('name').value.trim(),
+            email: document.getElementById('email').value.trim(),
+            phone: '+880' + validation.normalizedPhone,
+            address: document.getElementById('address').value.trim(),
+            district: document.getElementById('district').value.trim(),
+            city: document.getElementById('city').value.trim(),
+            postcode: document.getElementById('postal').value.trim() || '1000',
+            country: 'Bangladesh'
+          },
+        products: cart.map((item) => ({
+          name: item.name,
+          quantity: item.quantity,
+          price: item.price,
+          size: item.size
+        })),
+        note: document.getElementById('note').value.trim(),
+        payment_method: paymentMethod
+      };
+
+      localStorage.setItem('pending_order', JSON.stringify(orderData));
+
+      if (paymentMethod === 'cod') {
+        localStorage.removeItem('cart');
+        localStorage.setItem('last_order', JSON.stringify({
+          ...orderData,
+          status: 'COD Confirmed'
+        }));
+        showToast('Order confirmed! Thank you.');
+        setTimeout(() => {
+          window.location.href = 'index.html';
+        }, 1500);
+        return;
+      }
+
+      loadingOverlay.classList.add('show');
+      setButtonsDisabled(true);
+
+      try {
+        const gatewayUrl = await initiateSSLCommerz(orderData);
+        window.location.href = gatewayUrl;
+      } catch (error) {
+        loadingOverlay.classList.remove('show');
+        setButtonsDisabled(false);
+        showToast(error.message || 'Payment initiation failed');
+        console.error(error);
+      }
+    }
+
+    orderButtons.forEach((btn) => {
+      btn.addEventListener('click', handleCheckout);
+    });
+
+    checkoutForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      alert("✅ Order placed successfully!");
-      localStorage.removeItem("cart");
-      window.location.href = "index.html";
+      handleCheckout();
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.lucide && typeof window.lucide.createIcons === 'function') {
+        window.lucide.createIcons();
+      }
+      renderSummary();
+      addCursorEvents();
     });
   </script>
-
 </body>
 </html>
+

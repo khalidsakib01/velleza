@@ -1,56 +1,194 @@
-<!-- verify-otp.html -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Verify OTP</title>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"></script>
-  <script>
-    const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_AUTH_DOMAIN",
-      projectId: "YOUR_PROJECT_ID",
-      appId: "YOUR_APP_ID"
-    };
-    firebase.initializeApp(firebaseConfig);
-  </script>
-  <style>
-    body {
-      font-family: sans-serif;
-      max-width: 400px;
-      margin: 40px auto;
-    }
-    input, button {
-      display: block;
-      margin-top: 10px;
-      padding: 10px;
-      width: 100%;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verify OTP - VELLEZA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+
+  <link rel="stylesheet" href="auth-shared.css" />
 </head>
 <body>
+  <nav id="navbar">
+    <div class="nav-left">
+      <a href="index.html" class="pill-btn">Home</a>
+      <button class="pill-btn" type="button" onclick="openPanel('contact-panel')">Contact</button>
+    </div>
 
-  <h2>Enter OTP</h2>
-  <input type="text" id="otp" placeholder="Enter the 6-digit OTP" />
-  <button onclick="verifyOTP()">Verify & Login</button>
+    <a href="index.html" class="nav-logo">VELLEZA</a>
+
+    <div class="nav-right">
+      <div class="search-container">
+        <button class="nav-btn search-toggle" aria-label="Search"><i data-lucide="search"></i></button>
+        <div class="search-dropdown">
+          <input type="text" class="search-input" placeholder="Search products..." />
+          <div class="search-results"></div>
+        </div>
+      </div>
+
+      <a href="login.html" class="nav-btn" aria-label="Account"><i data-lucide="user"></i></a>
+      <a href="cart.html" class="nav-btn" aria-label="Cart">
+        <i data-lucide="shopping-bag"></i>
+        <span class="cart-badge" id="cart-count">0</span>
+      </a>
+      <button class="nav-btn" onclick="openPanel('menu-panel')" aria-label="Menu"><i data-lucide="menu"></i></button>
+    </div>
+  </nav>
+
+  <main class="auth-wrapper">
+    <section class="auth-shell" style="width:min(560px,100%);">
+      <section class="form-pane">
+        <p class="brand-kicker">Velleza Secure Access</p>
+        <h1 class="brand-title" style="margin-top:8px;">Verify OTP</h1>
+        <p class="brand-copy" style="max-width:100%;">Enter the 6-digit code sent to <span id="phone-label">your number</span>.</p>
+
+        <label for="otp">One-Time Passcode</label>
+        <input id="otp" type="text" maxlength="6" inputmode="numeric" placeholder="000000" required style="letter-spacing:0.28em;text-align:center;" />
+
+        <button id="verify-btn" class="btn" type="button">Verify &amp; Continue</button>
+
+        <div class="meta-row">
+          <a href="phone-login.html">Resend code</a>
+          <a href="login.html">Back to email login</a>
+        </div>
+
+        <p id="status" class="status" aria-live="polite"></p>
+      </section>
+    </section>
+  </main>
+
+  <footer class="footer-section">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div><p class="footer-col-heading">VELLEZA Boutiques</p><a href="#" class="footer-col-link">VELLEZA FOOTWEAR</a></div>
+        <div><p class="footer-col-heading">Client Services</p><a href="#" class="footer-col-link">FAQ</a></div>
+        <div>
+          <p class="footer-col-heading">The House of VELLEZA</p>
+          <a href="#" class="footer-col-link">Sustainability</a>
+          <a href="#" class="footer-col-link">Ethics &amp; Compliance</a>
+          <a href="#" class="footer-col-link">Careers</a>
+        </div>
+        <div>
+          <p class="footer-col-heading">Legal Terms</p>
+          <a href="#" class="footer-col-link">Privacy Policy</a>
+          <a href="#" class="footer-col-link">Terms &amp; Conditions</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom-bar">
+        <div class="footer-payment-icons">
+          <img src="Bkash.png" alt="bKash" /><img src="Nagad.png" alt="Nagad" /><img src="DBB.png" alt="Dutch-Bangla Bank" />
+          <img src="visa.jpeg" alt="Visa" /><img src="mc.png" alt="Mastercard" /><img src="upay.png" alt="Upay" />
+          <img src="city bank.png" alt="City Bank" /><img src="ucb.png" alt="UCB" />
+        </div>
+
+        <div class="footer-social-links">
+          <a href="#" class="footer-social-link">Instagram</a><a href="#" class="footer-social-link">Facebook</a>
+          <a href="#" class="footer-social-link">X</a><a href="#" class="footer-social-link">TikTok</a>
+          <a href="#" class="footer-social-link">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div id="contact-panel" class="panel">
+    <button class="panel-close" onclick="closePanel('contact-panel')">&times;</button>
+    <p class="panel-label">Client Services</p>
+    <h2 class="panel-title">Contact Us</h2>
+    <div class="panel-rule"></div>
+    <div class="contact-row"><div><a href="tel:+8801943869880">+880 1943 869 880</a><p>Monday - Sunday, 10 AM - 8 PM</p></div></div>
+    <div class="contact-row"><div><a href="#">WhatsApp Support</a><p>Monday - Sunday, 10 AM - 8 PM</p></div></div>
+  </div>
+
+  <div id="menu-panel" class="panel">
+    <button class="panel-close" onclick="closePanel('menu-panel')">&times;</button>
+    <p class="panel-label">Navigation</p>
+    <div style="width:28px;height:1px;background:linear-gradient(90deg,var(--gold),transparent);margin-bottom:36px"></div>
+    <ul class="menu-nav"><li><a href="index.html">Home</a></li><li><a href="women-section.html">Women</a></li><li><a href="men-section.html">Men</a></li><li><a href="cart.html">Cart</a></li><li><a href="login.html">Account</a></li></ul>
+    <ul class="menu-sub-nav"><li><a href="#">Velleza Services</a></li><li><a href="#">World of Velleza</a></li><li><a href="#">Store Locator</a></li></ul>
+  </div>
+
+  <div id="overlay" onclick="closePanels()"></div>
+
+  <script src="products.js"></script>
+  <script src="auth-shared.js"></script>
 
   <script>
-    const auth = firebase.auth();
+    const firebaseConfig = {
+      apiKey: "AIzaSyCcmnhjA05Xj3oHo8m3AS6EiOPXu-ewn0g",
+      authDomain: "vellega-auth.firebaseapp.com",
+      projectId: "vellega-auth",
+      storageBucket: "vellega-auth.firebasestorage.app",
+      messagingSenderId: "422298524460",
+      appId: "1:422298524460:web:c4bb023f1301bfe16bea89",
+      measurementId: "G-LHMJRCS07C"
+    };
 
-    function verifyOTP() {
-      const code = document.getElementById("otp").value;
-      window.confirmationResult.confirm(code)
-        .then((result) => {
-          const user = result.user;
-          alert("Login successful!");
-          console.log("User info:", user);
-          // Redirect to home page or dashboard
-        })
-        .catch((error) => {
-          console.error(error);
-          alert("Invalid OTP. Try again.");
-        });
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
     }
+
+    const auth = firebase.auth();
+    const verifyBtn = document.getElementById("verify-btn");
+    const statusEl = document.getElementById("status");
+    const phoneLabel = document.getElementById("phone-label");
+
+    const verificationId = sessionStorage.getItem("otpVerificationId");
+    const phone = sessionStorage.getItem("otpPhone");
+
+    if (phone) {
+      phoneLabel.textContent = phone;
+    }
+
+    function setStatus(message, type) {
+      statusEl.textContent = message;
+      statusEl.className = "status" + (type ? " " + type : "");
+    }
+
+    if (!verificationId) {
+      setStatus("Session expired. Please request a new OTP.", "error");
+      verifyBtn.disabled = true;
+    }
+
+    verifyBtn.addEventListener("click", async () => {
+      const otp = document.getElementById("otp").value.trim();
+
+      if (!/^\d{6}$/.test(otp)) {
+        setStatus("Enter a valid 6-digit code.", "error");
+        return;
+      }
+
+      verifyBtn.disabled = true;
+      verifyBtn.textContent = "Verifying...";
+      setStatus("Validating OTP...", "");
+
+      try {
+        const credential = firebase.auth.PhoneAuthProvider.credential(verificationId, otp);
+        const result = await auth.signInWithCredential(credential);
+
+        localStorage.setItem("user", JSON.stringify({
+          uid: result.user.uid,
+          phone: result.user.phoneNumber || phone || ""
+        }));
+
+        sessionStorage.removeItem("otpVerificationId");
+        sessionStorage.removeItem("otpPhone");
+
+        setStatus("Phone verified. Redirecting...", "success");
+        setTimeout(() => window.location.href = "index.html", 800);
+      } catch (error) {
+        setStatus(error.message || "Invalid OTP. Try again.", "error");
+      } finally {
+        verifyBtn.disabled = false;
+        verifyBtn.textContent = "Verify & Continue";
+      }
+    });
   </script>
 </body>
 </html>

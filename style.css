@@ -1,62 +1,59 @@
-/* ✅ Import Playfair Display Font */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&display=swap');
-
+/* ✅ Import Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Cormorant+Garamond:wght@300;400;600&family=Montserrat:wght@300;400;500&display=swap');
+ 
 /* ✅ General Body Styling */
 body {
   font-family: 'Playfair Display', serif;
   background-color: #000000;
   color: #ffffff;
   scroll-behavior: smooth;
+  cursor: none;
 }
-
+ 
 html {
   scroll-behavior: smooth;
 }
-/* ✅ Default (when toggle is OFF) */
+ 
+/* ✅ High Contrast Mode */
 .lighten-text {
   font-weight: normal;
-  color: #9ca3af; /* Tailwind's text-gray-400 */
-}
-
-/* ✅ High contrast mode: only affect .lighten-text elements */
-.lighten-text {
+  color: #9ca3af;
   transition: all 0.3s ease;
 }
-
+ 
 body.high-contrast .lighten-text {
   font-weight: bold !important;
   color: black !important;
 }
-
-/* ✅ (Optional) Bold buttons too, only if needed */
+ 
 body.high-contrast .btn {
   font-weight: bold;
 }
-
+ 
 body.high-contrast button,
 body.high-contrast input,
 body.high-contrast select {
-  background-color: #000000; /* Black background */
-  color: #ffffff; /* White text */
-  border: 1px solid #ffffff; /* White borders for visibility */
+  background-color: #000000;
+  color: #ffffff;
+  border: 1px solid #ffffff;
 }
-
+ 
 /* ✅ Navbar */
 header {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
-
+ 
 /* ✅ Links */
 a {
   transition: all 0.3s ease-in-out;
-  text-decoration: none; /* Removed underline */
+  text-decoration: none;
 }
-
+ 
 a:hover {
   color: #d4d4d4;
-  /* Removed text-decoration: underline to avoid double underline */
 }
-
+ 
+/* ✅ Contact Floating Button */
 .contact-floating-button {
   font-family: 'Playfair Display', serif;
   font-weight: 500;
@@ -71,45 +68,38 @@ a:hover {
   border: none;
   text-decoration: none;
   transition: color 0.3s ease;
+  cursor: none;
 }
-
+ 
 .contact-floating-button:hover {
   color: #d4d4d4;
 }
-
+ 
 .plus-icon {
   display: inline-block;
   transition: transform 0.8s ease;
 }
-
-/* 🔁 Spin 180° (2x right) on hover */
+ 
 .group:hover .plus-icon {
   transform: rotate(180deg);
 }
-
-/* ✅ Fade In Left Animation for Contact Us */
+ 
+/* ✅ Fade In Left */
 @keyframes contactFadeIn {
-  0% {
-    opacity: 0;
-    transform: translateX(-20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  0%   { opacity: 0; transform: translateX(-20px); }
+  100% { opacity: 1; transform: translateX(0); }
 }
-
+ 
 .animate-contactFadeIn {
   opacity: 0;
   animation: contactFadeIn 1s ease-out 0.5s forwards;
 }
-
-/* ✅ Hero Section Text */
+ 
+/* ✅ Hero */
 .hero-text {
   text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
 }
-
-/* ✅ Floating Brand Name Animation */
+ 
 .floating-name {
   font-size: 5rem;
   font-weight: 600;
@@ -119,23 +109,17 @@ a:hover {
   z-index: 10;
   text-align: center;
 }
-
+ 
 @keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-12px);
-  }
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-12px); }
 }
-
+ 
 @media (max-width: 768px) {
-  .floating-name {
-    font-size: 2.5rem;
-  }
+  .floating-name { font-size: 2.5rem; }
 }
-
-/* ✅ Main Button (Shop Now, etc.) */
+ 
+/* ✅ Main Button */
 .btn {
   background-color: #ffffff;
   color: #000000;
@@ -146,11 +130,11 @@ a:hover {
   font-size: 0.875rem;
   transition: background-color 0.3s ease;
 }
-
+ 
 .btn:hover {
   background-color: #e5e5e5;
 }
-
+ 
 /* ✅ Add to Cart Button */
 .add-to-cart {
   padding: 10px 20px;
@@ -161,14 +145,14 @@ a:hover {
   font-size: 14px;
   text-transform: uppercase;
   border-radius: 0.375rem;
-  cursor: pointer;
+  cursor: none;
   transition: background-color 0.3s ease;
 }
-
+ 
 .add-to-cart:hover {
   background-color: #333333;
 }
-
+ 
 /* ✅ Product Card */
 .card {
   background-color: #ffffff;
@@ -178,13 +162,93 @@ a:hover {
   overflow: hidden;
   transition: transform 0.3s ease;
 }
-
+ 
 .card:hover {
   transform: translateY(-4px);
 }
-
+ 
 /* ✅ Footer */
 footer {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   color: #a0a0a0;
 }
+ 
+/* ============================================
+   ✅ PREMIUM MEN / WOMEN SECTION BUTTONS
+   ============================================ */
+.premium-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 52px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  font-size: 0.65rem;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: #d4b483;
+  background: transparent;
+  border: 1px solid #b8975a;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  cursor: none;
+  transition: color 0.5s ease, border-color 0.5s ease, letter-spacing 0.5s ease;
+}
+ 
+/* Shimmer sweep */
+.premium-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    110deg,
+    transparent 25%,
+    rgba(184, 151, 90, 0.12) 50%,
+    transparent 75%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.premium-btn:hover::after {
+  transform: translateX(100%);
+}
+ 
+/* Bottom gold line grows */
+.premium-btn::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, #b8975a, transparent);
+  transition: width 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.premium-btn:hover::before {
+  width: 100%;
+}
+ 
+.premium-btn:hover {
+  color: #e8d5b0;
+  border-color: #d4b483;
+  letter-spacing: 0.55em;
+  transform: none;
+}
+ 
+/* ============================================
+   ✅ FILTER STRIP (homepage section buttons)
+   ============================================ */
+.filter-strip {
+  background: #080808;
+  padding: 3rem 0 4rem;
+}
+ 
+.filter-strip-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 4rem;
+  display: flex;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+ 

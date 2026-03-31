@@ -2,58 +2,183 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sign Up - VELLEGA</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Account - VELLEZA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest"></script>
 
-  <!-- Firebase SDKs (compat version) -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&display=swap');
-    body { font-family: 'Playfair Display', serif; }
-  </style>
+  <link rel="stylesheet" href="auth-shared.css" />
 </head>
+<body>
+  <nav id="navbar">
+    <div class="nav-left">
+      <a href="index.html" class="pill-btn">Home</a>
+      <button class="pill-btn" type="button" onclick="openPanel('contact-panel')">Contact</button>
+    </div>
 
-<body class="bg-black text-white min-h-screen flex items-center justify-center px-4">
-  <div class="w-full max-w-md bg-gray-900 p-8 rounded-lg shadow-lg">
-    <h2 class="text-3xl font-bold mb-6 text-center">Sign Up for VELLEGA</h2>
+    <a href="index.html" class="nav-logo">VELLEZA</a>
 
-    <form id="signup-form">
-      <div class="mb-4">
-        <label for="name" class="block text-sm font-semibold mb-2">Full Name</label>
-        <input type="text" id="name" class="w-full px-4 py-2 bg-black border border-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-white" required>
+    <div class="nav-right">
+      <div class="search-container">
+        <button class="nav-btn search-toggle" aria-label="Search"><i data-lucide="search"></i></button>
+        <div class="search-dropdown">
+          <input type="text" class="search-input" placeholder="Search products..." />
+          <div class="search-results"></div>
+        </div>
       </div>
 
-      <div class="mb-4">
-        <label for="phone" class="block text-sm font-semibold mb-2">Phone Number</label>
-        <input type="tel" id="phone" class="w-full px-4 py-2 bg-black border border-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-white" required>
+      <a href="login.html" class="nav-btn" aria-label="Account"><i data-lucide="user"></i></a>
+      <a href="cart.html" class="nav-btn" aria-label="Cart">
+        <i data-lucide="shopping-bag"></i>
+        <span class="cart-badge" id="cart-count">0</span>
+      </a>
+      <button class="nav-btn" onclick="openPanel('menu-panel')" aria-label="Menu"><i data-lucide="menu"></i></button>
+    </div>
+  </nav>
+
+  <main class="auth-wrapper">
+    <section class="auth-shell two-col">
+      <section class="brand-pane">
+        <p class="brand-kicker">Velleza Atelier</p>
+        <h1 class="brand-title">Create Your Account</h1>
+        <p class="brand-copy">Join the private VELLEZA client space for curated launches, order history, and priority support.</p>
+      </section>
+
+      <section class="form-pane">
+        <p class="form-head">Sign Up</p>
+
+        <form id="signup-form">
+          <div>
+            <label for="name">Full Name</label>
+            <input id="name" type="text" required autocomplete="name" />
+          </div>
+
+          <div>
+            <label for="phone">Phone Number</label>
+            <input id="phone" type="tel" required autocomplete="tel" placeholder="+8801XXXXXXXXX" />
+          </div>
+
+          <div>
+            <label for="email">Email Address</label>
+            <input id="email" type="email" required autocomplete="email" />
+          </div>
+
+          <div>
+            <label for="password">Password (Minimum 8 Characters)</label>
+            <input id="password" type="password" required minlength="8" autocomplete="new-password" />
+          </div>
+
+          <button id="submit-btn" class="btn" type="submit">Create Account</button>
+        </form>
+
+        <div class="meta-row">
+          <span>Already have an account? <a href="login.html">Sign in</a></span>
+          <a href="phone-login.html">Phone login</a>
+        </div>
+
+        <p id="status" class="status" aria-live="polite"></p>
+      </section>
+    </section>
+  </main>
+
+  <footer class="footer-section">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div>
+          <p class="footer-col-heading">VELLEZA Boutiques</p>
+          <a href="#" class="footer-col-link">VELLEZA FOOTWEAR</a>
+        </div>
+        <div>
+          <p class="footer-col-heading">Client Services</p>
+          <a href="#" class="footer-col-link">FAQ</a>
+        </div>
+        <div>
+          <p class="footer-col-heading">The House of VELLEZA</p>
+          <a href="#" class="footer-col-link">Sustainability</a>
+          <a href="#" class="footer-col-link">Ethics &amp; Compliance</a>
+          <a href="#" class="footer-col-link">Careers</a>
+        </div>
+        <div>
+          <p class="footer-col-heading">Legal Terms</p>
+          <a href="#" class="footer-col-link">Privacy Policy</a>
+          <a href="#" class="footer-col-link">Terms &amp; Conditions</a>
+        </div>
       </div>
 
-      <div class="mb-4">
-        <label for="email" class="block text-sm font-semibold mb-2">Gmail</label>
-        <input type="email" id="email" class="w-full px-4 py-2 bg-black border border-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-white" required>
+      <div class="footer-bottom-bar">
+        <div class="footer-payment-icons">
+          <img src="Bkash.png" alt="bKash" />
+          <img src="Nagad.png" alt="Nagad" />
+          <img src="DBB.png" alt="Dutch-Bangla Bank" />
+          <img src="visa.jpeg" alt="Visa" />
+          <img src="mc.png" alt="Mastercard" />
+          <img src="upay.png" alt="Upay" />
+          <img src="city bank.png" alt="City Bank" />
+          <img src="ucb.png" alt="UCB" />
+        </div>
+
+        <div class="footer-social-links">
+          <a href="#" class="footer-social-link">Instagram</a>
+          <a href="#" class="footer-social-link">Facebook</a>
+          <a href="#" class="footer-social-link">X</a>
+          <a href="#" class="footer-social-link">TikTok</a>
+          <a href="#" class="footer-social-link">LinkedIn</a>
+        </div>
       </div>
+    </div>
+  </footer>
 
-      <div class="mb-4">
-        <label for="password" class="block text-sm font-semibold mb-2">Password</label>
-        <input type="password" id="password" class="w-full px-4 py-2 bg-black border border-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-white" required>
+  <div id="contact-panel" class="panel">
+    <button class="panel-close" onclick="closePanel('contact-panel')">&times;</button>
+    <p class="panel-label">Client Services</p>
+    <h2 class="panel-title">Contact Us</h2>
+    <div class="panel-rule"></div>
+
+    <div class="contact-row">
+      <div>
+        <a href="tel:+8801943869880">+880 1943 869 880</a>
+        <p>Monday - Sunday, 10 AM - 8 PM</p>
       </div>
+    </div>
 
-      <div class="mb-6">
-        <label for="verification" class="block text-sm font-semibold mb-2">Verification Code</label>
-        <input type="text" id="verification" placeholder="" class="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100 text-gray-600 cursor-not-allowed" disabled>
-        <p class="text-xs text-gray-400 mt-1">Verification feature coming soon. You can skip this field for now.</p>
+    <div class="contact-row">
+      <div>
+        <a href="#">WhatsApp Support</a>
+        <p>Monday - Sunday, 10 AM - 8 PM</p>
       </div>
-
-      <button type="submit" class="w-full bg-white text-black font-semibold py-2 px-4 rounded hover:bg-gray-200 transition">Sign Up</button>
-    </form>
-
-    <!-- Loader below form -->
-    <div id="loader" class="hidden text-center mt-4 text-gray-400">Signing up...</div>
+    </div>
   </div>
+
+  <div id="menu-panel" class="panel">
+    <button class="panel-close" onclick="closePanel('menu-panel')">&times;</button>
+    <p class="panel-label">Navigation</p>
+    <div style="width:28px;height:1px;background:linear-gradient(90deg,var(--gold),transparent);margin-bottom:36px"></div>
+
+    <ul class="menu-nav">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="women-section.html">Women</a></li>
+      <li><a href="men-section.html">Men</a></li>
+      <li><a href="cart.html">Cart</a></li>
+      <li><a href="login.html">Account</a></li>
+    </ul>
+
+    <ul class="menu-sub-nav">
+      <li><a href="#">Velleza Services</a></li>
+      <li><a href="#">World of Velleza</a></li>
+      <li><a href="#">Store Locator</a></li>
+    </ul>
+  </div>
+
+  <div id="overlay" onclick="closePanels()"></div>
+
+  <script src="products.js"></script>
+  <script src="auth-shared.js"></script>
 
   <script>
     const firebaseConfig = {
@@ -66,51 +191,70 @@
       measurementId: "G-LHMJRCS07C"
     };
 
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+
     const auth = firebase.auth();
     const db = firebase.firestore();
 
-    const loader = document.getElementById("loader");
+    const form = document.getElementById("signup-form");
+    const statusEl = document.getElementById("status");
+    const submitBtn = document.getElementById("submit-btn");
 
-    document.getElementById("signup-form").addEventListener("submit", function(e) {
-      e.preventDefault();
-      loader.classList.remove("hidden");
+    function setStatus(message, type) {
+      statusEl.textContent = message;
+      statusEl.className = "status" + (type ? " " + type : "");
+    }
 
-      const name = document.getElementById("name").value;
-      const phone = document.getElementById("phone").value;
-      const email = document.getElementById("email").value;
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const name = document.getElementById("name").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value;
 
-      auth.createUserWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          const user = userCredential.user;
+      if (password.length < 8) {
+        setStatus("Use at least 8 characters in your password.", "error");
+        return;
+      }
 
-          // Send verification email
-          user.sendEmailVerification()
-            .then(() => {
-              alert("📧 Verification email sent. Check your inbox.");
-            });
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Creating...";
+      setStatus("Setting up your account...", "");
 
-          // Save profile to Firestore
-          return db.collection("users").doc(user.uid).set({
-            name: name,
-            phone: phone,
-            email: email,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-          });
-        })
-        .then(() => {
-          loader.classList.add("hidden");
-          alert("✅ Signed up successfully! Redirecting...");
-          window.location.href = "index.html";
-        })
-        .catch((error) => {
-          loader.classList.add("hidden");
-          console.error(error);
-          alert("❌ " + error.message);
-        });
+      try {
+        const credential = await auth.createUserWithEmailAndPassword(email, password);
+        const user = credential.user;
+
+        await user.updateProfile({ displayName: name });
+
+        await db.collection("users").doc(user.uid).set({
+          name,
+          phone,
+          email,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+
+        try {
+          await user.sendEmailVerification();
+        } catch (verificationError) {
+          console.warn("Email verification could not be sent:", verificationError);
+        }
+
+        setStatus("Account created. Check your email for verification before logging in.", "success");
+        setTimeout(() => {
+          window.location.href = "login.html";
+        }, 1300);
+      } catch (error) {
+        setStatus(error.message, "error");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Create Account";
+      }
     });
   </script>
 </body>
 </html>
+
