@@ -498,6 +498,15 @@
       return window.VellezaOrderStore.saveOrder(orderData, overrides);
     }
 
+    async function saveOrderRecordWithTimeout(orderData, overrides = {}, timeoutMs = 6000) {
+      return Promise.race([
+        saveOrderRecord(orderData, overrides),
+        new Promise((_, reject) => {
+          setTimeout(() => reject(new Error('Order save timed out.')), timeoutMs);
+        })
+      ]);
+    }
+
     function getRecentOrderLock() {
       try {
         return JSON.parse(sessionStorage.getItem('checkout_submit_lock') || 'null');
@@ -677,38 +686,31 @@
       setRecentOrderLock(orderData.tran_id);
  
       if (paymentMethod === 'cod') {
-        try {
-          await saveOrderRecord(orderData, {
-            order_status: 'confirmed',
-            payment_status: 'pending_on_delivery',
-            fulfillment_status: 'new'
-          });
-          localStorage.removeItem('cart');
-          localStorage.setItem('last_order', JSON.stringify({ ...orderData, status: 'COD Confirmed' }));
-          await sendOrderNotification({
-            event: 'cod_created',
-            order: {
-              tran_id: orderData.tran_id,
-              total_amount: orderData.total_amount,
-              payment_method: 'cod',
-              customer: orderData.customer,
-              products: orderData.products
-            }
-          });
-          showToast('Order confirmed! Thank you.');
-          setTimeout(() => { window.location.href = `order-success.html?status=cod&tran_id=${encodeURIComponent(orderData.tran_id)}`; }, 1200);
-        } catch (error) {
-          console.error(error);
-          setButtonsDisabled(false);
-          isSubmittingOrder = false;
-          clearRecentOrderLock();
-          showToast(error.message || 'Could not save your order. Please try again.');
-        }
+        localStorage.removeItem('cart');
+        localStorage.setItem('last_order', JSON.stringify({ ...orderData, status: 'COD Confirmed' }));
+        saveOrderRecord(orderData, {
+          order_status: 'confirmed',
+          payment_status: 'pending_on_delivery',
+          fulfillment_status: 'new'
+        }).catch((error) => {
+          console.error('COD save warning:', error);
+        });
+        sendOrderNotification({
+          event: 'cod_created',
+          order: {
+            tran_id: orderData.tran_id,
+            total_amount: orderData.total_amount,
+            payment_method: 'cod',
+            customer: orderData.customer,
+            products: orderData.products
+          }
+        }).catch(() => {});
+        window.location.href = `order-success.html?status=cod&tran_id=${encodeURIComponent(orderData.tran_id)}`;
         return;
       }
 
       try {
-        await saveOrderRecord(orderData, {
+        await saveOrderRecordWithTimeout(orderData, {
           order_status: 'payment_pending',
           payment_status: 'pending',
           fulfillment_status: 'awaiting_payment'
