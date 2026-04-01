@@ -31,14 +31,11 @@
       transform: translate(-50%,-50%);
       transition: left 0.12s ease, top 0.12s ease;
     }
-
-    /* Animated check circle */
     .success-ring {
       width: 100px; height: 100px; border-radius: 50%;
       border: 1px solid var(--ash);
       display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 32px;
-      position: relative;
+      margin: 0 auto 32px; position: relative;
       animation: ringPulse 2s ease infinite;
     }
     @keyframes ringPulse {
@@ -46,91 +43,32 @@
       50% { box-shadow: 0 0 0 12px rgba(184,151,90,0.08); border-color: rgba(184,151,90,0.4); }
     }
     .check-icon { color: var(--gold); }
-
-    .page-label {
-      font-size: 9px; letter-spacing: 0.45em; text-transform: uppercase;
-      color: var(--gold); margin-bottom: 16px;
-    }
-    .page-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2rem, 5vw, 3.5rem);
-      font-weight: 300; letter-spacing: 0.1em; margin-bottom: 16px;
-    }
-    .page-sub {
-      font-size: 12px; letter-spacing: 0.08em;
-      color: rgba(245,240,232,0.45); line-height: 1.8;
-      max-width: 420px; margin: 0 auto 40px;
-    }
-
-    /* Order details card */
-    .order-card {
-      background: var(--charcoal); border: 1px solid var(--ash);
-      padding: 28px 36px; max-width: 440px; width: 100%;
-      margin: 0 auto 36px; text-align: left;
-    }
-    .order-card-title {
-      font-size: 9px; letter-spacing: 0.35em; text-transform: uppercase;
-      color: rgba(245,240,232,0.35); margin-bottom: 20px;
-    }
-    .order-row {
-      display: flex; justify-content: space-between;
-      font-size: 11px; letter-spacing: 0.08em;
-      color: rgba(245,240,232,0.6); padding: 8px 0;
-      border-bottom: 1px solid rgba(42,42,42,0.6);
-    }
+    .page-label { font-size: 9px; letter-spacing: 0.45em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+    .page-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 300; letter-spacing: 0.1em; margin-bottom: 16px; }
+    .page-sub { font-size: 12px; letter-spacing: 0.08em; color: rgba(245,240,232,0.45); line-height: 1.8; max-width: 420px; margin: 0 auto 40px; }
+    .order-card { background: var(--charcoal); border: 1px solid var(--ash); padding: 28px 36px; max-width: 440px; width: 100%; margin: 0 auto 36px; text-align: left; }
+    .order-card-title { font-size: 9px; letter-spacing: 0.35em; text-transform: uppercase; color: rgba(245,240,232,0.35); margin-bottom: 20px; }
+    .order-row { display: flex; justify-content: space-between; font-size: 11px; letter-spacing: 0.08em; color: rgba(245,240,232,0.6); padding: 8px 0; border-bottom: 1px solid rgba(42,42,42,0.6); }
     .order-row:last-child { border-bottom: none; }
     .order-row span:last-child { color: var(--ivory); }
     .order-row.highlight span:last-child { color: var(--gold); }
-
-    /* Status badge */
-    .status-badge {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 4px 12px;
-      font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase;
-      color: #4caf8a; border: 1px solid rgba(76,175,138,0.3);
-      background: rgba(76,175,138,0.07);
-    }
-    .status-dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: #4caf8a; animation: blink 1.5s ease infinite;
-    }
+    .status-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: #4caf8a; border: 1px solid rgba(76,175,138,0.3); background: rgba(76,175,138,0.07); }
+    .status-dot { width: 6px; height: 6px; border-radius: 50%; background: #4caf8a; animation: blink 1.5s ease infinite; }
     @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
-
-    /* Failed state */
     .failed-ring { border-color: rgba(224,96,96,0.3); }
     .fail-icon { color: #e06060; }
-
-    /* Buttons */
-    .btn-gold {
-      display: inline-block; padding: 14px 48px;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 10px; letter-spacing: 0.4em; text-transform: uppercase;
-      background: var(--gold); color: var(--obsidian);
-      border: none; text-decoration: none; cursor: none;
-      transition: background 0.3s, letter-spacing 0.3s;
-      font-weight: 500;
-    }
+    .btn-gold { display: inline-block; padding: 14px 48px; font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 0.4em; text-transform: uppercase; background: var(--gold); color: var(--obsidian); border: none; text-decoration: none; cursor: none; transition: background 0.3s, letter-spacing 0.3s; font-weight: 500; }
     .btn-gold:hover { background: var(--gold-light); letter-spacing: 0.5em; }
-    .btn-ghost {
-      display: inline-block; padding: 12px 36px;
-      font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase;
-      color: rgba(245,240,232,0.4); border: 1px solid var(--ash);
-      text-decoration: none; cursor: none; margin-left: 12px;
-      transition: border-color 0.3s, color 0.3s;
-    }
+    .btn-ghost { display: inline-block; padding: 12px 36px; font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(245,240,232,0.4); border: 1px solid var(--ash); text-decoration: none; cursor: none; margin-left: 12px; transition: border-color 0.3s, color 0.3s; }
     .btn-ghost:hover { border-color: rgba(184,151,90,0.4); color: var(--ivory); }
-
-    .divider {
-      width: 40px; height: 1px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-      margin: 0 auto 32px;
-    }
+    .divider { width: 40px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); margin: 0 auto 32px; }
   </style>
 </head>
 <body>
   <div id="cursor-dot"></div>
   <div id="cursor-ring"></div>
 
+  <!-- SUCCESS VIEW -->
   <div id="success-view" style="display:none; width:100%;">
     <div class="success-ring">
       <i data-lucide="check" class="check-icon" style="width:40px;height:40px;"></i>
@@ -158,6 +96,7 @@
     <a href="index.html" class="btn-gold">Continue Shopping</a>
   </div>
 
+  <!-- FAILED VIEW -->
   <div id="failed-view" style="display:none; width:100%;">
     <div class="success-ring failed-ring">
       <i data-lucide="x" class="fail-icon" style="width:40px;height:40px;"></i>
@@ -172,6 +111,7 @@
     <a href="cart.html" class="btn-ghost">Back to Cart</a>
   </div>
 
+  <!-- COD VIEW -->
   <div id="cod-view" style="display:none; width:100%;">
     <div class="success-ring">
       <i data-lucide="package" class="check-icon" style="width:38px;height:38px;"></i>
@@ -186,16 +126,18 @@
   </div>
 
   <script>
-    /* Cursor */
-    const dot = document.getElementById('cursor-dot');
+    // Cursor
+    const dot  = document.getElementById('cursor-dot');
     const ring = document.getElementById('cursor-ring');
     document.addEventListener('mousemove', e => {
-      dot.style.left = e.clientX + 'px'; dot.style.top = e.clientY + 'px';
-      ring.style.left = e.clientX + 'px'; ring.style.top = e.clientY + 'px';
+      dot.style.left  = e.clientX + 'px';
+      dot.style.top   = e.clientY + 'px';
+      ring.style.left = e.clientX + 'px';
+      ring.style.top  = e.clientY + 'px';
     });
 
-    /* Read query params from SSLCommerz redirect */
-    const params = new URLSearchParams(window.location.search);
+    // Read query params
+    const params  = new URLSearchParams(window.location.search);
     const status  = params.get('status');
     const tranId  = params.get('tran_id');
     const amount  = params.get('amount');
@@ -205,10 +147,15 @@
       lucide.createIcons();
 
       if (status === 'success') {
-        document.getElementById('out-tran').textContent    = tranId || '—';
-        document.getElementById('out-amount').textContent  = amount ? `BDT ${parseFloat(amount).toLocaleString()}` : '—';
-        document.getElementById('out-method').textContent  = method || 'Online Payment';
+        // ✅ Fill order details
+        document.getElementById('out-tran').textContent   = tranId || '—';
+        document.getElementById('out-amount').textContent = amount ? `BDT ${parseFloat(amount).toLocaleString()}` : '—';
+        document.getElementById('out-method').textContent = method || 'Online Payment';
         document.getElementById('success-view').style.display = 'block';
+
+        // ✅ Clear cart and pending order
+        localStorage.removeItem('cart');
+        localStorage.removeItem('pending_order');
 
       } else if (status === 'cod') {
         const order = JSON.parse(localStorage.getItem('last_order') || '{}');
@@ -216,8 +163,13 @@
         document.getElementById('cod-amount').textContent = `BDT ${parseFloat(total).toLocaleString()}`;
         document.getElementById('cod-view').style.display = 'block';
 
+        // ✅ Clear cart and pending order
+        localStorage.removeItem('cart');
+        localStorage.removeItem('pending_order');
+        localStorage.removeItem('last_order');
+
       } else {
-        /* failed / unverified / anything else */
+        // failed / unverified / anything else
         document.getElementById('failed-view').style.display = 'block';
       }
     });
