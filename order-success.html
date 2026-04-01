@@ -6,36 +6,64 @@
   <title>Order Confirmed | VELLEZA</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="order-store.js"></script>
   <style>
     :root {
-      --gold: #b8975a; --gold-light: #d4b483;
-      --obsidian: #080808; --ash: #2a2a2a;
-      --ivory: #f5f0e8; --charcoal: #111111;
+      --gold: #b8975a;
+      --gold-light: #d4b483;
+      --obsidian: #080808;
+      --ash: #2a2a2a;
+      --ivory: #f5f0e8;
+      --charcoal: #111111;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Montserrat', sans-serif; font-weight: 300;
-      background: var(--obsidian); color: var(--ivory);
-      min-height: 100vh; display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      text-align: center; padding: 40px 24px; cursor: none;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      background: var(--obsidian);
+      color: var(--ivory);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 24px;
+      cursor: none;
     }
     #cursor-dot {
-      width: 8px; height: 8px; background: var(--gold); border-radius: 50%;
-      position: fixed; pointer-events: none; z-index: 99999;
-      transform: translate(-50%,-50%);
+      width: 8px;
+      height: 8px;
+      background: var(--gold);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 99999;
+      transform: translate(-50%, -50%);
     }
     #cursor-ring {
-      width: 34px; height: 34px; border: 1px solid rgba(184,151,90,0.5);
-      border-radius: 50%; position: fixed; pointer-events: none; z-index: 99998;
-      transform: translate(-50%,-50%);
+      width: 34px;
+      height: 34px;
+      border: 1px solid rgba(184,151,90,0.5);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 99998;
+      transform: translate(-50%, -50%);
       transition: left 0.12s ease, top 0.12s ease;
     }
     .success-ring {
-      width: 100px; height: 100px; border-radius: 50%;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
       border: 1px solid var(--ash);
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 32px; position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 32px;
+      position: relative;
       animation: ringPulse 2s ease infinite;
     }
     @keyframes ringPulse {
@@ -43,41 +71,143 @@
       50% { box-shadow: 0 0 0 12px rgba(184,151,90,0.08); border-color: rgba(184,151,90,0.4); }
     }
     .check-icon { color: var(--gold); }
-    .page-label { font-size: 9px; letter-spacing: 0.45em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
-    .page-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 300; letter-spacing: 0.1em; margin-bottom: 16px; }
-    .page-sub { font-size: 12px; letter-spacing: 0.08em; color: rgba(245,240,232,0.45); line-height: 1.8; max-width: 420px; margin: 0 auto 40px; }
-    .order-card { background: var(--charcoal); border: 1px solid var(--ash); padding: 28px 36px; max-width: 440px; width: 100%; margin: 0 auto 36px; text-align: left; }
-    .order-card-title { font-size: 9px; letter-spacing: 0.35em; text-transform: uppercase; color: rgba(245,240,232,0.35); margin-bottom: 20px; }
-    .order-row { display: flex; justify-content: space-between; font-size: 11px; letter-spacing: 0.08em; color: rgba(245,240,232,0.6); padding: 8px 0; border-bottom: 1px solid rgba(42,42,42,0.6); }
+    .page-label {
+      font-size: 9px;
+      letter-spacing: 0.45em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+    .page-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      margin-bottom: 16px;
+    }
+    .page-sub {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      color: rgba(245,240,232,0.45);
+      line-height: 1.8;
+      max-width: 420px;
+      margin: 0 auto 40px;
+    }
+    .order-card {
+      background: var(--charcoal);
+      border: 1px solid var(--ash);
+      padding: 28px 36px;
+      max-width: 440px;
+      width: 100%;
+      margin: 0 auto 36px;
+      text-align: left;
+    }
+    .order-card-title {
+      font-size: 9px;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.35);
+      margin-bottom: 20px;
+    }
+    .order-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      color: rgba(245,240,232,0.6);
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(42,42,42,0.6);
+    }
     .order-row:last-child { border-bottom: none; }
     .order-row span:last-child { color: var(--ivory); }
     .order-row.highlight span:last-child { color: var(--gold); }
-    .status-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: #4caf8a; border: 1px solid rgba(76,175,138,0.3); background: rgba(76,175,138,0.07); }
-    .status-dot { width: 6px; height: 6px; border-radius: 50%; background: #4caf8a; animation: blink 1.5s ease infinite; }
-    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      font-size: 9px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: #4caf8a;
+      border: 1px solid rgba(76,175,138,0.3);
+      background: rgba(76,175,138,0.07);
+    }
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #4caf8a;
+      animation: blink 1.5s ease infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
     .failed-ring { border-color: rgba(224,96,96,0.3); }
     .fail-icon { color: #e06060; }
-    .btn-gold { display: inline-block; padding: 14px 48px; font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 0.4em; text-transform: uppercase; background: var(--gold); color: var(--obsidian); border: none; text-decoration: none; cursor: none; transition: background 0.3s, letter-spacing 0.3s; font-weight: 500; }
+    .btn-gold {
+      display: inline-block;
+      padding: 14px 48px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      background: var(--gold);
+      color: var(--obsidian);
+      border: none;
+      text-decoration: none;
+      cursor: none;
+      transition: background 0.3s, letter-spacing 0.3s;
+      font-weight: 500;
+    }
     .btn-gold:hover { background: var(--gold-light); letter-spacing: 0.5em; }
-    .btn-ghost { display: inline-block; padding: 12px 36px; font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(245,240,232,0.4); border: 1px solid var(--ash); text-decoration: none; cursor: none; margin-left: 12px; transition: border-color 0.3s, color 0.3s; }
+    .btn-ghost {
+      display: inline-block;
+      padding: 12px 36px;
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.4);
+      border: 1px solid var(--ash);
+      text-decoration: none;
+      cursor: none;
+      margin-left: 12px;
+      transition: border-color 0.3s, color 0.3s;
+    }
     .btn-ghost:hover { border-color: rgba(184,151,90,0.4); color: var(--ivory); }
-    .divider { width: 40px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); margin: 0 auto 32px; }
+    .divider {
+      width: 40px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 0 auto 32px;
+    }
+    .policy-links {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 26px;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+    }
+    .policy-links a { color: rgba(245,240,232,0.52); text-decoration: none; }
+    .policy-links a:hover { color: var(--gold); }
   </style>
 </head>
 <body>
   <div id="cursor-dot"></div>
   <div id="cursor-ring"></div>
 
-  <!-- SUCCESS VIEW -->
   <div id="success-view" style="display:none; width:100%;">
     <div class="success-ring">
       <i data-lucide="check" class="check-icon" style="width:40px;height:40px;"></i>
     </div>
-    <p class="page-label">Velleza — Order Confirmed</p>
+    <p class="page-label">Velleza Order Confirmed</p>
     <h1 class="page-title">Thank You</h1>
     <div class="divider"></div>
     <p class="page-sub">
-      Your order has been placed successfully. A confirmation will be sent to your email shortly.
+      Your payment has been verified and your order is now in our processing queue.
     </p>
     <div class="order-card">
       <p class="order-card-title">Order Details</p>
@@ -94,9 +224,14 @@
       </div>
     </div>
     <a href="index.html" class="btn-gold">Continue Shopping</a>
+    <div class="policy-links">
+      <a href="shipping-policy.html">Shipping Policy</a>
+      <a href="refund-policy.html">Refund & Cancellation</a>
+      <a href="privacy-policy.html">Privacy Policy</a>
+      <a href="terms.html">Terms & Conditions</a>
+    </div>
   </div>
 
-  <!-- FAILED VIEW -->
   <div id="failed-view" style="display:none; width:100%;">
     <div class="success-ring failed-ring">
       <i data-lucide="x" class="fail-icon" style="width:40px;height:40px;"></i>
@@ -109,9 +244,14 @@
     </p>
     <a href="checkout.html" class="btn-gold">Try Again</a>
     <a href="cart.html" class="btn-ghost">Back to Cart</a>
+    <div class="policy-links">
+      <a href="shipping-policy.html">Shipping Policy</a>
+      <a href="refund-policy.html">Refund & Cancellation</a>
+      <a href="privacy-policy.html">Privacy Policy</a>
+      <a href="terms.html">Terms & Conditions</a>
+    </div>
   </div>
 
-  <!-- COD VIEW -->
   <div id="cod-view" style="display:none; width:100%;">
     <div class="success-ring">
       <i data-lucide="package" class="check-icon" style="width:38px;height:38px;"></i>
@@ -122,54 +262,163 @@
     <p class="page-sub">
       Your order has been confirmed. Please have <strong id="cod-amount" style="color:var(--gold)"></strong> ready when your package arrives.
     </p>
+    <p class="page-label" id="cod-reference" style="margin-top:-10px; margin-bottom:28px; color:rgba(245,240,232,0.45);"></p>
     <a href="index.html" class="btn-gold">Continue Shopping</a>
+    <div class="policy-links">
+      <a href="shipping-policy.html">Shipping Policy</a>
+      <a href="refund-policy.html">Refund & Cancellation</a>
+      <a href="privacy-policy.html">Privacy Policy</a>
+      <a href="terms.html">Terms & Conditions</a>
+    </div>
   </div>
 
   <script>
-    // Cursor
-    const dot  = document.getElementById('cursor-dot');
+    const dot = document.getElementById('cursor-dot');
     const ring = document.getElementById('cursor-ring');
-    document.addEventListener('mousemove', e => {
-      dot.style.left  = e.clientX + 'px';
-      dot.style.top   = e.clientY + 'px';
+    document.addEventListener('mousemove', (e) => {
+      dot.style.left = e.clientX + 'px';
+      dot.style.top = e.clientY + 'px';
       ring.style.left = e.clientX + 'px';
-      ring.style.top  = e.clientY + 'px';
+      ring.style.top = e.clientY + 'px';
     });
 
-    // Read query params
-    const params  = new URLSearchParams(window.location.search);
-    const status  = params.get('status');
-    const tranId  = params.get('tran_id');
-    const amount  = params.get('amount');
-    const method  = params.get('method');
+    const params = new URLSearchParams(window.location.search);
+    const status = params.get('status');
+    const tranId = params.get('tran_id');
+    const amount = params.get('amount');
+    const method = params.get('method');
 
-    document.addEventListener('DOMContentLoaded', () => {
+    const pendingOrder = (() => {
+      try {
+        return JSON.parse(localStorage.getItem('pending_order') || 'null');
+      } catch (_) {
+        return null;
+      }
+    })();
+
+    const lastOrder = (() => {
+      try {
+        return JSON.parse(localStorage.getItem('last_order') || 'null');
+      } catch (_) {
+        return null;
+      }
+    })();
+
+    async function syncOrder(overrides) {
+      if (!window.VellezaOrderStore || typeof window.VellezaOrderStore.saveOrder !== 'function') return;
+      const baseOrder = pendingOrder || lastOrder;
+      if (!baseOrder && !(overrides && overrides.tran_id)) return;
+      await window.VellezaOrderStore.saveOrder(baseOrder || { tran_id: overrides.tran_id }, overrides || {});
+    }
+
+    async function sendOrderNotification(payload) {
+      try {
+        await fetch('/api/order-notify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+      } catch (_) {
+      }
+    }
+
+    async function notifyOnce(tran_id, payload) {
+      if (!tran_id) return;
+      const key = `order_notify_${tran_id}_${payload.event}`;
+      if (localStorage.getItem(key)) return;
+      await sendOrderNotification(payload);
+      localStorage.setItem(key, 'sent');
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
       lucide.createIcons();
 
       if (status === 'success') {
-        // ✅ Fill order details
-        document.getElementById('out-tran').textContent   = tranId || '—';
-        document.getElementById('out-amount').textContent = amount ? `BDT ${parseFloat(amount).toLocaleString()}` : '—';
+        try {
+          await syncOrder({
+            tran_id: tranId || pendingOrder?.tran_id,
+            payment_amount: amount || pendingOrder?.total_amount,
+            card_type: method || '',
+            method_label: method || 'Online Payment',
+            order_status: 'confirmed',
+            payment_status: 'paid',
+            fulfillment_status: 'new'
+          });
+          await notifyOnce(tranId || pendingOrder?.tran_id, {
+            event: 'payment_confirmed',
+            order: {
+              tran_id: tranId || pendingOrder?.tran_id,
+              total_amount: amount || pendingOrder?.total_amount,
+              payment_method: 'sslcommerz',
+              payment_label: method || 'Online Payment',
+              customer: pendingOrder?.customer || null,
+              products: pendingOrder?.products || []
+            }
+          });
+        } catch (error) {
+          console.error('Order sync failed:', error);
+        }
+
+        sessionStorage.removeItem('checkout_submit_lock');
+        document.getElementById('out-tran').textContent = tranId || 'Order Pending';
+        document.getElementById('out-amount').textContent = amount ? `BDT ${parseFloat(amount).toLocaleString()}` : 'Pending';
         document.getElementById('out-method').textContent = method || 'Online Payment';
         document.getElementById('success-view').style.display = 'block';
 
-        // ✅ Clear cart and pending order
-        localStorage.removeItem('cart');
-        localStorage.removeItem('pending_order');
-
-      } else if (status === 'cod') {
-        const order = JSON.parse(localStorage.getItem('last_order') || '{}');
-        const total = order.total_amount || '—';
-        document.getElementById('cod-amount').textContent = `BDT ${parseFloat(total).toLocaleString()}`;
-        document.getElementById('cod-view').style.display = 'block';
-
-        // ✅ Clear cart and pending order
         localStorage.removeItem('cart');
         localStorage.removeItem('pending_order');
         localStorage.removeItem('last_order');
+      } else if (status === 'cod') {
+        const order = lastOrder || {};
+        const total = Number(order.total_amount || 0);
 
+        try {
+          await syncOrder({
+            tran_id: tranId || order.tran_id,
+            payment_amount: order.total_amount,
+            method_label: 'Cash on Delivery',
+            order_status: 'confirmed',
+            payment_status: 'pending_on_delivery',
+            fulfillment_status: 'new',
+            payment_method: 'cod'
+          });
+          await notifyOnce(tranId || order.tran_id, {
+            event: 'cod_confirmed',
+            order: {
+              tran_id: tranId || order.tran_id,
+              total_amount: order.total_amount,
+              payment_method: 'cod',
+              payment_label: 'Cash on Delivery',
+              customer: order.customer || null,
+              products: order.products || []
+            }
+          });
+        } catch (error) {
+          console.error('Order sync failed:', error);
+        }
+
+        sessionStorage.removeItem('checkout_submit_lock');
+        document.getElementById('cod-amount').textContent = total ? `BDT ${total.toLocaleString()}` : 'BDT Pending';
+        document.getElementById('cod-reference').textContent = (tranId || order.tran_id) ? `Reference ${tranId || order.tran_id}` : '';
+        document.getElementById('cod-view').style.display = 'block';
+
+        localStorage.removeItem('cart');
+        localStorage.removeItem('pending_order');
+        localStorage.removeItem('last_order');
       } else {
-        // failed / unverified / anything else
+        sessionStorage.removeItem('checkout_submit_lock');
+        syncOrder({
+          tran_id: tranId || pendingOrder?.tran_id,
+          payment_amount: amount || pendingOrder?.total_amount,
+          card_type: method || '',
+          method_label: method || 'Online Payment',
+          order_status: status === 'cancelled' ? 'cancelled' : 'payment_review',
+          payment_status: status === 'failed' ? 'failed' : 'unverified',
+          fulfillment_status: 'hold'
+        }).catch((error) => {
+          console.error('Order sync failed:', error);
+        });
+
         document.getElementById('failed-view').style.display = 'block';
       }
     });

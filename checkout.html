@@ -7,7 +7,10 @@
  
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
   <script src="products.js"></script>
+  <script src="order-store.js"></script>
  
   <style>
     :root {
@@ -206,6 +209,16 @@
       margin-top: 16px; font-size: 9px; letter-spacing: 0.2em;
       text-transform: uppercase; color: rgba(245,240,232,0.25);
     }
+    .policy-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 18px;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+    }
+    .policy-links a { color: rgba(245,240,232,0.52); text-decoration: none; }
+    .policy-links a:hover { color: var(--gold); }
   </style>
 </head>
 <body>
@@ -300,29 +313,28 @@
         <div class="form-block">
           <p class="form-block-title">Payment Method</p>
           <div class="payment-methods">
-            <label class="payment-option selected">
-              <input type="radio" name="payment" value="sslcommerz" checked>
+            <label class="payment-option">
+              <input type="radio" name="payment" value="sslcommerz">
               <div class="radio-dot"></div>
               <div class="payment-option-label">
                 <strong>bKash / Nagad / Cards / Net Banking</strong>
-                <span>Powered by SSLCommerz - all BD payment methods in one</span>
+                <span>Demo sandbox payment flow for testing checkout experience</span>
               </div>
             </label>
-            <label class="payment-option">
-              <input type="radio" name="payment" value="cod">
+            <label class="payment-option selected">
+              <input type="radio" name="payment" value="cod" checked>
               <div class="radio-dot"></div>
               <div class="payment-option-label">
                 <strong>Cash on Delivery</strong>
-                <span>Pay when your order arrives</span>
+                <span>Recommended for real orders. Pay when your package arrives.</span>
               </div>
             </label>
           </div>
           <div class="ssl-note" id="ssl-note">
-            You'll be redirected to SSLCommerz's secure payment page where you can pay via bKash, Nagad, Rocket, Visa, Mastercard, DBBL, City Bank, or any other supported method.
+            Online payment is connected to the SSLCommerz demo sandbox.
             <br><br>
-            <strong style="color:rgba(245,240,232,0.6);">Currently in Sandbox (test) mode.</strong>
-            Use test card <strong style="color:var(--gold);">4111 1111 1111 1111</strong> / exp: any future date / CVV: any 3 digits.
-            For bKash test: number <strong style="color:var(--gold);">01711111111</strong>, OTP: <strong style="color:var(--gold);">123456</strong>.
+            <strong style="color:rgba(245,240,232,0.6);">Use Cash on Delivery for real customer orders.</strong>
+            Demo payment is only for testing. Orders are still saved before redirect either way.
           </div>
         </div>
  
@@ -334,10 +346,16 @@
           </div>
         </div>
  
-        <button type="button" class="place-order-btn js-place-order">Place Order & Pay</button>
+        <button type="button" class="place-order-btn js-place-order">Confirm Order (COD)</button>
         <div class="security-strip">
           <i data-lucide="shield-check" style="width:12px;height:12px;"></i>
-          256-bit SSL encrypted · Secured by SSLCommerz
+          Real orders via COD, demo testing via SSLCommerz sandbox
+        </div>
+        <div class="policy-links">
+          <a href="shipping-policy.html">Shipping Policy</a>
+          <a href="refund-policy.html">Refund & Cancellation</a>
+          <a href="privacy-policy.html">Privacy Policy</a>
+          <a href="terms.html">Terms & Conditions</a>
         </div>
       </form>
     </div>
@@ -349,7 +367,7 @@
           <p style="font-size:11px;color:rgba(245,240,232,0.3);">Loading...</p>
         </div>
         <div id="summary-totals"></div>
-        <button type="button" class="place-order-btn js-place-order" style="margin-top:20px;">Place Order & Pay</button>
+        <button type="button" class="place-order-btn js-place-order" style="margin-top:20px;">Confirm Order (COD)</button>
       </div>
     </div>
   </div>
@@ -363,6 +381,7 @@
     const paymentOptions = document.querySelectorAll('.payment-option');
     const orderButtons = document.querySelectorAll('.js-place-order');
     const sslNote = document.getElementById('ssl-note');
+    let isSubmittingOrder = false;
  
     const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
       ? 'http://localhost:4000'
@@ -387,6 +406,22 @@
       toastEl.classList.add('show');
       clearTimeout(showToast._timer);
       showToast._timer = setTimeout(() => toastEl.classList.remove('show'), 3500);
+    }
+
+    function getCheckoutStatusNotice() {
+      const params = new URLSearchParams(window.location.search);
+      const status = params.get('status');
+      if (status === 'failed') return 'Your payment did not complete. Please try again.';
+      if (status === 'cancelled') return 'Your payment was cancelled. You can try again when ready.';
+      return '';
+    }
+
+    function getStoredUser() {
+      try {
+        return JSON.parse(localStorage.getItem('user') || 'null');
+      } catch (_) {
+        return null;
+      }
     }
  
     function getCart() {
@@ -435,6 +470,62 @@
         <div class="summary-row"><span>Shipping</span><span>TBD</span></div>
         <div class="summary-row total"><span>Total</span><span>BDT ${total.toLocaleString()}</span></div>
       `;
+    }
+
+    function prefillKnownCustomer() {
+      const user = getStoredUser();
+      if (!user) return;
+
+      if (user.name && !document.getElementById('name').value.trim()) {
+        document.getElementById('name').value = user.name;
+      }
+
+      if (user.email && !document.getElementById('email').value.trim()) {
+        document.getElementById('email').value = user.email;
+      }
+
+      if (user.phone && !document.getElementById('phone').value.trim()) {
+        const normalized = String(user.phone).replace(/^\+880/, '').replace(/\D/g, '');
+        document.getElementById('phone').value = normalized;
+      }
+    }
+
+    async function saveOrderRecord(orderData, overrides = {}) {
+      if (!window.VellezaOrderStore || typeof window.VellezaOrderStore.saveOrder !== 'function') {
+        throw new Error('Order storage is not available right now.');
+      }
+
+      return window.VellezaOrderStore.saveOrder(orderData, overrides);
+    }
+
+    function getRecentOrderLock() {
+      try {
+        return JSON.parse(sessionStorage.getItem('checkout_submit_lock') || 'null');
+      } catch (_) {
+        return null;
+      }
+    }
+
+    function setRecentOrderLock(tranId) {
+      sessionStorage.setItem('checkout_submit_lock', JSON.stringify({
+        tran_id: tranId,
+        created_at: Date.now()
+      }));
+    }
+
+    function clearRecentOrderLock() {
+      sessionStorage.removeItem('checkout_submit_lock');
+    }
+
+    async function sendOrderNotification(payload) {
+      try {
+        await fetch('/api/order-notify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+      } catch (_) {
+      }
     }
  
     paymentOptions.forEach((option) => {
@@ -496,13 +587,16 @@
  
       return { ok: errors.length === 0, errors, normalizedPhone: phone };
     }
- 
+
     async function initiateSSLCommerz(orderData) {
+      const paymentEndpoint = API_BASE
+        ? `${API_BASE}/api/initiate-payment`
+        : '/api/payment?action=initiate';
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 15000);
       let response;
       try {
-        response = await fetch(`${API_BASE}/api/payment?action=initiate`, {
+        response = await fetch(paymentEndpoint, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(orderData),
@@ -514,11 +608,11 @@
       } finally {
         clearTimeout(timeoutId);
       }
- 
+
       let data;
       try { data = await response.json(); }
       catch { throw new Error('Server returned an invalid response'); }
- 
+
       if (!response.ok || data.status !== 'success' || !data.gatewayUrl) {
         throw new Error(data.message || 'Could not get payment gateway URL');
       }
@@ -530,6 +624,17 @@
     }
  
     async function handleCheckout() {
+      if (isSubmittingOrder) {
+        showToast('Your order is already being processed.');
+        return;
+      }
+
+      const recentLock = getRecentOrderLock();
+      if (recentLock && Date.now() - recentLock.created_at < 20000) {
+        showToast('Please wait a few seconds before submitting again.');
+        return;
+      }
+
       const cart = getCart();
       if (cart.length === 0) { showToast('Your cart is empty'); return; }
  
@@ -567,24 +672,73 @@
       };
  
       localStorage.setItem('pending_order', JSON.stringify(orderData));
+      setButtonsDisabled(true);
+      isSubmittingOrder = true;
+      setRecentOrderLock(orderData.tran_id);
  
       if (paymentMethod === 'cod') {
-        localStorage.removeItem('cart');
-        localStorage.setItem('last_order', JSON.stringify({ ...orderData, status: 'COD Confirmed' }));
-        showToast('Order confirmed! Thank you.');
-        setTimeout(() => { window.location.href = 'order-success.html?status=cod'; }, 1500);
+        try {
+          await saveOrderRecord(orderData, {
+            order_status: 'confirmed',
+            payment_status: 'pending_on_delivery',
+            fulfillment_status: 'new'
+          });
+          localStorage.removeItem('cart');
+          localStorage.setItem('last_order', JSON.stringify({ ...orderData, status: 'COD Confirmed' }));
+          await sendOrderNotification({
+            event: 'cod_created',
+            order: {
+              tran_id: orderData.tran_id,
+              total_amount: orderData.total_amount,
+              payment_method: 'cod',
+              customer: orderData.customer,
+              products: orderData.products
+            }
+          });
+          showToast('Order confirmed! Thank you.');
+          setTimeout(() => { window.location.href = `order-success.html?status=cod&tran_id=${encodeURIComponent(orderData.tran_id)}`; }, 1200);
+        } catch (error) {
+          console.error(error);
+          setButtonsDisabled(false);
+          isSubmittingOrder = false;
+          clearRecentOrderLock();
+          showToast(error.message || 'Could not save your order. Please try again.');
+        }
         return;
       }
- 
+
+      try {
+        await saveOrderRecord(orderData, {
+          order_status: 'payment_pending',
+          payment_status: 'pending',
+          fulfillment_status: 'awaiting_payment'
+        });
+      } catch (error) {
+        console.error(error);
+        setButtonsDisabled(false);
+        isSubmittingOrder = false;
+        clearRecentOrderLock();
+        showToast(error.message || 'Could not save your order. Please try again.');
+        return;
+      }
+
       loadingOverlay.classList.add('show');
-      setButtonsDisabled(true);
- 
+
       try {
         const gatewayUrl = await initiateSSLCommerz(orderData);
         window.location.href = gatewayUrl;
       } catch (error) {
         loadingOverlay.classList.remove('show');
         setButtonsDisabled(false);
+        isSubmittingOrder = false;
+        clearRecentOrderLock();
+        try {
+          await saveOrderRecord(orderData, {
+            order_status: 'payment_init_failed',
+            payment_status: 'failed',
+            fulfillment_status: 'hold'
+          });
+        } catch (_) {}
         showToast(error.message || 'Payment initiation failed');
         console.error(error);
       }
@@ -596,8 +750,12 @@
     document.addEventListener('DOMContentLoaded', () => {
       if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
       renderSummary();
+      prefillKnownCustomer();
       addCursorEvents();
+      const statusNotice = getCheckoutStatusNotice();
+      if (statusNotice) showToast(statusNotice);
     });
   </script>
 </body>
 </html>
+

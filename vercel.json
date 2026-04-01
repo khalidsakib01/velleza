@@ -1,12 +1,28 @@
 {
   "rewrites": [
     {
-      "source": "/api/(.*)",
-      "destination": "/api/payment"
+      "source": "/api/order-notify",
+      "destination": "/api/order-notify"
+    },
+    {
+      "source": "/api/payment",
+      "destination": "/api/payment-handler"
     },
     {
       "source": "/payment/(.*)",
-      "destination": "/api/payment"
+      "destination": "/api/payment-handler"
+    },
+    {
+      "source": "/api/initiate-payment",
+      "destination": "/api/payment-handler"
+    },
+    {
+      "source": "/api/validate-payment",
+      "destination": "/api/payment-handler"
+    },
+    {
+      "source": "/api/health",
+      "destination": "/api/payment-handler"
     },
     {
       "source": "/",
