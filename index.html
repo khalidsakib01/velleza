@@ -667,8 +667,8 @@
     }
     body.mobile-view #navbar { display: none; }
     body.mobile-view .contact-floating-button {
-      font-size: 10px;
-      letter-spacing: 0.08em;
+      font-size: 9px;
+      letter-spacing: 0.05em;
       white-space: nowrap;
       gap: 0.2rem;
       min-width: 0;
@@ -677,9 +677,14 @@
     }
     body.mobile-view .top-icons { gap: 4px; }
     body.mobile-view .nav-btn {
-      width: 32px;
-      height: 32px;
+      width: 28px;
+      height: 28px;
       flex-shrink: 0;
+    }
+    body.mobile-view .nav-btn i,
+    body.mobile-view .nav-btn svg {
+      width: 14px !important;
+      height: 14px !important;
     }
     body.mobile-view #top-bar .search-container { position: static; }
     body.mobile-view #dual-hero { height: 100svh; min-height: 680px; }
@@ -691,9 +696,9 @@
     }
     body.mobile-view .hero-video-wrap video { height: 100%; }
     body.mobile-view .brand-title {
-      font-size: clamp(2.2rem, 11vw, 3.6rem);
-      letter-spacing: 0.18em;
-      text-indent: 0.18em;
+      font-size: clamp(1.9rem, 10vw, 3rem);
+      letter-spacing: 0.14em;
+      text-indent: 0.14em;
     }
     body.mobile-view .hero-pause-btn {
       width: 48px;
@@ -731,6 +736,23 @@
       flex-direction: column;
       align-items: flex-start;
       gap: 18px;
+    }
+    @media (max-width: 430px) {
+      body.mobile-view #top-bar { padding: 10px 10px; gap: 6px; }
+      body.mobile-view .contact-floating-button { font-size: 8px; letter-spacing: 0.04em; }
+      body.mobile-view .brand-title {
+        font-size: clamp(1.7rem, 9vw, 2.4rem);
+        letter-spacing: 0.12em;
+        text-indent: 0.12em;
+      }
+      body.mobile-view .video-controls-bar { padding: 10px 12px 14px; gap: 8px; }
+      body.mobile-view .split-content,
+      body.mobile-view .split-text { padding: 32px 16px; }
+      body.mobile-view .panel-close { top: 14px; right: 14px; width: 32px; height: 32px; }
+      body.mobile-view #contact-panel,
+      body.mobile-view #menu-panel { padding: 42px 20px 24px; }
+      body.mobile-view .footer-section { padding: 1.8rem 0.9rem; }
+      body.mobile-view .footer-social-links { gap: 10px; }
     }
   </style>
 </head>

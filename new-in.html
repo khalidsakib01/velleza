@@ -326,8 +326,8 @@
     }
     body.mobile-view #navbar { display: none; }
     body.mobile-view .contact-floating-button {
-      font-size: 10px;
-      letter-spacing: 0.08em;
+      font-size: 9px;
+      letter-spacing: 0.05em;
       white-space: nowrap;
       gap: 0.2rem;
       min-width: 0;
@@ -336,12 +336,17 @@
     }
     body.mobile-view .top-icons { gap: 4px; }
     body.mobile-view .nav-btn {
-      width: 31px;
-      height: 31px;
+      width: 28px;
+      height: 28px;
       flex-shrink: 0;
     }
-    body.mobile-view .hero { min-height: 48vh; padding: 92px 18px 30px; }
-    body.mobile-view .hero-title { font-size: clamp(2rem, 10vw, 3rem); }
+    body.mobile-view .nav-btn i,
+    body.mobile-view .nav-btn svg {
+      width: 14px !important;
+      height: 14px !important;
+    }
+    body.mobile-view .hero { min-height: 44vh; padding: 84px 16px 24px; }
+    body.mobile-view .hero-title { font-size: clamp(1.75rem, 9vw, 2.6rem); letter-spacing: 0.1em; }
     body.mobile-view .collection-tabs,
     body.mobile-view .products-section { padding-left: 18px; padding-right: 18px; }
     body.mobile-view .products-grid { grid-template-columns: 1fr; gap: 16px; }
@@ -362,6 +367,18 @@
       flex-direction: column;
       align-items: flex-start;
       gap: 18px;
+    }
+    @media (max-width: 430px) {
+      body.mobile-view #top-bar { padding: 10px; gap: 6px; }
+      body.mobile-view .contact-floating-button { font-size: 8px; letter-spacing: 0.04em; }
+      body.mobile-view .hero { min-height: 38vh; padding: 78px 14px 20px; }
+      body.mobile-view .hero-title { font-size: clamp(1.55rem, 8vw, 2.2rem); }
+      body.mobile-view .hero-sub { font-size: 0.92rem; line-height: 1.6; }
+      body.mobile-view .collection-tabs,
+      body.mobile-view .products-section { padding-left: 14px; padding-right: 14px; }
+      body.mobile-view #contact-panel,
+      body.mobile-view #menu-panel { padding: 42px 20px 24px; }
+      body.mobile-view .footer-section { padding: 1.8rem 0.9rem; }
     }
   </style>
 </head>

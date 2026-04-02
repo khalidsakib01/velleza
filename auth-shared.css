@@ -26,6 +26,10 @@ body {
   padding-top: 92px;
 }
 
+body.mobile-view {
+  padding-top: 72px;
+}
+
 #navbar {
   position: fixed;
   top: 0;
@@ -726,5 +730,164 @@ input:focus {
 
   .footer-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+body.mobile-view #navbar {
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 8px;
+  padding: 10px 12px;
+  height: 60px;
+}
+
+body.mobile-view .nav-left {
+  display: flex;
+  gap: 0;
+  min-width: 0;
+}
+
+body.mobile-view .nav-logo {
+  grid-column: 2;
+  justify-self: center;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  white-space: nowrap;
+}
+
+body.mobile-view .nav-left a[href="index.html"] {
+  display: none;
+}
+
+body.mobile-view .nav-left .pill-btn {
+  padding: 7px 10px;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+}
+
+body.mobile-view .nav-right {
+  grid-column: 3;
+  justify-self: end;
+  gap: 4px;
+}
+
+body.mobile-view .nav-btn {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+body.mobile-view .nav-btn i,
+body.mobile-view .nav-btn svg {
+  width: 14px !important;
+  height: 14px !important;
+}
+
+body.mobile-view .search-container {
+  position: static;
+}
+
+body.mobile-view .search-dropdown {
+  position: fixed;
+  top: 56px;
+  left: 12px;
+  right: 12px;
+  width: auto;
+  max-height: 48vh;
+}
+
+body.mobile-view .auth-wrapper {
+  padding: 12px;
+}
+
+body.mobile-view .auth-shell.two-col {
+  grid-template-columns: 1fr;
+}
+
+body.mobile-view .brand-pane,
+body.mobile-view .form-pane {
+  padding: 28px 18px;
+}
+
+body.mobile-view .brand-title {
+  font-size: clamp(1.8rem, 10vw, 2.4rem);
+}
+
+body.mobile-view .meta-row {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+body.mobile-view .panel {
+  width: 100vw;
+  max-width: 100vw;
+}
+
+body.mobile-view .footer-section {
+  padding: 2.2rem 1rem;
+}
+
+body.mobile-view .footer-grid {
+  grid-template-columns: 1fr;
+  gap: 1.4rem;
+}
+
+body.mobile-view .footer-bottom-bar {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+body.mobile-view .footer-social-link {
+  color: #aaa;
+}
+
+@media (max-width: 430px) {
+  body.mobile-view #navbar {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    padding: 8px 10px;
+    height: 56px;
+    gap: 6px;
+  }
+
+  body.mobile-view .nav-logo {
+    font-size: 0.66rem;
+    letter-spacing: 0.14em;
+  }
+
+  body.mobile-view .nav-left .pill-btn {
+    padding: 5px 8px;
+    font-size: 7px;
+    letter-spacing: 0.06em;
+  }
+
+  body.mobile-view .auth-wrapper {
+    padding: 10px;
+  }
+
+  body.mobile-view .brand-pane,
+  body.mobile-view .form-pane {
+    padding: 22px 14px;
+  }
+
+  body.mobile-view .brand-title {
+    font-size: clamp(1.5rem, 8vw, 2rem);
+    letter-spacing: 0.08em;
+  }
+
+  body.mobile-view .brand-copy,
+  body.mobile-view .status,
+  body.mobile-view label {
+    font-size: 12px;
+  }
+
+  body.mobile-view input,
+  body.mobile-view .btn {
+    padding: 12px 12px;
+  }
+
+  body.mobile-view #contact-panel,
+  body.mobile-view #menu-panel {
+    padding: 42px 20px 24px;
   }
 }

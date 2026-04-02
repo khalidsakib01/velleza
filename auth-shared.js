@@ -38,7 +38,7 @@
     }
 
     resultsEl.innerHTML = list.map(function (p) {
-      return '<a href="' + p.page + '" class="search-result-item">'
+      return '<a href="product.html?product=' + encodeURIComponent(p.name) + '" class="search-result-item">'
         + '<img src="' + p.image + '" alt="' + p.name + '" onerror="this.src=\'gucci1.png\'">'
         + '<div><p class="search-result-name">' + p.name + '</p>'
         + '<p class="search-result-meta">' + p.currency + p.price + ' - ' + p.category + '</p></div></a>';
@@ -72,6 +72,26 @@
 
       input.addEventListener("input", function () {
         filterProducts(input.value, results);
+      });
+
+      input.addEventListener("keydown", function (event) {
+        if (event.key !== "Enter") return;
+        event.preventDefault();
+
+        var query = input.value.trim().toLowerCase();
+        if (!query) return;
+
+        var match = products.find(function (p) {
+          return p.name.toLowerCase() === query;
+        }) || products.find(function (p) {
+          return p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query);
+        });
+
+        if (match) {
+          window.location.href = "product.html?product=" + encodeURIComponent(match.name);
+        } else {
+          results.innerHTML = '<p style="padding:14px 16px;font-size:11px;color:#777;letter-spacing:0.1em">No product found.</p>';
+        }
       });
     });
 
@@ -109,12 +129,19 @@
   window.closePanel = closePanel;
   window.closePanels = closePanels;
 
+  function applyMobileMode() {
+    var mobile = window.matchMedia("(max-width: 768px), (pointer: coarse)").matches;
+    document.body.classList.toggle("mobile-view", mobile);
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     if (window.lucide && typeof window.lucide.createIcons === "function") {
       window.lucide.createIcons();
     }
 
+    applyMobileMode();
     updateCartCount();
     initSearch();
+    window.addEventListener("resize", applyMobileMode);
   });
 })();
