@@ -20,6 +20,7 @@
     }
  
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
  
     body {
       background: var(--black);
@@ -27,6 +28,7 @@
       font-family: 'Montserrat', sans-serif;
       font-weight: 300;
       cursor: none;
+      overflow-x: hidden;
     }
  
     /* Custom cursor */
@@ -96,6 +98,30 @@
     .icon-btn:hover {
       background: rgba(184,150,46,0.15);
       border-color: var(--gold);
+    }
+
+    .cart-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--gold);
+      color: var(--black);
+      font-size: 8px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: scale(0);
+      transition: opacity 0.3s, transform 0.3s;
+    }
+
+    .cart-badge.visible {
+      opacity: 1;
+      transform: scale(1);
     }
  
     /* Search */
@@ -242,11 +268,14 @@
     /* Cart alert */
     #cart-alert {
       position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%);
-      background: var(--cream); color: var(--black);
-      padding: 16px 40px; font-size: 11px; letter-spacing: 0.2em;
-      text-transform: uppercase; opacity: 0; transition: opacity 0.4s;
-      z-index: 9999; border-left: 3px solid var(--gold);
+      background: rgba(8,8,8,0.92); color: var(--cream);
+      padding: 16px 28px; font-size: 10px; letter-spacing: 0.22em;
+      text-transform: uppercase; opacity: 0; transition: opacity 0.4s, transform 0.4s;
+      z-index: 9999; border: 1px solid rgba(184,151,90,0.35);
+      border-radius: 999px; box-shadow: 0 18px 60px rgba(0,0,0,0.45);
+      backdrop-filter: blur(10px); pointer-events: none;
     }
+    #cart-alert.show { opacity: 1; transform: translateX(-50%) translateY(-6px); }
  
     /* Panels */
     .panel {
@@ -299,24 +328,49 @@
     .overlay.open { display: block; }
  
     /* Footer */
-    .footer { background: #050505; border-top: 1px solid var(--border); padding: 60px 48px; }
+    .footer { background: #ffffff; border-top: 1px solid #e5e5e5; padding: 60px 48px; color: #1a1a1a; }
+    .section-header, .products-grid { scroll-margin-top: 110px; }
     .footer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; margin-bottom: 48px; }
     @media (max-width: 768px) {
       .footer-grid { grid-template-columns: repeat(2, 1fr); }
       .products-grid { margin: 0 0 48px; }
       .topbar { padding: 20px 24px; }
     }
+    @media (max-width: 640px) {
+      .topbar { padding: 16px; }
+      .contact-btn { display: none; }
+      .section-header { padding: 64px 20px 32px; }
+      .products-grid { grid-template-columns: 1fr; }
+      .product-info { margin: 0 20px; }
+      .footer { padding: 2.5rem 1.2rem; }
+      .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; }
+      #search-dropdown { width: min(320px, calc(100vw - 32px)); right: -8px; }
+    }
+    @media (hover: none), (pointer: coarse) {
+      body { cursor: auto; }
+      .cursor, .cursor-ring { display: none; }
+      .icon-btn,
+      .contact-btn,
+      .quick-add,
+      .panel-close,
+      .panel-link,
+      .menu-link,
+      .footer-link,
+      .social-link { cursor: pointer; }
+      .product-overlay { opacity: 1; background: linear-gradient(to top, rgba(10,10,10,0.72) 0%, transparent 60%); }
+    }
     .footer-heading {
       font-size: 10px; letter-spacing: 0.35em; text-transform: uppercase;
-      color: var(--gold-light); margin-bottom: 20px; font-weight: 500;
+      color: #999; margin-bottom: 20px; font-weight: 500;
     }
     .footer-link {
       display: block; font-size: 12px; letter-spacing: 0.08em;
-      color: #c8c8c8; text-decoration: none; padding: 6px 0; transition: color 0.3s;
+      color: #666; text-decoration: none; padding: 6px 0; transition: color 0.3s;
     }
-    .footer-link:hover { color: var(--gold-light); }
+    .footer-link:hover { color: #1a1a1a; }
     .footer-bottom {
-      border-top: 1px solid var(--border); padding-top: 32px;
+      border-top: 1px solid #e5e5e5; padding-top: 32px;
       display: flex; flex-wrap: wrap;
       align-items: center; justify-content: space-between; gap: 24px;
     }
@@ -328,9 +382,9 @@
     .social-links { display: flex; gap: 24px; }
     .social-link {
       font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase;
-      color: #c0c0c0; text-decoration: none; transition: color 0.3s;
+      color: #999; text-decoration: none; transition: color 0.3s;
     }
-    .social-link:hover { color: var(--gold-light); }
+    .social-link:hover { color: #1a1a1a; }
   </style>
 </head>
  
@@ -340,7 +394,7 @@
   <div class="cursor-ring" id="cursor-ring"></div>
  
   <!-- Cart Alert -->
-  <div id="cart-alert">Item added to selection</div>
+  <div id="cart-alert">Added to cart</div>
  
   <!-- Top Bar -->
   <div class="topbar">
@@ -366,6 +420,7 @@
       </a>
       <a href="cart.html" class="icon-btn">
         <i data-lucide="shopping-bag" style="width:18px;height:18px;"></i>
+        <span class="cart-badge" id="cart-count">0</span>
       </a>
     </div>
   </div>
@@ -382,7 +437,7 @@
   </section>
  
   <!-- Section Header -->
-  <div class="section-header">
+  <div class="section-header" id="womens-selection">
     <p class="section-label">The Collection</p>
     <h2 class="section-title">Women's Selection</h2>
     <div class="section-divider"></div>
@@ -391,7 +446,7 @@
   <!-- Products Grid — Women specific -->
   <div class="products-grid">
  
-    <div class="product-card">
+    <div class="product-card" id="womens-bags">
       <div class="product-tag">New</div>
       <div class="product-img-wrap">
         <img src="gucci1.png" alt="Luxury Handbag">
@@ -403,11 +458,11 @@
         <p class="product-category">Women · Handbags</p>
         <h3 class="product-name">Luxury Handbag</h3>
         <p class="product-desc">Premium leather, timeless silhouette.</p>
-        <p class="product-price">USD 499</p>
+        <p class="product-price">BDT 4,990</p>
       </div>
     </div>
  
-    <div class="product-card">
+    <div class="product-card" id="womens-shoes">
       <div class="product-tag">Exclusive</div>
       <div class="product-img-wrap">
         <img src="gucci2.png" alt="Heeled Mule">
@@ -419,7 +474,7 @@
         <p class="product-category">Women · Shoes</p>
         <h3 class="product-name">Heeled Mule</h3>
         <p class="product-desc">Italian leather, sculpted heel.</p>
-        <p class="product-price">USD 350</p>
+        <p class="product-price">BDT 3,500</p>
       </div>
     </div>
  
@@ -434,7 +489,7 @@
         <p class="product-category">Women · Clutches</p>
         <h3 class="product-name">Evening Clutch</h3>
         <p class="product-desc">Satin finish, gold-tone hardware.</p>
-        <p class="product-price">USD 220</p>
+        <p class="product-price">BDT 2,200</p>
       </div>
     </div>
  
@@ -446,7 +501,7 @@
         </div>
       </div>
       <div class="product-info">
-        <p class="product-category">Women · Ready-to-Wear</p>
+        <p class="product-category">Women Ready-to-Wear</p>
         <h3 class="product-name">Silk Blouse</h3>
         <p class="product-desc">100% pure silk, relaxed fit.</p>
         <p class="product-price">BDT 3,500</p>
@@ -454,32 +509,111 @@
     </div>
  
   </div>
+
+  <div class="section-header" id="womens-bags-section">
+    <p class="section-label">Leather Goods</p>
+    <h2 class="section-title">Women's Bags</h2>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="products-grid" id="womens-bags">
+    <div class="product-card">
+      <div class="product-tag">New</div>
+      <div class="product-img-wrap">
+        <img src="gucci1.png" alt="Luxury Handbag">
+        <div class="product-overlay">
+          <button class="quick-add" onclick="addToCart('Luxury Handbag')">Add to Selection</button>
+        </div>
+      </div>
+      <div class="product-info">
+        <p class="product-category">Women Bags</p>
+        <h3 class="product-name">Luxury Handbag</h3>
+        <p class="product-desc">Premium leather, timeless silhouette.</p>
+        <p class="product-price">BDT 4,990</p>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-tag">Exclusive</div>
+      <div class="product-img-wrap">
+        <img src="gucci1.png" alt="Evening Clutch">
+        <div class="product-overlay">
+          <button class="quick-add" onclick="addToCart('Evening Clutch')">Add to Selection</button>
+        </div>
+      </div>
+      <div class="product-info">
+        <p class="product-category">Women Bags</p>
+        <h3 class="product-name">Evening Clutch</h3>
+        <p class="product-desc">Satin finish, gold-tone hardware.</p>
+        <p class="product-price">BDT 2,200</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-header" id="womens-shoes-section">
+    <p class="section-label">Footwear Edit</p>
+    <h2 class="section-title">Women's Shoes</h2>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="products-grid">
+    <div class="product-card">
+      <div class="product-tag">Exclusive</div>
+      <div class="product-img-wrap">
+        <img src="gucci2.png" alt="Heeled Mule">
+        <div class="product-overlay">
+          <button class="quick-add" onclick="addToCart('Heeled Mule')">Add to Selection</button>
+        </div>
+      </div>
+      <div class="product-info">
+        <p class="product-category">Women Shoes</p>
+        <h3 class="product-name">Heeled Mule</h3>
+        <p class="product-desc">Italian leather, sculpted heel.</p>
+        <p class="product-price">BDT 3,500</p>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img-wrap">
+        <img src="gucci2.png" alt="Slingback Pump">
+        <div class="product-overlay">
+          <button class="quick-add" onclick="addToCart('Slingback Pump')">Add to Selection</button>
+        </div>
+      </div>
+      <div class="product-info">
+        <p class="product-category">Women Shoes</p>
+        <h3 class="product-name">Slingback Pump</h3>
+        <p class="product-desc">Sharp heel line with a clean formal finish.</p>
+        <p class="product-price">BDT 3,950</p>
+      </div>
+    </div>
+  </div>
  
   <!-- Footer -->
   <footer class="footer">
     <div class="footer-grid">
       <div>
         <p class="footer-heading">Velleza Boutiques</p>
-        <a href="#" class="footer-link">Velleza Footwear</a>
-        <a href="#" class="footer-link">Flagship Store</a>
+        <a href="new-in.html?gender=women" class="footer-link">New In Women</a>
+        <a href="new-in.html?gender=men" class="footer-link">New In Men</a>
       </div>
       <div>
         <p class="footer-heading">Client Services</p>
-        <a href="#" class="footer-link">FAQ</a>
-        <a href="#" class="footer-link">Returns</a>
-        <a href="#" class="footer-link">Size Guide</a>
+        <a href="shipping-policy.html" class="footer-link">Shipping Policy</a>
+        <a href="refund-policy.html" class="footer-link">Refund & Returns</a>
+        <a href="cart.html" class="footer-link">Your Cart</a>
       </div>
       <div>
         <p class="footer-heading">The House</p>
-        <a href="#" class="footer-link">Sustainability</a>
-        <a href="#" class="footer-link">Ethics & Compliance</a>
-        <a href="#" class="footer-link">Careers</a>
+        <a href="women-section.html#womens-bags" class="footer-link">Women's Bags</a>
+        <a href="women-section.html#womens-shoes-section" class="footer-link">Women's Shoes</a>
+        <a href="men-section.html" class="footer-link">Men's Section</a>
       </div>
       <div>
         <p class="footer-heading">Legal</p>
-        <a href="#" class="footer-link">Privacy Policy</a>
-        <a href="#" class="footer-link">Terms & Conditions</a>
-        <a href="#" class="footer-link">Cookie Policy</a>
+        <a href="privacy-policy.html" class="footer-link">Privacy Policy</a>
+        <a href="terms.html" class="footer-link">Terms & Conditions</a>
+        <a href="refund-policy.html" class="footer-link">Refund Policy</a>
       </div>
     </div>
     <div class="footer-bottom">
@@ -492,10 +626,11 @@
         <img src="city bank.png" alt="City Bank">
       </div>
       <div class="social-links">
-        <a href="#" class="social-link">Instagram</a>
-        <a href="#" class="social-link">Facebook</a>
-        <a href="#" class="social-link">X</a>
-        <a href="#" class="social-link">Tiktok</a>
+        <a href="https://www.instagram.com" class="social-link">Instagram</a>
+        <a href="https://www.facebook.com" class="social-link">Facebook</a>
+        <a href="https://x.com" class="social-link">X</a>
+        <a href="https://www.tiktok.com" class="social-link">Tiktok</a>
+        <a href="https://www.linkedin.com" class="social-link">LinkedIn</a>
       </div>
     </div>
   </footer>
@@ -504,11 +639,11 @@
   <div id="contact-panel" class="panel">
     <button class="panel-close" onclick="closePanel('contact-panel')">&times;</button>
     <h2 class="panel-title">Contact</h2>
-    <a href="tel:+8801943869880" class="panel-link">📞 +880 194 386 9880</a>
-    <a href="#" class="panel-link">🟢 WhatsApp</a>
-    <a href="#" class="panel-link">💬 Live Chat</a>
+    <a href="tel:+8801943869880" class="panel-link">Call +880 194 386 9880</a>
+    <a href="https://wa.me/8801943869880" class="panel-link">WhatsApp</a>
+    <a href="mailto:hello@velleza.com" class="panel-link">Email Support</a>
     <p style="font-size:12px;color:#a0a0a0;margin-top:24px;letter-spacing:0.05em;line-height:2;">
-      Our advisors are available<br>Monday – Sunday · 10AM – 8PM
+      Our advisors are available<br>Monday - Sunday | 10AM - 8PM
     </p>
   </div>
  
@@ -516,16 +651,16 @@
   <div id="menu-panel" class="panel">
     <button class="panel-close" onclick="closePanel('menu-panel')">&times;</button>
     <nav style="margin-top:60px;">
-      <a href="index.html" class="menu-nav-title">New In</a>
-      <a href="#" class="menu-nav-title">Handbags</a>
-      <a href="women.html" class="menu-nav-title">Women</a>
-      <a href="men-section.html" class="menu-nav-title">Men</a>
-      <a href="#" class="menu-nav-title">Watches</a>
-      <a href="#" class="menu-nav-title">Fragrances</a>
+      <a href="index.html" class="menu-nav-title">Home</a>
+      <a href="new-in.html?gender=women" class="menu-nav-title">New In Women</a>
+      <a href="new-in.html?gender=men" class="menu-nav-title">New In Men</a>
+      <a href="women-section.html#womens-bags" class="menu-nav-title">Women's Bags</a>
+      <a href="women-section.html#womens-shoes-section" class="menu-nav-title">Women's Shoes</a>
+      <a href="men-section.html" class="menu-nav-title">Men's Section</a>
     </nav>
     <div style="margin-top:40px;border-top:1px solid #1a1a1a;padding-top:32px;">
-      <a href="#" class="panel-link">Velleza Services</a>
-      <a href="#" class="panel-link">Store Locator</a>
+      <a href="privacy-policy.html" class="panel-link">Privacy Policy</a>
+      <a href="terms.html" class="panel-link">Terms & Conditions</a>
       <a href="cart.html" class="panel-link">My Cart</a>
     </div>
   </div>
@@ -576,7 +711,7 @@
         return;
       }
       results.innerHTML = filtered.map(p => `
-        <a href="${p.page}" class="search-item">
+        <a href="product.html?product=${encodeURIComponent(p.name)}" class="search-item">
           <img src="${p.image}" alt="${p.name}">
           <div>
             <p class="search-item-name">${p.name}</p>
@@ -584,6 +719,15 @@
           </div>
         </a>
       `).join('');
+    }
+
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const total = cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
+      const badge = document.getElementById('cart-count');
+      if (!badge) return;
+      badge.textContent = total;
+      badge.classList.toggle('visible', total > 0);
     }
  
     // Cart
@@ -616,12 +760,18 @@
          });
        }
        localStorage.setItem('cart', JSON.stringify(cart));
-       window.location.href = 'cart.html';
+       updateCartCount();
+       const alert = document.getElementById('cart-alert');
+       alert.textContent = productName + ' added to cart';
+       alert.classList.add('show');
+       clearTimeout(alert._timer);
+       alert._timer = setTimeout(() => alert.classList.remove('show'), 2200);
      }
  
     // Init
     document.addEventListener('DOMContentLoaded', function () {
       lucide.createIcons();
+      updateCartCount();
  
       document.getElementById('search-btn').addEventListener('click', function (e) {
         e.stopPropagation();
@@ -634,7 +784,23 @@
       });
  
       document.getElementById('search-dropdown').addEventListener('click', e => e.stopPropagation());
- 
+
+      document.getElementById('search-input').addEventListener('keydown', function (e) {
+        if (e.key !== 'Enter') return;
+        e.preventDefault();
+        const query = this.value.trim().toLowerCase();
+        const match = products.find(p => p.name.toLowerCase() === query)
+          || products.find(p => p.name.toLowerCase().includes(query))
+          || products.find(p => p.category.toLowerCase().includes(query));
+
+        if (match) {
+          window.location.href = `product.html?product=${encodeURIComponent(match.name)}`;
+          return;
+        }
+
+        filterProducts(this.value);
+      });
+
       document.addEventListener('click', function () {
         document.getElementById('search-dropdown').classList.remove('open');
       });
@@ -642,3 +808,7 @@
   </script>
 </body>
 </html>
+
+
+
+

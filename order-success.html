@@ -285,14 +285,6 @@
     const amount = params.get('amount');
     const method = params.get('method');
 
-    const pendingOrder = (() => {
-      try {
-        return JSON.parse(localStorage.getItem('pending_order') || 'null');
-      } catch (_) {
-        return null;
-      }
-    })();
-
     const lastOrder = (() => {
       try {
         return JSON.parse(localStorage.getItem('last_order') || 'null');

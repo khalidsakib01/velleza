@@ -247,17 +247,17 @@
     .brand-title {
       font-family: 'Playfair Display', serif;
       font-size: clamp(2.4rem, 8vw, 5.6rem);
-      letter-spacing: 0.65em;
+      letter-spacing: 0.42em;
       color: var(--ivory);
       text-transform: uppercase;
-      text-indent: 0.65em;
+      text-indent: 0.42em;
     }
 
     .video-controls-bar {
       position: absolute; bottom: 0; left: 0; width: 100%;
       z-index: 30; padding: 16px 24px;
-      background: rgba(0,0,0,0.4);
-      backdrop-filter: blur(4px);
+      background: transparent;
+      backdrop-filter: none;
       display: flex; align-items: center; justify-content: space-between; gap: 1rem;
     }
 
@@ -311,6 +311,7 @@
     .cat-card {
       position: relative; overflow: hidden;
       cursor: none; aspect-ratio: 3/4;
+      display: block;
     }
 
     .cat-card img {
@@ -564,17 +565,19 @@
 
     #toast {
       position: fixed; bottom: 36px; left: 50%; transform: translateX(-50%);
-      background: var(--ivory); color: var(--obsidian);
-      padding: 14px 36px;
+      background: rgba(8,8,8,0.92); color: var(--ivory);
+      padding: 16px 28px;
       font-family: 'Montserrat', sans-serif;
-      font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase;
-      border-left: 3px solid var(--gold);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
-      opacity: 0; transition: opacity .4s; z-index: 9999;
+      font-size: 9px; letter-spacing: 0.28em; text-transform: uppercase;
+      border: 1px solid rgba(184,151,90,0.35);
+      box-shadow: 0 18px 60px rgba(0,0,0,0.45);
+      backdrop-filter: blur(10px);
+      opacity: 0; transition: opacity .4s, transform .4s; z-index: 9999;
       pointer-events: none; white-space: nowrap;
+      border-radius: 999px;
     }
 
-    #toast.show { opacity: 1; }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(-6px); }
 
     a { text-decoration: none; }
     * { cursor: none !important; }
@@ -620,8 +623,36 @@
 
     @media (max-width: 560px) {
       .categories-grid { grid-template-columns: 1fr; }
-      .brand-title { letter-spacing: 0.35em; text-indent: 0.35em; }
+      .brand-title { letter-spacing: 0.2em; text-indent: 0.2em; }
       .video-controls-bar { flex-wrap: wrap; }
+    }
+
+    @media (max-width: 640px) {
+      #top-bar { display: none; }
+      #navbar {
+        transform: translateY(0);
+        grid-template-columns: auto 1fr auto;
+      }
+      .nav-left { display: none; }
+      .nav-logo { font-size: 0.78rem; letter-spacing: 0.24em; }
+      .categories-section { padding: 80px 20px; }
+      .split-content { padding: 40px 22px; }
+      .footer-section { padding: 2.5rem 1.2rem; }
+      .footer-grid { grid-template-columns: 1fr !important; gap: 1.5rem !important; }
+      .footer-bottom-bar { flex-direction: column; align-items: flex-start; }
+    }
+
+    @media (hover: none), (pointer: coarse) {
+      body { cursor: auto; }
+      #cursor-dot, #cursor-ring { display: none; }
+      .nav-btn,
+      .contact-btn,
+      .contact-floating-button,
+      .quick-add-btn,
+      .hero-pause-btn,
+      .cta-link,
+      .footer-col-link,
+      .social-link { cursor: pointer; }
     }
   </style>
 </head>
@@ -732,29 +763,29 @@
       </div>
 
       <div class="categories-grid">
-        <div class="cat-card" data-aos="fade-up" data-aos-delay="0">
+        <a href="women-section.html#womens-bags" class="cat-card" data-aos="fade-up" data-aos-delay="0">
           <img src="gucci1.png" alt="Women's Handbags">
           <div class="cat-border"></div>
           <div class="cat-label"><p>Women's Handbags</p></div>
-        </div>
+        </a>
 
-        <div class="cat-card" data-aos="fade-up" data-aos-delay="80">
+        <a href="women-section.html#womens-shoes-section" class="cat-card" data-aos="fade-up" data-aos-delay="80">
           <img src="gucci2.png" alt="Women's Shoes">
           <div class="cat-border"></div>
           <div class="cat-label"><p>Women's Shoes</p></div>
-        </div>
+        </a>
 
-        <div class="cat-card" data-aos="fade-up" data-aos-delay="160">
+        <a href="men-section.html#mens-shoes" class="cat-card" data-aos="fade-up" data-aos-delay="160">
           <img src="gucci3.png" alt="Men's Shoes">
           <div class="cat-border"></div>
           <div class="cat-label"><p>Men's Shoes</p></div>
-        </div>
+        </a>
 
-        <div class="cat-card" data-aos="fade-up" data-aos-delay="240">
+        <a href="men-section.html#mens-bags" class="cat-card" data-aos="fade-up" data-aos-delay="240">
           <img src="gucci4.png" alt="Men's Bags">
           <div class="cat-border"></div>
           <div class="cat-label"><p>Men's Bags</p></div>
-        </div>
+        </a>
       </div>
     </div>
   </section>
@@ -779,16 +810,15 @@
       <div class="split-overlay"></div>
       <div class="split-text">
         <h3>New In for Men</h3>
-        <a href="men-section.html" class="split-cta">Shop the Selection</a>
+        <a href="new-in.html?gender=men" class="split-cta">Shop the Selection</a>
       </div>
     </div>
 
     <div class="split-block" data-aos="fade-left">
       <img src="pic1.jpg" alt="New for Women">
-      <div class="split-overlay"></div>
       <div class="split-text">
         <h3>New In for Women</h3>
-        <a href="women-section.html" class="split-cta">Shop the Selection</a>
+        <a href="new-in.html?gender=women" class="split-cta">Shop the Selection</a>
       </div>
     </div>
   </div>
@@ -798,22 +828,25 @@
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:3rem;padding-bottom:2rem">
         <div>
           <p class="footer-col-heading">VELLEZA Boutiques</p>
-          <a href="#" class="footer-col-link">VELLEZA FOOTWEAR</a>
+          <a href="new-in.html?gender=men" class="footer-col-link">New In Men</a>
+          <a href="new-in.html?gender=women" class="footer-col-link">New In Women</a>
         </div>
         <div>
           <p class="footer-col-heading">Client Services</p>
-          <a href="#" class="footer-col-link">FAQ</a>
+          <a href="shipping-policy.html" class="footer-col-link">Shipping Policy</a>
+          <a href="refund-policy.html" class="footer-col-link">Refund & Returns</a>
         </div>
         <div>
           <p class="footer-col-heading">The House of VELLEZA</p>
-          <a href="#" class="footer-col-link">Sustainability</a>
-          <a href="#" class="footer-col-link">Ethics &amp; Compliance</a>
-          <a href="#" class="footer-col-link">Careers</a>
+          <a href="women-section.html" class="footer-col-link">Women's Section</a>
+          <a href="men-section.html" class="footer-col-link">Men's Section</a>
+          <a href="cart.html" class="footer-col-link">Your Cart</a>
         </div>
         <div>
           <p class="footer-col-heading">Legal Terms</p>
-          <a href="#" class="footer-col-link">Privacy Policy</a>
-          <a href="#" class="footer-col-link">Terms &amp; Conditions</a>
+          <a href="privacy-policy.html" class="footer-col-link">Privacy Policy</a>
+          <a href="terms.html" class="footer-col-link">Terms &amp; Conditions</a>
+          <a href="refund-policy.html" class="footer-col-link">Refund Policy</a>
         </div>
       </div>
 
@@ -830,11 +863,11 @@
         </div>
 
         <div class="footer-social-links">
-          <a href="#" class="footer-social-link">Instagram</a>
-          <a href="#" class="footer-social-link">Facebook</a>
-          <a href="#" class="footer-social-link">X</a>
-          <a href="#" class="footer-social-link">TikTok</a>
-          <a href="#" class="footer-social-link">LinkedIn</a>
+          <a href="https://www.instagram.com" class="footer-social-link">Instagram</a>
+          <a href="https://www.facebook.com" class="footer-social-link">Facebook</a>
+          <a href="https://x.com" class="footer-social-link">X</a>
+          <a href="https://www.tiktok.com" class="footer-social-link">TikTok</a>
+          <a href="https://www.linkedin.com" class="footer-social-link">LinkedIn</a>
         </div>
       </div>
     </div>
@@ -869,19 +902,21 @@
     <div style="width:28px;height:1px;background:linear-gradient(90deg,var(--gold),transparent);margin-bottom:36px"></div>
 
     <ul class="menu-nav">
-      <li><a href="#">New In</a></li>
-      <li><a href="#">Handbags</a></li>
-      <li><a href="women-section.html">Women</a></li>
-      <li><a href="men-section.html">Men</a></li>
-      <li><a href="#">Watches</a></li>
-      <li><a href="#">Fragrances</a></li>
-      <li><a href="#">Gifts</a></li>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="new-in.html?gender=women">New In Women</a></li>
+      <li><a href="new-in.html?gender=men">New In Men</a></li>
+      <li><a href="women-section.html">Women's Section</a></li>
+      <li><a href="men-section.html">Men's Section</a></li>
+      <li><a href="cart.html">Cart</a></li>
     </ul>
 
     <ul class="menu-sub-nav">
-      <li><a href="#">Velleza Services</a></li>
-      <li><a href="#">World of Velleza</a></li>
-      <li><a href="#">Store Locator</a></li>
+      <li><a href="women-section.html#womens-bags">Women's Bags</a></li>
+      <li><a href="women-section.html#womens-shoes-section">Women's Shoes</a></li>
+      <li><a href="men-section.html#mens-bags">Men's Bags</a></li>
+      <li><a href="men-section.html#mens-shoes">Men's Shoes</a></li>
+      <li><a href="privacy-policy.html">Privacy Policy</a></li>
+      <li><a href="terms.html">Terms &amp; Conditions</a></li>
     </ul>
   </div>
 
@@ -1075,7 +1110,7 @@
       }
 
       resultsEl.innerHTML = list.map(p => `
-        <a href="${p.page}" class="search-result-item">
+        <a href="product.html?product=${encodeURIComponent(p.name)}" class="search-result-item">
           <img src="${p.image}" alt="${p.name}" onerror="this.src='gucci1.png'">
           <div>
             <p class="search-result-name">${p.name}</p>
@@ -1083,6 +1118,16 @@
           </div>
         </a>
       `).join('');
+    }
+
+    function findSearchMatch(query) {
+      if (typeof products === 'undefined') return null;
+      const normalized = query.trim().toLowerCase();
+      if (!normalized) return null;
+
+      return products.find(p => p.name.toLowerCase() === normalized)
+        || products.find(p => p.name.toLowerCase().includes(normalized))
+        || products.find(p => p.category.toLowerCase().includes(normalized));
     }
 
     function initSearchDropdowns() {
@@ -1108,6 +1153,17 @@
 
         dropdown.addEventListener('click', e => e.stopPropagation());
         input.addEventListener('input', () => filterProducts(input.value, results));
+        input.addEventListener('keydown', e => {
+          if (e.key !== 'Enter') return;
+          e.preventDefault();
+          const match = findSearchMatch(input.value);
+          if (match) {
+            window.location.href = `product.html?product=${encodeURIComponent(match.name)}`;
+            return;
+          }
+          filterProducts(input.value, results);
+          showToast('Product not found');
+        });
       });
 
       document.addEventListener('click', closeSearchDropdowns);
