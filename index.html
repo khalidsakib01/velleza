@@ -714,7 +714,7 @@
     body.mobile-view .vc-time { min-width: auto; font-size: 0.7rem; }
     body.mobile-view #video-progress { order: 3; width: 100%; }
     body.mobile-view .categories-section { padding: 72px 20px; }
-    body.mobile-view .categories-grid { grid-template-columns: 1fr; gap: 14px; }
+    body.mobile-view .categories-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
     body.mobile-view .filter-strip { padding: 0 20px; }
     body.mobile-view .filter-inner { gap: 10px; overflow-x: auto; }
     body.mobile-view .filter-btn { white-space: nowrap; }
@@ -748,11 +748,15 @@
       body.mobile-view .video-controls-bar { padding: 10px 12px 14px; gap: 8px; }
       body.mobile-view .split-content,
       body.mobile-view .split-text { padding: 32px 16px; }
+      body.mobile-view .categories-grid { gap: 10px; }
       body.mobile-view .panel-close { top: 14px; right: 14px; width: 32px; height: 32px; }
       body.mobile-view #contact-panel,
       body.mobile-view #menu-panel { padding: 42px 20px 24px; }
       body.mobile-view .footer-section { padding: 1.8rem 0.9rem; }
       body.mobile-view .footer-social-links { gap: 10px; }
+    }
+    @media (max-width: 360px) {
+      body.mobile-view .categories-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
