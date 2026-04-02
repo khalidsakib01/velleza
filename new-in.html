@@ -225,6 +225,19 @@
     }
     .footer-payment-icons { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
     .footer-payment-icons img { height: 30px; object-fit: contain; }
+    .footer-social-links { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+    .footer-social-link {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: #aaa;
+      text-decoration: none;
+      transition: color .3s;
+    }
+    .footer-social-link:visited { color: #aaa; }
+    .footer-social-link:hover { color: #1a1a1a; }
 
     .panel {
       position: fixed; top: 0; right: 0; height: 100%; z-index: 600;
@@ -299,6 +312,56 @@
       .quick-add,
       .view-piece,
       .tab-link { cursor: pointer; }
+    }
+
+    body.mobile-view #top-bar {
+      display: grid !important;
+      grid-template-columns: minmax(0, 1fr) auto;
+      padding: 12px 12px;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(to bottom, rgba(8,8,8,0.92), rgba(8,8,8,0.15));
+      width: 100vw;
+      max-width: 100vw;
+    }
+    body.mobile-view #navbar { display: none; }
+    body.mobile-view .contact-floating-button {
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+      gap: 0.2rem;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    body.mobile-view .top-icons { gap: 4px; }
+    body.mobile-view .nav-btn {
+      width: 31px;
+      height: 31px;
+      flex-shrink: 0;
+    }
+    body.mobile-view .hero { min-height: 48vh; padding: 92px 18px 30px; }
+    body.mobile-view .hero-title { font-size: clamp(2rem, 10vw, 3rem); }
+    body.mobile-view .collection-tabs,
+    body.mobile-view .products-section { padding-left: 18px; padding-right: 18px; }
+    body.mobile-view .products-grid { grid-template-columns: 1fr; gap: 16px; }
+    body.mobile-view .product-desc { min-height: 0; }
+    body.mobile-view #top-bar .search-container { position: static; }
+    body.mobile-view .search-dropdown {
+      position: fixed;
+      top: 56px;
+      left: 12px;
+      right: 12px;
+      width: auto;
+      max-height: 48vh;
+    }
+    body.mobile-view .panel { width: 100vw; max-width: 100vw; }
+    body.mobile-view .footer-section { padding: 2.25rem 1.1rem; }
+    body.mobile-view .footer-grid { grid-template-columns: 1fr !important; gap: 1.4rem; }
+    body.mobile-view .footer-bottom-bar {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 18px;
     }
   </style>
 </head>
@@ -425,7 +488,9 @@
           <img src="DBB.png" alt="Dutch-Bangla Bank">
           <img src="visa.jpeg" alt="Visa">
           <img src="mc.png" alt="Mastercard">
+          <img src="upay.png" alt="Upay">
           <img src="city bank.png" alt="City Bank">
+          <img src="ucb.png" alt="UCB">
         </div>
         <div class="footer-social-links">
           <a href="https://www.instagram.com" class="footer-social-link">Instagram</a>
@@ -440,10 +505,11 @@
 
   <div id="contact-panel" class="panel">
     <button class="panel-close" onclick="closePanel('contact-panel')">&times;</button>
-    <p class="panel-label">Support</p>
-    <a href="tel:+8801943869880" style="display:block;font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:#1a1a1a;text-decoration:none;margin-bottom:14px;">+880 194 386 9880</a>
-    <a href="shipping-policy.html" style="display:block;color:#666;text-decoration:none;margin-bottom:10px;">Shipping Policy</a>
-    <a href="refund-policy.html" style="display:block;color:#666;text-decoration:none;">Refund & Returns</a>
+    <p class="panel-label">Client Services</p>
+    <a href="tel:+8801943869880" style="display:block;font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:#1a1a1a;text-decoration:none;margin-bottom:14px;">+880 1943 869 880</a>
+    <a href="https://wa.me/8801943869880" style="display:block;color:#666;text-decoration:none;margin-bottom:10px;">WhatsApp Support</a>
+    <a href="mailto:khalidsakib07@gmail.com" style="display:block;color:#666;text-decoration:none;margin-bottom:10px;">Email Support</a>
+    <p style="margin-top:14px;color:#999;font-size:10px;letter-spacing:0.1em;line-height:1.7;">Monday - Sunday, 10 AM - 8 PM</p>
   </div>
 
   <div id="menu-panel" class="panel">
@@ -491,7 +557,17 @@
       });
     }
 
+    function applyMobileMode() {
+      const mobile = window.matchMedia('(max-width: 768px), (pointer: coarse)').matches;
+      document.body.classList.toggle('mobile-view', mobile);
+    }
+
     function handleNavbarScroll() {
+      if (document.body.classList.contains('mobile-view')) {
+        document.getElementById('navbar').classList.remove('scrolled');
+        document.getElementById('top-bar').classList.remove('hidden');
+        return;
+      }
       const past = window.scrollY > 180;
       document.getElementById('navbar').classList.toggle('scrolled', past);
       document.getElementById('top-bar').classList.toggle('hidden', past);
@@ -619,7 +695,7 @@
       }
 
       resultsEl.innerHTML = list.map(p => `
-        <a href="${p.page}" class="search-result-item">
+        <a href="product.html?product=${encodeURIComponent(p.name)}" class="search-result-item">
           <img src="${p.image}" alt="${p.name}">
           <div>
             <p class="search-result-name">${p.name}</p>
@@ -677,12 +753,17 @@
     document.addEventListener('DOMContentLoaded', () => {
       AOS.init({ duration: 800, once: true, easing: 'ease-out-quart' });
       lucide.createIcons();
+      applyMobileMode();
       bindCursorHover();
       updateCartCount();
       initSearchDropdowns();
       renderProducts();
       handleNavbarScroll();
       window.addEventListener('scroll', handleNavbarScroll);
+      window.addEventListener('resize', () => {
+        applyMobileMode();
+        handleNavbarScroll();
+      });
     });
   </script>
 </body>

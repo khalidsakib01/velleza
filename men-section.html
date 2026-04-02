@@ -503,7 +503,11 @@
     }
     @media (max-width: 640px) {
       .topbar { padding: 16px; }
-      .contact-btn { display: none; }
+      .contact-btn {
+        display: inline-flex;
+        align-items: center;
+        min-width: 0;
+      }
       .section-header { padding: 64px 20px 32px; }
       .products-grid { grid-template-columns: 1fr; }
       .product-info { margin: 0 20px; }
@@ -524,6 +528,62 @@
       .footer-link,
       .social-link { cursor: pointer; }
       .product-overlay { opacity: 1; background: linear-gradient(to top, rgba(10,10,10,0.72) 0%, transparent 60%); }
+    }
+    body.mobile-view .topbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 8px;
+      padding: 12px;
+      width: 100vw;
+      max-width: 100vw;
+      background: linear-gradient(to bottom, rgba(10,10,10,0.94), rgba(10,10,10,0.2));
+      backdrop-filter: blur(10px);
+    }
+    body.mobile-view .contact-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.2rem;
+      min-width: 0;
+      opacity: 1;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+    }
+    body.mobile-view .topbar-right {
+      gap: 4px;
+      justify-self: end;
+    }
+    body.mobile-view .icon-btn {
+      width: 32px;
+      height: 32px;
+      flex-shrink: 0;
+    }
+    body.mobile-view .hero { height: 78svh; min-height: 620px; }
+    body.mobile-view .hero-title {
+      font-size: clamp(2.2rem, 12vw, 3.4rem);
+      letter-spacing: 0.08em;
+    }
+    body.mobile-view .hero-sub { letter-spacing: 0.18em; }
+    body.mobile-view .section-header { padding: 64px 20px 32px; }
+    body.mobile-view .products-grid { grid-template-columns: 1fr; margin: 0 0 42px; }
+    body.mobile-view .product-info { margin: 0 20px; }
+    body.mobile-view #search-container { position: static; }
+    body.mobile-view #search-dropdown {
+      position: fixed;
+      top: 56px;
+      left: 12px;
+      right: 12px;
+      width: auto;
+      max-height: 48vh;
+    }
+    body.mobile-view .panel { width: 100vw; max-width: 100vw; }
+    body.mobile-view .footer { padding: 2.25rem 1.1rem; }
+    body.mobile-view .footer-grid { grid-template-columns: 1fr; gap: 1.4rem; }
+    body.mobile-view .footer-bottom {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 18px;
     }
     .footer-heading {
       font-size: 9px;
@@ -583,11 +643,6 @@
     </button>
  
     <div class="topbar-right">
-      <!-- Menu -->
-      <button class="icon-btn" onclick="openPanel('menu-panel')" style="cursor:none;">
-        <i data-lucide="menu" style="width:18px;height:18px;"></i>
-      </button>
- 
       <!-- Search -->
       <div id="search-container">
         <button class="icon-btn" id="search-btn">
@@ -609,6 +664,11 @@
         <i data-lucide="shopping-bag" style="width:18px;height:18px;"></i>
         <span class="cart-badge" id="cart-count">0</span>
       </a>
+
+      <!-- Menu -->
+      <button class="icon-btn" onclick="openPanel('menu-panel')" style="cursor:none;">
+        <i data-lucide="menu" style="width:18px;height:18px;"></i>
+      </button>
     </div>
   </div>
  
@@ -895,6 +955,11 @@
       document.getElementById('overlay').classList.remove('open');
       document.getElementById('search-dropdown').classList.remove('open');
     }
+
+    function applyMobileMode() {
+      const mobile = window.matchMedia('(max-width: 768px), (pointer: coarse)').matches;
+      document.body.classList.toggle('mobile-view', mobile);
+    }
  
     // ============================
     // Search
@@ -977,6 +1042,7 @@
     // ============================
     document.addEventListener('DOMContentLoaded', function () {
       lucide.createIcons();
+      applyMobileMode();
       updateCartCount();
  
       // Search button
@@ -1011,6 +1077,8 @@
       document.addEventListener('click', function () {
         document.getElementById('search-dropdown').classList.remove('open');
       });
+
+      window.addEventListener('resize', applyMobileMode);
     });
   </script>
 </body>
