@@ -349,6 +349,12 @@
     body.mobile-view .hero-title { font-size: clamp(1.75rem, 9vw, 2.6rem); letter-spacing: 0.1em; }
     body.mobile-view .collection-tabs,
     body.mobile-view .products-section { padding-left: 18px; padding-right: 18px; }
+    body.mobile-view .collection-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    body.mobile-view .tab-link { width: 100%; padding: 11px 10px; }
     body.mobile-view .products-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
     body.mobile-view .product-desc { min-height: 0; }
     body.mobile-view #top-bar .search-container { position: static; }
