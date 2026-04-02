@@ -6,9 +6,6 @@
   <title>Order Confirmed | VELLEZA</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-  <script src="order-store.js"></script>
   <style>
     :root {
       --gold: #b8975a;
@@ -304,121 +301,32 @@
       }
     })();
 
-    async function syncOrder(overrides) {
-      if (!window.VellezaOrderStore || typeof window.VellezaOrderStore.saveOrder !== 'function') return;
-      const baseOrder = pendingOrder || lastOrder;
-      if (!baseOrder && !(overrides && overrides.tran_id)) return;
-      await window.VellezaOrderStore.saveOrder(baseOrder || { tran_id: overrides.tran_id }, overrides || {});
-    }
-
-    async function sendOrderNotification(payload) {
-      try {
-        await fetch('/api/order-notify', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-      } catch (_) {
-      }
-    }
-
-    async function notifyOnce(tran_id, payload) {
-      if (!tran_id) return;
-      const key = `order_notify_${tran_id}_${payload.event}`;
-      if (localStorage.getItem(key)) return;
-      await sendOrderNotification(payload);
-      localStorage.setItem(key, 'sent');
-    }
-
-    document.addEventListener('DOMContentLoaded', async () => {
+    document.addEventListener('DOMContentLoaded', () => {
       lucide.createIcons();
 
       if (status === 'success') {
-        try {
-          await syncOrder({
-            tran_id: tranId || pendingOrder?.tran_id,
-            payment_amount: amount || pendingOrder?.total_amount,
-            card_type: method || '',
-            method_label: method || 'Online Payment',
-            order_status: 'confirmed',
-            payment_status: 'paid',
-            fulfillment_status: 'new'
-          });
-          await notifyOnce(tranId || pendingOrder?.tran_id, {
-            event: 'payment_confirmed',
-            order: {
-              tran_id: tranId || pendingOrder?.tran_id,
-              total_amount: amount || pendingOrder?.total_amount,
-              payment_method: 'sslcommerz',
-              payment_label: method || 'Online Payment',
-              customer: pendingOrder?.customer || null,
-              products: pendingOrder?.products || []
-            }
-          });
-        } catch (error) {
-          console.error('Order sync failed:', error);
-        }
-
-        sessionStorage.removeItem('checkout_submit_lock');
         document.getElementById('out-tran').textContent = tranId || 'Order Pending';
         document.getElementById('out-amount').textContent = amount ? `BDT ${parseFloat(amount).toLocaleString()}` : 'Pending';
         document.getElementById('out-method').textContent = method || 'Online Payment';
         document.getElementById('success-view').style.display = 'block';
 
+        sessionStorage.removeItem('checkout_submit_lock');
         localStorage.removeItem('cart');
         localStorage.removeItem('pending_order');
         localStorage.removeItem('last_order');
       } else if (status === 'cod') {
         const order = lastOrder || {};
         const total = Number(order.total_amount || 0);
-
-        try {
-          await syncOrder({
-            tran_id: tranId || order.tran_id,
-            payment_amount: order.total_amount,
-            method_label: 'Cash on Delivery',
-            order_status: 'confirmed',
-            payment_status: 'pending_on_delivery',
-            fulfillment_status: 'new',
-            payment_method: 'cod'
-          });
-          await notifyOnce(tranId || order.tran_id, {
-            event: 'cod_confirmed',
-            order: {
-              tran_id: tranId || order.tran_id,
-              total_amount: order.total_amount,
-              payment_method: 'cod',
-              payment_label: 'Cash on Delivery',
-              customer: order.customer || null,
-              products: order.products || []
-            }
-          });
-        } catch (error) {
-          console.error('Order sync failed:', error);
-        }
-
-        sessionStorage.removeItem('checkout_submit_lock');
         document.getElementById('cod-amount').textContent = total ? `BDT ${total.toLocaleString()}` : 'BDT Pending';
         document.getElementById('cod-reference').textContent = (tranId || order.tran_id) ? `Reference ${tranId || order.tran_id}` : '';
         document.getElementById('cod-view').style.display = 'block';
 
+        sessionStorage.removeItem('checkout_submit_lock');
         localStorage.removeItem('cart');
         localStorage.removeItem('pending_order');
         localStorage.removeItem('last_order');
       } else {
         sessionStorage.removeItem('checkout_submit_lock');
-        syncOrder({
-          tran_id: tranId || pendingOrder?.tran_id,
-          payment_amount: amount || pendingOrder?.total_amount,
-          card_type: method || '',
-          method_label: method || 'Online Payment',
-          order_status: status === 'cancelled' ? 'cancelled' : 'payment_review',
-          payment_status: status === 'failed' ? 'failed' : 'unverified',
-          fulfillment_status: 'hold'
-        }).catch((error) => {
-          console.error('Order sync failed:', error);
-        });
-
         document.getElementById('failed-view').style.display = 'block';
       }
     });

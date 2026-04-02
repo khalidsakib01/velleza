@@ -18,7 +18,7 @@
    - `BACKEND_URL=https://your-domain`
    - `RESEND_API_KEY=your_resend_api_key`
    - `ORDER_FROM_EMAIL=orders@your-domain.com`
-   - `ORDER_ALERT_EMAIL=khalidsakib01@gmail.com`
+   - `ORDER_ALERT_EMAIL=khalidsakib07@gmail.com`
 
 2. In SSLCommerz merchant settings, use these callback URLs:
    - `https://your-domain/payment/success`
@@ -26,9 +26,9 @@
    - `https://your-domain/payment/cancel`
    - `https://your-domain/payment/ipn`
 
-3. `admin-orders.html` is already set to `khalidsakib01@gmail.com` as the admin login email.
+3. `admin-orders.html` is already set to `khalidsakib07@gmail.com` as the admin login email.
 
-4. `firestore.rules` is already set to `khalidsakib01@gmail.com`; publish those rules in Firebase Console.
+4. `firestore.rules` is already set to `khalidsakib07@gmail.com`; publish those rules in Firebase Console.
 
 ## Firestore Rules
 
@@ -44,7 +44,7 @@ service cloud.firestore {
 
     function isAdmin() {
       return signedIn() && request.auth.token.email in [
-        "khalidsakib01@gmail.com"
+        "khalidsakib07@gmail.com"
       ];
     }
 
