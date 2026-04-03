@@ -706,17 +706,32 @@
       font-size: 1.1rem;
     }
     body.mobile-view .video-controls-bar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
+      display: grid;
+      grid-template-columns: auto auto auto minmax(88px, 1fr) auto auto;
+      align-items: center;
+      gap: 8px;
       padding: 12px 14px 18px;
     }
-    body.mobile-view .vc-time { min-width: auto; font-size: 0.7rem; }
-    body.mobile-view #video-progress { order: 3; width: 100%; }
+    body.mobile-view .video-controls-bar > div { display: contents; }
+    body.mobile-view .vc-btn { font-size: 0.92rem; }
+    body.mobile-view .vc-time {
+      min-width: auto;
+      font-size: 0.68rem;
+      white-space: nowrap;
+    }
+    body.mobile-view #video-progress {
+      order: 0;
+      width: 100%;
+      min-width: 0;
+      height: 2px;
+    }
     body.mobile-view .categories-section { padding: 72px 0 40px; }
     body.mobile-view .categories-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; }
     body.mobile-view .cat-label { padding: 16px 10px; }
-    body.mobile-view .filter-strip { padding: 18px 20px 26px; }
+    body.mobile-view .filter-strip {
+      margin-top: 14px;
+      padding: 18px 20px 26px;
+    }
     body.mobile-view .filter-inner {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -757,12 +772,21 @@
         letter-spacing: 0.12em;
         text-indent: 0.12em;
       }
-      body.mobile-view .video-controls-bar { padding: 10px 12px 14px; gap: 8px; }
+      body.mobile-view .video-controls-bar {
+        grid-template-columns: auto auto auto minmax(72px, 1fr) auto auto;
+        padding: 10px 12px 14px;
+        gap: 7px;
+      }
+      body.mobile-view .vc-btn { font-size: 0.82rem; }
+      body.mobile-view .vc-time { font-size: 0.62rem; }
       body.mobile-view .split-content,
       body.mobile-view .split-text { padding: 32px 16px; }
       body.mobile-view .categories-section { padding: 64px 0 34px; }
       body.mobile-view .categories-grid { gap: 0; }
-      body.mobile-view .filter-strip { padding: 16px 14px 22px; }
+      body.mobile-view .filter-strip {
+        margin-top: 12px;
+        padding: 16px 14px 22px;
+      }
       body.mobile-view .filter-inner { max-width: 100%; gap: 8px; }
       body.mobile-view .panel-close { top: 14px; right: 14px; width: 32px; height: 32px; }
       body.mobile-view #contact-panel,
