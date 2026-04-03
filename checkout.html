@@ -741,15 +741,23 @@
       setRecentOrderLock(orderData.tran_id);
  
       if (paymentMethod === 'cod') {
+        try {
+          await saveOrderRecordWithTimeout(orderData, {
+            order_status: 'confirmed',
+            payment_status: 'pending_on_delivery',
+            fulfillment_status: 'new'
+          }, 8000);
+        } catch (error) {
+          console.error('COD save failed:', error);
+          setButtonsDisabled(false);
+          isSubmittingOrder = false;
+          clearRecentOrderLock();
+          showToast(error.message || 'Could not save your COD order. Please try again.');
+          return;
+        }
+
         localStorage.removeItem('cart');
         localStorage.setItem('last_order', JSON.stringify({ ...orderData, status: 'COD Confirmed' }));
-        saveOrderRecord(orderData, {
-          order_status: 'confirmed',
-          payment_status: 'pending_on_delivery',
-          fulfillment_status: 'new'
-        }).catch((error) => {
-          console.error('COD save warning:', error);
-        });
         sendOrderNotification({
           event: 'cod_created',
           order: {
