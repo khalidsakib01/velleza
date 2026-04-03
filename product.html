@@ -184,7 +184,7 @@
     }
     .panel.open { transform: translateX(0); }
     #contact-panel { width: 420px; max-width: 100%; background: var(--warm-white); color: #1a1a1a; padding: 52px 44px; }
-    #menu-panel { width: 380px; max-width: 100%; background: var(--obsidian); color: var(--ivory); padding: 52px 44px; border-left: 1px solid rgba(184,151,90,0.12); }
+    #menu-panel { width: 380px; max-width: 100%; background: var(--warm-white); color: #1a1a1a; padding: 52px 44px; border-left: 1px solid rgba(184,151,90,0.12); }
     .panel-close {
       position: absolute; top: 20px; right: 20px; width: 36px; height: 36px; border-radius: 50%;
       background: none; border: 1px solid rgba(0,0,0,0.12); color: #888; font-size: 1.1rem;
@@ -315,7 +315,7 @@
     }
     body.mobile-view .panel { width: 100vw; max-width: 100vw; }
     body.mobile-view .footer-section { padding: 2.25rem 1.1rem; }
-    body.mobile-view .footer-grid { grid-template-columns: 1fr !important; gap: 1.4rem; }
+    body.mobile-view .footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 1rem; }
     body.mobile-view .footer-bottom-bar {
       flex-direction: column;
       align-items: flex-start;
@@ -332,6 +332,9 @@
       body.mobile-view #contact-panel,
       body.mobile-view #menu-panel { padding: 42px 20px 24px; }
       body.mobile-view .footer-section { padding: 1.8rem 0.9rem; }
+    }
+    @media (max-width: 360px) {
+      body.mobile-view .footer-grid { grid-template-columns: 1fr !important; }
     }
   </style>
 </head>

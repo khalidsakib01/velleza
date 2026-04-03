@@ -504,8 +504,8 @@ input:focus {
 #menu-panel {
   width: 380px;
   max-width: 100%;
-  background: var(--obsidian);
-  color: var(--ivory);
+  background: #ffffff;
+  color: #1a1a1a;
   padding: 52px 44px;
   border-left: 1px solid rgba(184, 151, 90, 0.12);
 }
@@ -828,8 +828,8 @@ body.mobile-view .footer-section {
 }
 
 body.mobile-view .footer-grid {
-  grid-template-columns: 1fr;
-  gap: 1.4rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
 }
 
 body.mobile-view .footer-bottom-bar {
@@ -889,5 +889,10 @@ body.mobile-view .footer-social-link {
   body.mobile-view #contact-panel,
   body.mobile-view #menu-panel {
     padding: 42px 20px 24px;
+  }
+}
+@media (max-width: 360px) {
+  body.mobile-view .footer-grid {
+    grid-template-columns: 1fr;
   }
 }

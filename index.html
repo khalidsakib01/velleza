@@ -489,7 +489,7 @@
 
     #menu-panel {
       width: 380px; max-width: 100%;
-      background: var(--obsidian); color: var(--ivory);
+      background: var(--warm-white); color: #1a1a1a;
       padding: 52px 44px;
       border-left: 1px solid rgba(184,151,90,0.12);
     }
@@ -503,7 +503,7 @@
       cursor: none; transition: border-color .3s, color .3s;
     }
 
-    #menu-panel .panel-close { border-color: rgba(184,151,90,0.25); color: var(--ivory); }
+    #menu-panel .panel-close { border-color: rgba(184,151,90,0.25); color: #1a1a1a; }
     .panel-close:hover { border-color: currentColor; color: #1a1a1a; }
     #menu-panel .panel-close:hover { color: var(--gold); border-color: var(--gold); }
 
@@ -718,7 +718,7 @@
     body.mobile-view .filter-strip { padding: 0 20px; }
     body.mobile-view .filter-inner { gap: 10px; overflow-x: auto; }
     body.mobile-view .filter-btn { white-space: nowrap; }
-    body.mobile-view .split-section { grid-template-columns: 1fr; }
+    body.mobile-view .split-section { grid-template-columns: 1fr 1fr; gap: 10px; }
     body.mobile-view .split-content,
     body.mobile-view .split-text { padding: 40px 22px; }
     body.mobile-view .search-dropdown {
@@ -731,7 +731,7 @@
     }
     body.mobile-view .panel { width: 100vw; max-width: 100vw; }
     body.mobile-view .footer-section { padding: 2.25rem 1.1rem; }
-    body.mobile-view .footer-grid { grid-template-columns: 1fr !important; gap: 1.4rem !important; }
+    body.mobile-view .footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 1rem !important; }
     body.mobile-view .footer-bottom-bar {
       flex-direction: column;
       align-items: flex-start;
@@ -757,6 +757,8 @@
     }
     @media (max-width: 360px) {
       body.mobile-view .categories-grid { grid-template-columns: 1fr; }
+      body.mobile-view .split-section { grid-template-columns: 1fr; }
+      body.mobile-view .footer-grid { grid-template-columns: 1fr !important; }
     }
   </style>
 </head>
