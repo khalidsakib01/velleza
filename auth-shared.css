@@ -610,7 +610,7 @@ input:focus {
   font-family: "Cormorant Garamond", serif;
   font-size: 1.6rem;
   letter-spacing: 0.08em;
-  color: var(--ivory);
+  color: #1a1a1a;
   text-decoration: none;
   display: block;
   padding: 8px 0;
@@ -628,7 +628,7 @@ input:focus {
   font-size: 9px;
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: rgba(245, 240, 232, 0.35);
+  color: #777;
   text-decoration: none;
   display: block;
   padding: 6px 0;

@@ -655,14 +655,15 @@
     .payment-icons { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
     .payment-icons img { height: 28px; object-fit: contain; opacity: 0.6; filter: grayscale(1); transition: opacity 0.3s, filter 0.3s; }
     .payment-icons img:hover { opacity: 1; filter: grayscale(0); }
-    .social-links { display: flex; gap: 24px; }
+    .social-links { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
     .social-link {
       font-size: 9px;
-      letter-spacing: 0.25em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       color: #999;
       text-decoration: none;
       transition: color 0.3s;
+      white-space: nowrap;
     }
     .social-link:hover { color: #1a1a1a; }
   </style>

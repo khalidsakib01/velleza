@@ -44,7 +44,7 @@
 
     #top-bar {
       position: fixed; top: 0; left: 0; right: 0; z-index: 500;
-      display: flex; align-items: center; justify-content: space-between;
+      display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
       padding: 22px 28px; pointer-events: none;
       transition: opacity .35s ease, transform .35s ease;
     }
@@ -61,6 +61,17 @@
 
     .plus-icon { transition: transform 0.8s ease; display: inline-block; }
     #top-bar:hover .plus-icon { transform: rotate(180deg); }
+    .topbar-logo-mini {
+      justify-self: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.34em;
+      text-transform: uppercase;
+      color: var(--ivory);
+      text-decoration: none;
+      pointer-events: all;
+      white-space: nowrap;
+    }
 
     .top-icons, .nav-right, .nav-left { display: flex; align-items: center; gap: 8px; }
 
@@ -256,11 +267,11 @@
     .menu-nav { list-style: none; padding: 0; margin: 0 0 40px; }
     .menu-nav li { margin-bottom: 6px; }
     .menu-nav a {
-      font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; color: var(--ivory); text-decoration: none;
+      font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; color: #1a1a1a; text-decoration: none;
       display: block; padding: 8px 0; border-bottom: 1px solid rgba(184,151,90,0.08);
     }
     .menu-sub-nav { list-style: none; padding: 0; margin: 0; }
-    .menu-sub-nav a { font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(245,240,232,0.4); text-decoration: none; display: block; padding: 6px 0; }
+    .menu-sub-nav a { font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: #777; text-decoration: none; display: block; padding: 6px 0; }
 
     #overlay {
       position: fixed; inset: 0; z-index: 550; background: rgba(8,8,8,0.7); backdrop-filter: blur(4px);
@@ -316,7 +327,7 @@
 
     body.mobile-view #top-bar {
       display: grid !important;
-      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-columns: 1fr auto 1fr;
       padding: 12px 12px;
       align-items: center;
       gap: 8px;
@@ -335,6 +346,11 @@
       text-overflow: ellipsis;
     }
     body.mobile-view .top-icons { gap: 4px; }
+    body.mobile-view .topbar-logo-mini {
+      grid-column: 2;
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+    }
     body.mobile-view .nav-btn {
       width: 28px;
       height: 28px;
@@ -402,6 +418,8 @@
     <button onclick="openPanel('contact-panel')" class="contact-floating-button">
       <span class="plus-icon">+</span> Contact Us
     </button>
+
+    <a href="index.html" class="topbar-logo-mini">VELLEZA</a>
 
     <div class="top-icons">
       <div class="search-container">
