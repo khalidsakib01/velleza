@@ -707,10 +707,10 @@
     }
     body.mobile-view .video-controls-bar {
       display: grid;
-      grid-template-columns: auto auto auto minmax(88px, 1fr) auto auto;
+      grid-template-columns: max-content max-content max-content minmax(0, 1fr) max-content max-content;
       align-items: center;
-      gap: 8px;
-      padding: 12px 14px 18px;
+      gap: 6px;
+      padding: 12px 10px 18px;
     }
     body.mobile-view .video-controls-bar > div { display: contents; }
     body.mobile-view .vc-btn { font-size: 0.92rem; }
@@ -729,8 +729,8 @@
     body.mobile-view .categories-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; }
     body.mobile-view .cat-label { padding: 16px 10px; }
     body.mobile-view .filter-strip {
-      margin-top: 14px;
-      padding: 18px 20px 26px;
+      margin: 14px 0;
+      padding: 18px 20px;
     }
     body.mobile-view .filter-inner {
       display: grid;
@@ -744,7 +744,7 @@
     body.mobile-view .split-section {
       grid-template-columns: 1fr 1fr;
       gap: 0;
-      margin-top: 8px;
+      margin-top: 0;
     }
     body.mobile-view .split-content,
     body.mobile-view .split-text { padding: 40px 22px; }
@@ -773,9 +773,9 @@
         text-indent: 0.12em;
       }
       body.mobile-view .video-controls-bar {
-        grid-template-columns: auto auto auto minmax(72px, 1fr) auto auto;
-        padding: 10px 12px 14px;
-        gap: 7px;
+        grid-template-columns: max-content max-content max-content minmax(0, 1fr) max-content max-content;
+        padding: 10px 8px 14px;
+        gap: 5px;
       }
       body.mobile-view .vc-btn { font-size: 0.82rem; }
       body.mobile-view .vc-time { font-size: 0.62rem; }
@@ -784,8 +784,8 @@
       body.mobile-view .categories-section { padding: 64px 0 34px; }
       body.mobile-view .categories-grid { gap: 0; }
       body.mobile-view .filter-strip {
-        margin-top: 12px;
-        padding: 16px 14px 22px;
+        margin: 12px 0;
+        padding: 16px 14px;
       }
       body.mobile-view .filter-inner { max-width: 100%; gap: 8px; }
       body.mobile-view .panel-close { top: 14px; right: 14px; width: 32px; height: 32px; }
