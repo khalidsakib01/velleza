@@ -1057,16 +1057,16 @@
 
     function getBrandTargetState() {
       const mobile = document.body.classList.contains('mobile-view');
-      const liveMetrics = mobile ? calculateBrandMetrics() : brandMetrics;
+      const liveMetrics = calculateBrandMetrics() || brandMetrics;
       if (!liveMetrics) return;
-      if (mobile) brandMetrics = liveMetrics;
+      brandMetrics = liveMetrics;
 
       const heroRect = document.getElementById('dual-hero').getBoundingClientRect();
       const mobileRange = Math.max(heroRect.height * 0.72, window.innerHeight * 0.52, 320);
-      const desktopRange = Math.max(window.innerHeight * 0.85, 420);
+      const desktopRange = Math.max(heroRect.height * 0.68, window.innerHeight * 0.46, 360);
       const travel = clamp(-heroRect.top, 0, mobile ? mobileRange : desktopRange);
       const progress = clamp(travel / (mobile ? mobileRange : desktopRange), 0, 1);
-      const eased = easeOutQuart(progress * (mobile ? 1 : 0.9));
+      const eased = easeOutQuart(progress);
 
       return {
         x: lerp(liveMetrics.startX, liveMetrics.endX, eased),
@@ -1086,41 +1086,8 @@
     function animateBrandTransition() {
       brandAnimationFrame = null;
       if (!targetBrandState) return;
-
-      const mobile = document.body.classList.contains('mobile-view');
-
-      if (!currentBrandState) {
-        currentBrandState = { ...targetBrandState };
-        renderBrandTransition(currentBrandState);
-        return;
-      }
-
-      if (mobile) {
-        currentBrandState = { ...targetBrandState };
-        renderBrandTransition(currentBrandState);
-        return;
-      }
-
-      const smoothing = 0.22;
-
-      currentBrandState = {
-        x: lerp(currentBrandState.x, targetBrandState.x, smoothing),
-        y: lerp(currentBrandState.y, targetBrandState.y, smoothing),
-        scale: lerp(currentBrandState.scale, targetBrandState.scale, smoothing),
-        opacity: lerp(currentBrandState.opacity, targetBrandState.opacity, smoothing)
-      };
-
+      currentBrandState = { ...targetBrandState };
       renderBrandTransition(currentBrandState);
-
-      const settled =
-        Math.abs(currentBrandState.x - targetBrandState.x) < 0.18 &&
-        Math.abs(currentBrandState.y - targetBrandState.y) < 0.18 &&
-        Math.abs(currentBrandState.scale - targetBrandState.scale) < 0.0015 &&
-        Math.abs(currentBrandState.opacity - targetBrandState.opacity) < 0.002;
-
-      if (!settled) {
-        brandAnimationFrame = window.requestAnimationFrame(animateBrandTransition);
-      }
     }
 
     function updateBrandTransition() {
