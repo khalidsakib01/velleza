@@ -313,6 +313,10 @@
       background: var(--border);
       margin: 0 48px 80px;
     }
+
+    .products-grid.collection-grid {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
  
     .product-card {
       background: var(--black);
@@ -608,6 +612,7 @@
     @media (max-width: 768px) {
       .footer-grid { grid-template-columns: repeat(2, 1fr); }
       .products-grid { margin: 0 0 48px; }
+      .products-grid.collection-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
       .topbar { padding: 20px 24px; }
     }
     @media (max-width: 640px) {
@@ -682,9 +687,10 @@
       letter-spacing: 0.06em;
     }
     body.mobile-view .hero-sub { letter-spacing: 0.18em; }
-    body.mobile-view .section-header { padding: 64px 20px 32px; }
-    body.mobile-view .products-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin: 0 0 42px; }
-    body.mobile-view .product-info { margin: 0 10px; }
+      body.mobile-view .section-header { padding: 64px 20px 32px; }
+      body.mobile-view .products-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin: 0 0 42px; }
+      body.mobile-view .products-grid.collection-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      body.mobile-view .product-info { margin: 0 10px; }
     body.mobile-view #search-container { position: static; }
     body.mobile-view #search-dropdown {
       position: fixed;
@@ -744,10 +750,12 @@
       body.mobile-view .section-header,
       body.mobile-view .product-info { padding-left: 14px; padding-right: 14px; }
       body.mobile-view .products-grid { gap: 12px; }
+      body.mobile-view .products-grid.collection-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       body.mobile-view .footer-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 360px) {
       body.mobile-view .products-grid { grid-template-columns: 1fr; }
+      body.mobile-view .products-grid.collection-grid { grid-template-columns: 1fr; }
       body.mobile-view .product-info { margin: 0 14px; }
       body.mobile-view .footer-grid { grid-template-columns: 1fr; }
     }
@@ -848,105 +856,27 @@
       <div class="hero-line"></div>
     </div>
   </section>
- 
-  <!-- Section Header -->
-  <div class="section-header" id="mens-selection">
-    <p class="section-label">The Collection</p>
-    <h2 class="section-title">Men's Selection</h2>
-    <div class="section-divider"></div>
-  </div>
- 
-  <!-- Products Grid -->
-  <div class="products-grid">
- 
-    <!-- Product 1 -->
-    <div class="product-card">
-      <div class="product-tag">New</div>
-      <div class="product-img-wrap">
-        <img src="gucci3.png" alt="Classic Trench">
-        <div class="product-overlay">
-          <button class="quick-add" onclick="addToCart('Classic Trench')">Add to Selection</button>
-        </div>
-      </div>
-      <div class="product-info">
-        <p class="product-category">Men · Outerwear</p>
-        <h3 class="product-name">Classic Trench</h3>
-        <p class="product-desc">Parisian winter coat, refined silhouette.</p>
-        <p class="product-price">BDT 1,100</p>
-      </div>
-    </div>
- 
-    <!-- Product 2 -->
-    <div class="product-card">
-      <div class="product-img-wrap">
-        <img src="gucci4.png" alt="Tailored Evening Suit">
-        <div class="product-overlay">
-          <button class="quick-add" onclick="addToCart('Tailored Evening Suit')">Add to Selection</button>
-        </div>
-      </div>
-      <div class="product-info">
-        <p class="product-category">Men · Formal</p>
-        <h3 class="product-name">Tailored Evening Suit</h3>
-        <p class="product-desc">Elegant silhouette with a polished night finish.</p>
-        <p class="product-price">BDT 2,990</p>
-      </div>
-    </div>
- 
-    <!-- Product 3 -->
-    <div class="product-card">
-      <div class="product-tag">Exclusive</div>
-      <div class="product-img-wrap">
-        <img src="gucci3.png" alt="Oxford Loafer">
-        <div class="product-overlay">
-          <button class="quick-add" onclick="addToCart('Oxford Loafer')">Add to Selection</button>
-        </div>
-      </div>
-      <div class="product-info">
-        <p class="product-category">Men · Footwear</p>
-        <h3 class="product-name">Oxford Loafer</h3>
-        <p class="product-desc">Hand-stitched Italian leather.</p>
-        <p class="product-price">BDT 4,500</p>
-      </div>
-    </div>
- 
-    <!-- Product 4 -->
-    <div class="product-card">
-      <div class="product-img-wrap">
-        <img src="gucci4.png" alt="Silk Scarf">
-        <div class="product-overlay">
-          <button class="quick-add" onclick="addToCart('Silk Scarf')">Add to Selection</button>
-        </div>
-      </div>
-      <div class="product-info">
-        <p class="product-category">Men · Accessories</p>
-        <h3 class="product-name">Silk Scarf</h3>
-        <p class="product-desc">Pure silk, hand-rolled edges.</p>
-        <p class="product-price">BDT 1,800</p>
-      </div>
-    </div>
- 
-  </div>
- 
+
   <div class="section-header" id="mens-bags">
     <p class="section-label">Leather Goods</p>
     <h2 class="section-title">Men's Bags</h2>
     <div class="section-divider"></div>
   </div>
 
-  <div class="products-grid">
+  <div class="products-grid collection-grid">
 
     <div class="product-card">
       <div class="product-tag">New</div>
       <div class="product-img-wrap">
-        <img src="gucci4.png" alt="Executive Briefcase">
+        <img src="men's bag 1.jpg" alt="Noir Carry Tote">
         <div class="product-overlay">
-          <button class="quick-add" onclick="addToCart('Executive Briefcase')">Add to Selection</button>
+          <button class="quick-add" onclick="addToCart('Noir Carry Tote')">Add to Selection</button>
         </div>
       </div>
       <div class="product-info">
         <p class="product-category">Men Bags</p>
-        <h3 class="product-name">Executive Briefcase</h3>
-        <p class="product-desc">Structured carry with polished hardware.</p>
+        <h3 class="product-name">Noir Carry Tote</h3>
+        <p class="product-desc">Refined everyday structure with a clean city finish.</p>
         <p class="product-price">BDT 3,850</p>
       </div>
     </div>
@@ -954,16 +884,47 @@
     <div class="product-card">
       <div class="product-tag">Exclusive</div>
       <div class="product-img-wrap">
-        <img src="gucci3.png" alt="Weekend Duffle">
+        <img src="men's bag 2.jpg" alt="Monogram Weekender">
         <div class="product-overlay">
-          <button class="quick-add" onclick="addToCart('Weekend Duffle')">Add to Selection</button>
+          <button class="quick-add" onclick="addToCart('Monogram Weekender')">Add to Selection</button>
         </div>
       </div>
       <div class="product-info">
         <p class="product-category">Men Bags</p>
-        <h3 class="product-name">Weekend Duffle</h3>
-        <p class="product-desc">Soft-grain leather for overnight travel.</p>
+        <h3 class="product-name">Monogram Weekender</h3>
+        <p class="product-desc">Travel-ready silhouette with polished luxury detailing.</p>
         <p class="product-price">BDT 4,250</p>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img-wrap">
+        <img src="Men's bag 3.jpg" alt="Signature Travel Holdall">
+        <div class="product-overlay">
+          <button class="quick-add" onclick="addToCart('Signature Travel Holdall')">Add to Selection</button>
+        </div>
+      </div>
+      <div class="product-info">
+        <p class="product-category">Men Bags</p>
+        <h3 class="product-name">Signature Travel Holdall</h3>
+        <p class="product-desc">Soft form, broad capacity, and a quietly elevated look.</p>
+        <p class="product-price">BDT 4,600</p>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-tag">New</div>
+      <div class="product-img-wrap">
+        <img src="men's bag 4.jpg" alt="Urban Leather Satchel">
+        <div class="product-overlay">
+          <button class="quick-add" onclick="addToCart('Urban Leather Satchel')">Add to Selection</button>
+        </div>
+      </div>
+      <div class="product-info">
+        <p class="product-category">Men Bags</p>
+        <h3 class="product-name">Urban Leather Satchel</h3>
+        <p class="product-desc">Slim, structured, and built for a polished daily carry.</p>
+        <p class="product-price">BDT 3,980</p>
       </div>
     </div>
 
@@ -975,36 +936,83 @@
     <div class="section-divider"></div>
   </div>
 
-  <div class="products-grid">
+  <div class="products-grid collection-grid">
 
     <div class="product-card">
       <div class="product-tag">Exclusive</div>
       <div class="product-img-wrap">
-        <img src="gucci3.png" alt="Oxford Loafer">
+        <img src="Men's Shoes 1.jpg" alt="Velvet Court Sneaker">
         <div class="product-overlay">
-          <button class="quick-add" onclick="addToCart('Oxford Loafer')">Add to Selection</button>
+          <button class="quick-add" onclick="addToCart('Velvet Court Sneaker')">Add to Selection</button>
         </div>
       </div>
       <div class="product-info">
         <p class="product-category">Men Shoes</p>
-        <h3 class="product-name">Oxford Loafer</h3>
-        <p class="product-desc">Hand-stitched Italian leather.</p>
+        <h3 class="product-name">Velvet Court Sneaker</h3>
+        <p class="product-desc">Smooth profile with a soft luxury street finish.</p>
         <p class="product-price">BDT 4,500</p>
       </div>
     </div>
 
     <div class="product-card">
       <div class="product-img-wrap">
-        <img src="gucci4.png" alt="Chelsea Boot">
+        <img src="Men's Shoes 2.jpg" alt="Ivory Track Sneaker">
         <div class="product-overlay">
-          <button class="quick-add" onclick="addToCart('Chelsea Boot')">Add to Selection</button>
+          <button class="quick-add" onclick="addToCart('Ivory Track Sneaker')">Add to Selection</button>
         </div>
       </div>
       <div class="product-info">
         <p class="product-category">Men Shoes</p>
-        <h3 class="product-name">Chelsea Boot</h3>
-        <p class="product-desc">Clean profile with a tailored city finish.</p>
+        <h3 class="product-name">Ivory Track Sneaker</h3>
+        <p class="product-desc">Bright seasonal tone with clean-cut modern lines.</p>
         <p class="product-price">BDT 4,950</p>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-tag">New</div>
+      <div class="product-img-wrap">
+        <img src="Men's Shoes 3.jpg" alt="Graphite Street Runner">
+        <div class="product-overlay">
+          <button class="quick-add" onclick="addToCart('Graphite Street Runner')">Add to Selection</button>
+        </div>
+      </div>
+      <div class="product-info">
+        <p class="product-category">Men Shoes</p>
+        <h3 class="product-name">Graphite Street Runner</h3>
+        <p class="product-desc">Low-profile design with understated luxury energy.</p>
+        <p class="product-price">BDT 4,780</p>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img-wrap">
+        <img src="Men's Shoes 4.jpg" alt="Monarch Leather Trainer">
+        <div class="product-overlay">
+          <button class="quick-add" onclick="addToCart('Monarch Leather Trainer')">Add to Selection</button>
+        </div>
+      </div>
+      <div class="product-info">
+        <p class="product-category">Men Shoes</p>
+        <h3 class="product-name">Monarch Leather Trainer</h3>
+        <p class="product-desc">Balanced texture and form for an elevated daily pair.</p>
+        <p class="product-price">BDT 5,120</p>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-tag">Exclusive</div>
+      <div class="product-img-wrap">
+        <img src="Men's Shoes 5.jpg" alt="Midnight Signature Low">
+        <div class="product-overlay">
+          <button class="quick-add" onclick="addToCart('Midnight Signature Low')">Add to Selection</button>
+        </div>
+      </div>
+      <div class="product-info">
+        <p class="product-category">Men Shoes</p>
+        <h3 class="product-name">Midnight Signature Low</h3>
+        <p class="product-desc">Dark tonal styling with a crisp premium finish.</p>
+        <p class="product-price">BDT 5,350</p>
       </div>
     </div>
 
@@ -1222,7 +1230,7 @@
     // ============================
     function filterProducts(query) {
       const results = document.getElementById('search-results');
-      const filtered = query.trim() === ''
+      const filtered = query.trim() === '
         ? products
         : products.filter(p =>
             p.name.toLowerCase().includes(query.toLowerCase()) ||
@@ -1242,7 +1250,7 @@
             <p class="search-item-price">${p.currency}${p.price}</p>
           </div>
         </a>
-      `).join('');
+      `).join(');
     }
 
     function updateCartCount() {
@@ -1313,7 +1321,7 @@
         dd.classList.toggle('open');
         if (dd.classList.contains('open')) {
           document.getElementById('search-input').focus();
-          filterProducts('');
+          filterProducts(');
         }
       });
  
@@ -1364,6 +1372,8 @@
 </html>
 
  
+
+
 
 
 
