@@ -593,6 +593,7 @@
     body.mobile-view {
       --mobile-nav-height: clamp(56px, 8.8vw, 62px);
       --mobile-nav-pad-x: clamp(8px, 3.4vw, 14px);
+      --mobile-nav-pad-right: clamp(3px, 1.2vw, 8px);
       --mobile-nav-gap: clamp(4px, 1.5vw, 6px);
       --mobile-icon-size: clamp(29px, 8.2vw, 34px);
       --mobile-icon-glyph: clamp(11px, 3.3vw, 14px);
@@ -616,7 +617,7 @@
     body.mobile-view #navbar {
       grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
       align-items: center;
-      padding: 0 var(--mobile-nav-pad-x);
+      padding: 0 var(--mobile-nav-pad-right) 0 var(--mobile-nav-pad-x);
       height: var(--mobile-nav-height);
       background: transparent !important;
       border-bottom: none !important;
@@ -636,6 +637,7 @@
       justify-content: flex-end;
       gap: var(--mobile-nav-gap);
       min-width: 0;
+      transform: translateX(clamp(2px, 0.8vw, 6px));
     }
     body.mobile-view .contact-btn {
       display: inline-flex;
@@ -665,9 +667,6 @@
       font-size: var(--mobile-nav-logo-size);
       letter-spacing: var(--mobile-nav-logo-spacing);
       text-indent: var(--mobile-nav-logo-spacing);
-    }
-    body.mobile-view #brand-nav-ghost {
-      transform: translateX(clamp(-10px, -2.8vw, -6px));
     }
     body.mobile-view .hero-pause-btn {
       width: 48px;
