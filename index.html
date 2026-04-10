@@ -602,15 +602,15 @@
       text-indent: 0.14em;
     }
     body.mobile-view .brand-transition {
-      font-size: clamp(1.9rem, 10vw, 3rem);
-      letter-spacing: 0.14em;
-      text-indent: 0.14em;
+      font-size: clamp(1.75rem, 8.5vw, 2.7rem);
+      letter-spacing: 0.12em;
+      text-indent: 0.12em;
     }
     body.mobile-view #navbar {
       grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
       align-items: center;
-      padding: 0 18px;
-      height: 68px;
+      padding: 0 14px;
+      height: 62px;
       background: transparent !important;
       border-bottom: none !important;
       backdrop-filter: none !important;
@@ -627,28 +627,33 @@
     }
     body.mobile-view .nav-right {
       justify-content: flex-end;
-      gap: 8px;
+      gap: 6px;
       min-width: 0;
     }
     body.mobile-view .contact-btn {
       display: inline-flex;
       align-items: center;
-      min-height: 38px;
-      font-size: 10px;
-      letter-spacing: 0.3em;
+      min-height: 34px;
+      font-size: 8px;
+      letter-spacing: 0.22em;
       white-space: nowrap;
       color: rgba(245,240,232,0.7);
     }
     body.mobile-view .nav-btn {
-      width: 38px;
-      height: 38px;
+      width: 34px;
+      height: 34px;
       background: rgba(255,255,255,0.07);
       border: 1px solid rgba(255,255,255,0.08);
     }
+    body.mobile-view .nav-btn svg {
+      width: 14px;
+      height: 14px;
+      stroke-width: 1.8;
+    }
     body.mobile-view .nav-logo {
-      font-size: 1rem;
-      letter-spacing: 0.45em;
-      text-indent: 0.45em;
+      font-size: 0.9rem;
+      letter-spacing: 0.34em;
+      text-indent: 0.34em;
     }
     body.mobile-view .hero-pause-btn {
       width: 48px;
@@ -714,20 +719,21 @@
         text-indent: 0.12em;
       }
       body.mobile-view .brand-transition {
-        font-size: clamp(1.7rem, 9vw, 2.4rem);
-        letter-spacing: 0.12em;
-        text-indent: 0.12em;
+        font-size: clamp(1.55rem, 8vw, 2.15rem);
+        letter-spacing: 0.1em;
+        text-indent: 0.1em;
       }
-      body.mobile-view #navbar { padding: 0 12px; }
-      body.mobile-view .nav-right { gap: 6px; }
+      body.mobile-view #navbar { padding: 0 10px; height: 58px; }
+      body.mobile-view .nav-right { gap: 5px; }
       body.mobile-view .contact-btn {
-        font-size: 9px;
-        letter-spacing: 0.22em;
+        font-size: 7px;
+        letter-spacing: 0.18em;
       }
       body.mobile-view .nav-btn {
-        width: 36px;
-        height: 36px;
+        width: 31px;
+        height: 31px;
       }
+      body.mobile-view .nav-btn svg { width: 12px; height: 12px; }
       body.mobile-view .video-controls-bar {
         grid-template-columns: max-content max-content max-content minmax(0, 1fr) max-content max-content;
         padding: 10px 4px 14px;
@@ -751,16 +757,17 @@
       body.mobile-view .footer-social-links { gap: 10px; }
     }
     @media (max-width: 360px) {
-      body.mobile-view #navbar { padding: 0 10px; }
+      body.mobile-view #navbar { padding: 0 8px; height: 56px; }
       body.mobile-view .contact-btn {
-        font-size: 8px;
-        letter-spacing: 0.18em;
+        font-size: 6.5px;
+        letter-spacing: 0.14em;
       }
       body.mobile-view .nav-right { gap: 4px; }
       body.mobile-view .nav-btn {
-        width: 34px;
-        height: 34px;
+        width: 29px;
+        height: 29px;
       }
+      body.mobile-view .nav-btn svg { width: 11px; height: 11px; }
       body.mobile-view .categories-grid { grid-template-columns: 1fr; }
       body.mobile-view .split-section { grid-template-columns: 1fr; }
       body.mobile-view .footer-grid { grid-template-columns: 1fr !important; }
@@ -1050,13 +1057,13 @@
       ticking = false;
       if (!brandMetrics) return;
 
-      const maxScroll = Math.max(window.innerHeight * 0.55, 260);
+      const maxScroll = Math.max(window.innerHeight * 0.7, 360);
       const progress = clamp(window.scrollY / maxScroll, 0, 1);
-      const eased = easeOutQuart(progress);
+      const eased = easeOutQuart(progress * 0.82);
       const scale = lerp(1, brandMetrics.endWidth / brandMetrics.startWidth, eased);
       const x = lerp(brandMetrics.startX, brandMetrics.endX, eased);
       const y = lerp(brandMetrics.startY, brandMetrics.endY, eased);
-      const opacity = lerp(1, 0.96, eased);
+      const opacity = lerp(1, 0.98, eased);
 
       brandTransition.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%) scale(${scale})`;
       brandTransition.style.opacity = String(opacity);
