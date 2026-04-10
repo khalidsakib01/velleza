@@ -504,7 +504,6 @@
       font-size: clamp(1.2rem, 2.1vw, 1.9rem); letter-spacing: 0.05em;
       color: var(--ivory); text-decoration: none;
       display: block; padding: 8px 0;
-      border-bottom: 1px solid rgba(245,240,232,0.08);
       transition: color .3s, letter-spacing .3s, padding-left .3s;
     }
 
@@ -1005,29 +1004,23 @@
     </div>
   </div>
 
-  <div id="menu-panel" class="panel">
-    <button class="panel-close" onclick="closePanel('menu-panel')">&times;</button>
-    <p class="panel-label">Navigation</p>
-    <div style="width:28px;height:1px;background:linear-gradient(90deg,var(--gold),transparent);margin-bottom:36px"></div>
+    <div id="menu-panel" class="panel">
+      <button class="panel-close" onclick="closePanel('menu-panel')">&times;</button>
+      <p class="panel-label">Navigation</p>
 
-    <ul class="menu-nav">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="new-in.html?gender=women">New In Women</a></li>
-      <li><a href="new-in.html?gender=men">New In Men</a></li>
-      <li><a href="women-section.html">Women's Section</a></li>
-      <li><a href="men-section.html">Men's Section</a></li>
-      <li><a href="cart.html">Cart</a></li>
-    </ul>
+      <ul class="menu-nav">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="men-section.html">Men's Section</a></li>
+        <li><a href="women-section.html">Women's Section</a></li>
+        <li><a href="new-in.html?gender=men">New In Men</a></li>
+        <li><a href="new-in.html?gender=women">New In Women</a></li>
+      </ul>
 
-    <ul class="menu-sub-nav">
-      <li><a href="women-section.html#womens-bags">Women's Bags</a></li>
-      <li><a href="women-section.html#womens-shoes-section">Women's Shoes</a></li>
-      <li><a href="men-section.html#mens-bags">Men's Bags</a></li>
-      <li><a href="men-section.html#mens-shoes">Men's Shoes</a></li>
-      <li><a href="privacy-policy.html">Privacy Policy</a></li>
-      <li><a href="terms.html">Terms &amp; Conditions</a></li>
-    </ul>
-  </div>
+      <ul class="menu-sub-nav">
+        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+        <li><a href="terms.html">Terms &amp; Conditions</a></li>
+      </ul>
+    </div>
 
   <div id="overlay" onclick="closePanels()"></div>
 
