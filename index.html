@@ -60,7 +60,7 @@
       align-items: center;
       padding: 0 28px;
       height: 68px;
-      background: linear-gradient(to bottom, rgba(8,8,8,0.78), rgba(8,8,8,0.18), transparent);
+      background: transparent;
       border-bottom: none;
       backdrop-filter: none;
     }
@@ -71,10 +71,34 @@
       text-transform: uppercase; color: var(--ivory);
       text-decoration: none; font-weight: 500;
       text-align: center;
-      transition: color .3s;
+      visibility: hidden;
+      pointer-events: none;
+      user-select: none;
     }
 
-    .nav-logo:hover { color: var(--gold-light); }
+    .brand-transition {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 650;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 8vw, 5.6rem);
+      letter-spacing: 0.42em;
+      text-transform: uppercase;
+      text-indent: 0.42em;
+      color: var(--ivory);
+      text-decoration: none;
+      white-space: nowrap;
+      transform-origin: center center;
+      will-change: transform, letter-spacing, opacity;
+      text-shadow: 0 10px 35px rgba(0, 0, 0, 0.18);
+    }
+
+    .brand-ghost {
+      visibility: hidden;
+      user-select: none;
+      pointer-events: none;
+    }
 
     .nav-left {
       display: flex; align-items: center; gap: 8px;
@@ -542,6 +566,10 @@
         letter-spacing: 0.28em;
       }
 
+      .brand-transition {
+        font-size: clamp(2.1rem, 8vw, 4rem);
+      }
+
       .contact-btn {
         font-size: 9px;
         letter-spacing: 0.18em;
@@ -604,6 +632,11 @@
     }
     body.mobile-view .hero-video-wrap video { height: 100%; }
     body.mobile-view .brand-title {
+      font-size: clamp(1.9rem, 10vw, 3rem);
+      letter-spacing: 0.14em;
+      text-indent: 0.14em;
+    }
+    body.mobile-view .brand-transition {
       font-size: clamp(1.9rem, 10vw, 3rem);
       letter-spacing: 0.14em;
       text-indent: 0.14em;
@@ -678,6 +711,11 @@
         letter-spacing: 0.12em;
         text-indent: 0.12em;
       }
+      body.mobile-view .brand-transition {
+        font-size: clamp(1.7rem, 9vw, 2.4rem);
+        letter-spacing: 0.12em;
+        text-indent: 0.12em;
+      }
       body.mobile-view .video-controls-bar {
         grid-template-columns: max-content max-content max-content minmax(0, 1fr) max-content max-content;
         padding: 10px 4px 14px;
@@ -709,13 +747,14 @@
 </head>
 <body>
   <div id="toast"></div>
+  <a href="index.html" class="brand-transition" id="brand-transition" aria-label="VELLEZA">VELLEZA</a>
 
   <nav id="navbar">
     <div class="nav-left">
       <button onclick="openPanel('contact-panel')" class="contact-btn">+ Contact Us</button>
     </div>
 
-    <a href="index.html" class="nav-logo">VELLEZA</a>
+    <div class="nav-logo brand-ghost" id="brand-nav-ghost" aria-hidden="true">VELLEZA</div>
 
     <div class="nav-right">
       <div class="search-container">
@@ -752,7 +791,7 @@
     </div>
 
     <div style="position:absolute;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:1.5rem;">
-      <h1 class="brand-title">V E L L E Z A</h1>
+      <h1 class="brand-title brand-ghost" id="brand-hero-ghost">VELLEZA</h1>
       <button id="video-center-toggle" class="hero-pause-btn">❚❚</button>
     </div>
 
@@ -944,9 +983,67 @@
   <script src="products.js"></script>
 
   <script>
+    const brandTransition = document.getElementById('brand-transition');
+    const brandHeroGhost = document.getElementById('brand-hero-ghost');
+    const brandNavGhost = document.getElementById('brand-nav-ghost');
+    let brandMetrics = null;
+    let ticking = false;
+
     function applyMobileMode() {
       const mobile = window.matchMedia('(max-width: 768px), (pointer: coarse)').matches;
       document.body.classList.toggle('mobile-view', mobile);
+    }
+
+    function clamp(value, min, max) {
+      return Math.min(Math.max(value, min), max);
+    }
+
+    function easeOutQuart(value) {
+      return 1 - Math.pow(1 - value, 4);
+    }
+
+    function lerp(start, end, amount) {
+      return start + ((end - start) * amount);
+    }
+
+    function measureBrandTransition() {
+      const startRect = brandHeroGhost.getBoundingClientRect();
+      const endRect = brandNavGhost.getBoundingClientRect();
+
+      if (!startRect.width || !endRect.width) return;
+
+      brandMetrics = {
+        startX: startRect.left + (startRect.width / 2),
+        startY: startRect.top + (startRect.height / 2),
+        endX: endRect.left + (endRect.width / 2),
+        endY: endRect.top + (endRect.height / 2),
+        startWidth: startRect.width,
+        endWidth: endRect.width
+      };
+
+      updateBrandTransition();
+    }
+
+    function updateBrandTransition() {
+      ticking = false;
+      if (!brandMetrics) return;
+
+      const maxScroll = Math.max(window.innerHeight * 0.55, 260);
+      const progress = clamp(window.scrollY / maxScroll, 0, 1);
+      const eased = easeOutQuart(progress);
+      const scale = lerp(1, brandMetrics.endWidth / brandMetrics.startWidth, eased);
+      const x = lerp(brandMetrics.startX, brandMetrics.endX, eased);
+      const y = lerp(brandMetrics.startY, brandMetrics.endY, eased);
+      const opacity = lerp(1, 0.96, eased);
+
+      brandTransition.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%) scale(${scale})`;
+      brandTransition.style.opacity = String(opacity);
+    }
+
+    function requestBrandTransitionUpdate() {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(updateBrandTransition);
     }
 
     function updateCartCount() {
@@ -1173,9 +1270,16 @@
       applyMobileMode();
       updateCartCount();
       initSearchDropdowns();
+      measureBrandTransition();
+      window.addEventListener('scroll', requestBrandTransitionUpdate, { passive: true });
       window.addEventListener('resize', () => {
         applyMobileMode();
+        measureBrandTransition();
       });
+      window.addEventListener('load', measureBrandTransition);
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(measureBrandTransition).catch(() => {});
+      }
     });
   </script>
 </body>
