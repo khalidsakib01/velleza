@@ -97,7 +97,8 @@
       transition: text-shadow 180ms ease-out;
     }
 
-    body.menu-open #brand-transition {
+    body.menu-open #brand-transition,
+    body.contact-open #brand-transition {
       opacity: 0 !important;
       pointer-events: none;
     }
@@ -137,10 +138,30 @@
       font-family: 'Montserrat', sans-serif; font-weight: 300;
       font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase;
       color: rgba(245,240,232,0.7); background: none; border: none;
-      padding: 6px 0; transition: color .3s;
+      padding: 6px 0; transition: color .3s, opacity .3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
     }
 
     .contact-btn:hover { color: var(--gold); }
+
+    .contact-btn-mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 0.9rem;
+      transition: transform .45s cubic-bezier(0.23,1,0.32,1);
+      transform-origin: center center;
+    }
+
+    body.contact-open .contact-btn-mark {
+      transform: rotate(135deg);
+    }
+
+    body.contact-open .contact-btn {
+      color: var(--gold);
+    }
 
     .cart-badge {
       position: absolute; top: -3px; right: -3px;
@@ -443,9 +464,17 @@
     .panel.open { transform: translateX(0); }
 
     #contact-panel {
-      width: 420px; max-width: 100%;
-      background: var(--warm-white); color: #1a1a1a;
-      padding: 52px 44px;
+      inset: 0;
+      width: 100vw; max-width: 100vw;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0) 18%),
+        rgba(8,8,8,0.98);
+      color: var(--ivory);
+      padding: clamp(92px, 10vw, 118px) clamp(22px, 6vw, 72px) clamp(34px, 6vw, 56px);
+      border-left: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
     }
 
     #menu-panel {
@@ -471,8 +500,10 @@
       transition: border-color .3s, color .3s;
     }
 
+    #contact-panel .panel-close,
     #menu-panel .panel-close { border-color: rgba(245,240,232,0.22); color: var(--ivory); }
     .panel-close:hover { border-color: currentColor; color: #1a1a1a; }
+    #contact-panel .panel-close:hover { color: var(--gold); border-color: var(--gold); }
     #menu-panel .panel-close:hover { color: var(--gold); border-color: var(--gold); }
 
     .panel-label { font-size: 8px; letter-spacing: 0.45em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
@@ -483,18 +514,37 @@
       margin-bottom: 28px;
     }
 
-    #contact-panel .panel-title { color: #1a1a1a; }
+    #contact-panel .panel-title { color: var(--ivory); }
 
     .panel-rule { width: 100%; height: 1px; background: linear-gradient(90deg, var(--gold), transparent); margin-bottom: 32px; }
 
     .contact-row {
       display: flex; align-items: flex-start; gap: 14px;
-      padding: 20px 0; border-bottom: 1px solid #f0ebe3;
+      padding: 18px 0; border-bottom: 1px solid rgba(245,240,232,0.08);
     }
 
-    .contact-row-icon { font-size: 1.2rem; margin-top: 2px; }
-    .contact-row a { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: #1a1a1a; text-decoration: none; }
-    .contact-row p { font-size: 10px; letter-spacing: 0.1em; color: #999; margin-top: 6px; line-height: 1.7; }
+    .contact-row-icon { font-size: 1rem; margin-top: 2px; color: rgba(245,240,232,0.72); }
+    .contact-row a { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.1rem, 2.1vw, 1.45rem); color: var(--ivory); text-decoration: none; }
+    .contact-row p { font-size: 10px; letter-spacing: 0.16em; color: rgba(245,240,232,0.45); margin-top: 8px; line-height: 1.7; text-transform: uppercase; }
+
+    #contact-panel .panel-label {
+      color: rgba(245,240,232,0.5);
+      margin-bottom: 22px;
+    }
+
+    #contact-panel .panel-title {
+      margin-bottom: 20px;
+    }
+
+    #contact-panel .panel-rule {
+      background: linear-gradient(90deg, rgba(212,180,131,0.85), transparent);
+      margin-bottom: 28px;
+      width: min(100%, 160px);
+    }
+
+    #contact-panel .contact-list {
+      width: min(100%, 640px);
+    }
 
     .menu-nav { list-style: none; padding: 0; margin: 0 0 40px; }
     .menu-nav li { margin-bottom: 2px; }
@@ -784,6 +834,26 @@
       body.mobile-view .panel-close { top: 14px; right: 14px; width: 32px; height: 32px; }
       body.mobile-view #contact-panel,
       body.mobile-view #menu-panel { padding: 42px 20px 24px; }
+      body.mobile-view #contact-panel {
+        justify-content: flex-start;
+        padding: 84px 20px 28px;
+      }
+      body.mobile-view #contact-panel .panel-label {
+        font-size: 7px;
+        letter-spacing: 0.34em;
+        margin-bottom: 18px;
+      }
+      body.mobile-view #contact-panel .panel-title {
+        font-size: clamp(1.2rem, 5.6vw, 1.6rem);
+        margin-bottom: 16px;
+      }
+      body.mobile-view #contact-panel .contact-row a {
+        font-size: clamp(1rem, 5vw, 1.25rem);
+      }
+      body.mobile-view #contact-panel .contact-row p {
+        font-size: 8px;
+        letter-spacing: 0.14em;
+      }
       body.mobile-view #menu-panel {
         justify-content: flex-start;
         padding: 84px 20px 28px;
@@ -822,7 +892,7 @@
 
   <nav id="navbar">
     <div class="nav-left">
-      <button onclick="openPanel('contact-panel')" class="contact-btn">+ Contact Us</button>
+      <button onclick="openPanel('contact-panel')" class="contact-btn"><span class="contact-btn-mark">+</span><span>Contact Us</span></button>
     </div>
 
     <div class="nav-logo brand-ghost" id="brand-nav-ghost" aria-hidden="true">VELLEZA</div>
@@ -1005,6 +1075,7 @@
     <h2 class="panel-title">Contact Us</h2>
     <div class="panel-rule"></div>
 
+    <div class="contact-list">
     <div class="contact-row">
       <span class="contact-row-icon">📞</span>
       <div>
@@ -1019,6 +1090,7 @@
         <a href="#">WhatsApp</a>
         <p>Monday - Sunday, 10 AM - 8 PM</p>
       </div>
+    </div>
     </div>
   </div>
 
@@ -1237,6 +1309,9 @@
     function openPanel(id) {
       document.getElementById(id).classList.add('open');
       document.getElementById('overlay').classList.add('active');
+      if (id === 'contact-panel') {
+        document.body.classList.add('contact-open');
+      }
       if (id === 'menu-panel') {
         document.body.classList.add('menu-open');
       }
@@ -1244,6 +1319,9 @@
 
     function closePanel(id) {
       document.getElementById(id).classList.remove('open');
+      if (id === 'contact-panel') {
+        document.body.classList.remove('contact-open');
+      }
       if (id === 'menu-panel') {
         document.body.classList.remove('menu-open');
       }
@@ -1255,6 +1333,7 @@
     function closePanels() {
       document.querySelectorAll('.panel.open').forEach(p => p.classList.remove('open'));
       document.getElementById('overlay').classList.remove('active');
+      document.body.classList.remove('contact-open');
       document.body.classList.remove('menu-open');
     }
 
