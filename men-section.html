@@ -119,6 +119,7 @@
       display: flex;
       align-items: center;
       gap: 8px;
+      justify-self: end;
     }
  
     .icon-btn {
@@ -268,6 +269,11 @@
       margin: 32px auto 0;
       opacity: 0;
       animation: fadeUp 1s ease 1.4s forwards;
+    }
+    .hero-label,
+    .hero-sub,
+    .hero-line {
+      display: none;
     }
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(20px); }
