@@ -598,8 +598,8 @@
       --mobile-icon-glyph: clamp(11px, 3.3vw, 14px);
       --mobile-contact-size: clamp(6.5px, 2vw, 8px);
       --mobile-contact-spacing: clamp(0.14em, 0.45vw, 0.22em);
-      --mobile-brand-size: clamp(1.55rem, 7vw, 2.7rem);
-      --mobile-brand-spacing: clamp(0.1em, 0.35vw, 0.12em);
+      --mobile-brand-size: clamp(1.45rem, 6.4vw, 2.45rem);
+      --mobile-brand-spacing: clamp(0.08em, 0.28vw, 0.11em);
       --mobile-nav-logo-size: clamp(0.72rem, 2.9vw, 0.9rem);
       --mobile-nav-logo-spacing: clamp(0.18em, 0.9vw, 0.34em);
     }
@@ -665,6 +665,9 @@
       font-size: var(--mobile-nav-logo-size);
       letter-spacing: var(--mobile-nav-logo-spacing);
       text-indent: var(--mobile-nav-logo-spacing);
+    }
+    body.mobile-view #brand-nav-ghost {
+      transform: translateX(clamp(-10px, -2.8vw, -6px));
     }
     body.mobile-view .hero-pause-btn {
       width: 48px;
