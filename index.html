@@ -1030,13 +1030,13 @@
       return start + ((end - start) * amount);
     }
 
-    function measureBrandTransition() {
+    function calculateBrandMetrics() {
       const startRect = brandHeroGhost.getBoundingClientRect();
       const endRect = brandNavGhost.getBoundingClientRect();
 
-      if (!startRect.width || !endRect.width) return;
+      if (!startRect.width || !endRect.width) return null;
 
-      brandMetrics = {
+      return {
         startX: startRect.left + (startRect.width / 2),
         startY: startRect.top + (startRect.height / 2),
         endX: endRect.left + (endRect.width / 2),
@@ -1044,6 +1044,13 @@
         startWidth: startRect.width,
         endWidth: endRect.width
       };
+    }
+
+    function measureBrandTransition() {
+      const nextMetrics = calculateBrandMetrics();
+      if (!nextMetrics) return;
+
+      brandMetrics = nextMetrics;
 
       currentBrandState = null;
       targetBrandState = null;
@@ -1051,16 +1058,22 @@
     }
 
     function getBrandTargetState() {
-      if (!brandMetrics) return;
+      const mobile = document.body.classList.contains('mobile-view');
+      const liveMetrics = mobile ? calculateBrandMetrics() : brandMetrics;
+      if (!liveMetrics) return;
+      if (mobile) brandMetrics = liveMetrics;
 
-      const maxScroll = Math.max(window.innerHeight * 0.85, 420);
-      const progress = clamp(window.scrollY / maxScroll, 0, 1);
-      const eased = easeOutQuart(progress * 0.9);
+      const heroRect = document.getElementById('dual-hero').getBoundingClientRect();
+      const mobileRange = Math.max(heroRect.height * 0.72, window.innerHeight * 0.52, 320);
+      const desktopRange = Math.max(window.innerHeight * 0.85, 420);
+      const travel = clamp(-heroRect.top, 0, mobile ? mobileRange : desktopRange);
+      const progress = clamp(travel / (mobile ? mobileRange : desktopRange), 0, 1);
+      const eased = easeOutQuart(progress * (mobile ? 1 : 0.9));
 
       return {
-        x: lerp(brandMetrics.startX, brandMetrics.endX, eased),
-        y: lerp(brandMetrics.startY, brandMetrics.endY, eased),
-        scale: lerp(1, brandMetrics.endWidth / brandMetrics.startWidth, eased),
+        x: lerp(liveMetrics.startX, liveMetrics.endX, eased),
+        y: lerp(liveMetrics.startY, liveMetrics.endY, eased),
+        scale: lerp(1, liveMetrics.endWidth / liveMetrics.startWidth, eased),
         opacity: lerp(1, 0.985, eased)
       };
     }
@@ -1076,13 +1089,21 @@
       brandAnimationFrame = null;
       if (!targetBrandState) return;
 
+      const mobile = document.body.classList.contains('mobile-view');
+
       if (!currentBrandState) {
         currentBrandState = { ...targetBrandState };
         renderBrandTransition(currentBrandState);
         return;
       }
 
-      const smoothing = document.body.classList.contains('mobile-view') ? 0.16 : 0.22;
+      if (mobile) {
+        currentBrandState = { ...targetBrandState };
+        renderBrandTransition(currentBrandState);
+        return;
+      }
+
+      const smoothing = 0.22;
 
       currentBrandState = {
         x: lerp(currentBrandState.x, targetBrandState.x, smoothing),
@@ -1352,6 +1373,10 @@
         applyMobileMode();
         measureBrandTransition();
       });
+      if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', measureBrandTransition);
+        window.visualViewport.addEventListener('scroll', requestBrandTransitionUpdate);
+      }
       window.addEventListener('load', measureBrandTransition);
       if (document.fonts && document.fonts.ready) {
         document.fonts.ready.then(measureBrandTransition).catch(() => {});
