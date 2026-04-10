@@ -225,6 +225,14 @@
       display: flex; align-items: center; justify-content: space-between; gap: 1rem;
     }
 
+    .video-controls-left,
+    .video-controls-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex: 0 0 auto;
+    }
+
     .vc-btn { font-size: 1rem; color: white; background: none; border: none; transition: color 0.2s; }
     .vc-btn:hover { color: #d4d4d4; }
     .vc-time { font-size: 0.65rem; color: white; min-width: 40px; }
@@ -681,12 +689,21 @@
     }
     body.mobile-view .video-controls-bar {
       display: grid;
-      grid-template-columns: max-content max-content max-content minmax(0, 1fr) max-content max-content;
+      grid-template-columns: max-content minmax(0, 1fr) max-content;
       align-items: center;
-      gap: 4px;
-      padding: 12px 6px 18px;
+      gap: 6px;
+      padding: 12px 0 18px 6px;
     }
-    body.mobile-view .video-controls-bar > div { display: contents; }
+    body.mobile-view .video-controls-left,
+    body.mobile-view .video-controls-right {
+      gap: clamp(4px, 1.8vw, 8px);
+      min-width: 0;
+    }
+    body.mobile-view .video-controls-right {
+      justify-self: end;
+      padding-right: 0;
+      margin-right: 0;
+    }
     body.mobile-view .vc-btn { font-size: 0.92rem; }
     body.mobile-view .vc-time {
       min-width: auto;
@@ -694,10 +711,11 @@
       white-space: nowrap;
     }
     body.mobile-view #video-progress {
-      order: 0;
       width: 100%;
       min-width: 0;
       height: 2px;
+      justify-self: stretch;
+      margin-right: 0;
     }
     body.mobile-view .categories-section { padding: 72px 0 40px; }
     body.mobile-view .categories-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; }
@@ -738,7 +756,6 @@
         text-indent: 0.12em;
       }
       body.mobile-view .video-controls-bar {
-        grid-template-columns: max-content max-content max-content minmax(0, 1fr) max-content max-content;
         padding: 10px 4px 14px;
         gap: 3px;
       }
@@ -817,7 +834,7 @@
     </div>
 
     <div class="video-controls-bar">
-      <div style="display:flex;align-items:center;gap:1rem;">
+      <div class="video-controls-left">
         <button id="video-bottom-toggle" class="vc-btn">❚❚</button>
         <button id="sound-toggle" class="vc-btn">🔇</button>
         <span id="video-time-left" class="vc-time">0:00</span>
@@ -825,7 +842,7 @@
 
       <input type="range" id="video-progress" min="0" max="100" value="0">
 
-      <div style="display:flex;align-items:center;gap:1rem;">
+      <div class="video-controls-right">
         <span id="video-time-right" class="vc-time">-0:00</span>
         <button id="fullscreen-toggle" class="vc-btn">⛶</button>
       </div>
