@@ -27,29 +27,8 @@
       color: var(--cream);
       font-family: 'Montserrat', sans-serif;
       font-weight: 300;
-      cursor: none;
+      cursor: auto;
       overflow-x: hidden;
-    }
- 
-    /* Custom cursor */
-    .cursor {
-      width: 8px; height: 8px;
-      background: var(--gold);
-      border-radius: 50%;
-      position: fixed;
-      pointer-events: none;
-      z-index: 9999;
-      transition: transform 0.15s ease;
-    }
-    .cursor-ring {
-      width: 32px; height: 32px;
-      border: 1px solid var(--gold-light);
-      border-radius: 50%;
-      position: fixed;
-      pointer-events: none;
-      z-index: 9998;
-      transition: all 0.25s ease;
-      opacity: 0.6;
     }
  
     /* Top bar */
@@ -86,16 +65,24 @@
       color: var(--cream);
       background: none;
       border: none;
-      cursor: none;
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 0.45rem;
       opacity: 0.7;
-      transition: opacity 0.3s;
+      transition: color 0.3s, opacity 0.3s;
     }
     .contact-btn:hover { opacity: 1; }
-    .contact-btn .plus { font-size: 16px; transition: transform 0.6s; }
-    .contact-btn:hover .plus { transform: rotate(180deg); }
+    .contact-btn .plus {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 0.9rem;
+      font-size: 16px;
+      transition: transform .45s cubic-bezier(0.23,1,0.32,1);
+      transform-origin: center center;
+    }
+    body.contact-open .contact-btn { color: var(--gold-light); opacity: 1; }
+    body.contact-open .contact-btn .plus { transform: rotate(135deg); }
  
     .topbar-right {
       display: flex;
@@ -111,10 +98,10 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      cursor: none;
       transition: all 0.3s;
       color: var(--cream);
       text-decoration: none;
+      position: relative;
     }
     .icon-btn:hover {
       background: rgba(184,150,46,0.15);
@@ -294,7 +281,6 @@
       background: var(--black);
       position: relative;
       overflow: hidden;
-      cursor: none;
     }
  
     .product-img-wrap {
@@ -338,7 +324,6 @@
       background: var(--cream);
       border: none;
       padding: 14px 28px;
-      cursor: none;
       width: 100%;
       transition: background 0.3s;
     }
@@ -421,79 +406,151 @@
       position: fixed;
       top: 0; right: 0;
       height: 100%;
-      background: #0f0f0f;
-      z-index: 200;
+      z-index: 700;
       transform: translateX(100%);
-      transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      transition: transform .5s cubic-bezier(0.23,1,0.32,1);
       overflow-y: auto;
-      border-left: 1px solid var(--border);
     }
     .panel.open { transform: translateX(0); }
- 
-    #contact-panel { width: min(480px, 100%); padding: 48px; }
-    #menu-panel { width: min(400px, 100%); padding: 48px; background: var(--cream); color: #1a1a1a; }
+
+    #contact-panel,
+    #menu-panel {
+      inset: 0;
+      width: 100vw;
+      max-width: 100vw;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0) 18%),
+        rgba(8,8,8,0.98);
+      color: var(--cream);
+      padding: clamp(92px, 10vw, 118px) clamp(22px, 6vw, 72px) clamp(34px, 6vw, 56px);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
  
     .panel-close {
       position: absolute;
       top: 24px; right: 24px;
       width: 40px; height: 40px;
       border-radius: 50%;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid var(--border);
+      background: none;
+      border: 1px solid rgba(245,240,232,0.22);
       color: var(--cream);
       font-size: 18px;
       display: flex;
       align-items: center;
       justify-content: center;
-      cursor: none;
       transition: all 0.3s;
     }
-    .panel-close:hover { background: rgba(184,150,46,0.2); border-color: var(--gold); }
+    .panel-close:hover { background: rgba(184,150,46,0.08); border-color: var(--gold); color: var(--gold); }
  
     .panel-title {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 32px;
+      font-size: clamp(1.4rem, 3vw, 2rem);
       font-weight: 300;
       letter-spacing: 0.1em;
-      margin-bottom: 40px;
-      margin-top: 24px;
-    }
- 
-    .panel-link {
-      display: block;
-      font-size: 11px;
-      letter-spacing: 0.25em;
+      margin-bottom: 20px;
+      margin-top: 0;
       text-transform: uppercase;
+    }
+
+    .panel-label {
+      font-size: 8px;
+      letter-spacing: 0.45em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.5);
+      margin-bottom: 22px;
+    }
+
+    .panel-rule {
+      width: min(100%, 160px);
+      height: 1px;
+      background: linear-gradient(90deg, rgba(212,180,131,0.85), transparent);
+      margin-bottom: 28px;
+    }
+
+    .contact-list,
+    .menu-nav,
+    .menu-sub-nav {
+      width: min(100%, 640px);
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 18px 0;
+      border-bottom: 1px solid rgba(245,240,232,0.08);
+    }
+
+    .contact-row-icon {
+      font-size: 1rem;
+      margin-top: 2px;
+      color: rgba(245,240,232,0.72);
+    }
+
+    .contact-row a {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.1rem, 2.1vw, 1.45rem);
       color: var(--cream);
       text-decoration: none;
-      padding: 16px 0;
-      border-bottom: 1px solid #1a1a1a;
-      transition: color 0.3s, padding-left 0.3s;
     }
-    .panel-link:hover { color: var(--gold); padding-left: 8px; }
- 
-    .menu-nav-title {
+
+    .contact-row p {
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      color: rgba(245,240,232,0.45);
+      margin-top: 8px;
+      line-height: 1.7;
+      text-transform: uppercase;
+    }
+
+    .menu-nav { list-style: none; padding: 0; margin: 0 0 28px; }
+    .menu-nav li { margin-bottom: 2px; }
+    .menu-nav a {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 42px;
       font-weight: 300;
+      font-size: clamp(1.2rem, 2.1vw, 1.9rem);
       letter-spacing: 0.05em;
       color: var(--cream);
       text-decoration: none;
       display: block;
-      padding: 12px 0;
-      transition: color 0.3s;
-      line-height: 1.2;
+      padding: 8px 0;
+      transition: color .3s, letter-spacing .3s, padding-left .3s;
     }
-    .menu-nav-title:hover { color: var(--gold); }
- 
+    .menu-nav a:hover { color: var(--gold-light); letter-spacing: 0.08em; padding-left: 6px; }
+
+    .menu-sub-nav { list-style: none; padding: 0; margin: 0; }
+    .menu-sub-nav li { margin-bottom: 4px; }
+    .menu-sub-nav a {
+      font-size: 9px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.52);
+      text-decoration: none;
+      display: block;
+      padding: 5px 0;
+      transition: color .3s;
+    }
+    .menu-sub-nav a:hover { color: var(--gold); }
+
     .overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.7);
-      z-index: 150;
-      display: none;
+      z-index: 550;
+      background: rgba(8,8,8,0.7);
+      backdrop-filter: blur(4px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .4s;
     }
-    .overlay.open { display: block; }
+    .overlay.open { opacity: 1; pointer-events: all; }
+
+    body.menu-open .topbar-logo,
+    body.contact-open .topbar-logo {
+      opacity: 0;
+      pointer-events: none;
+    }
  
     /* Footer */
     .footer {
@@ -531,13 +588,10 @@
     }
     @media (hover: none), (pointer: coarse) {
       body { cursor: auto; }
-      .cursor, .cursor-ring { display: none; }
       .icon-btn,
       .contact-btn,
       .quick-add,
       .panel-close,
-      .panel-link,
-      .menu-link,
       .footer-link,
       .social-link { cursor: pointer; }
       .product-overlay { opacity: 0; pointer-events: none; }
@@ -602,6 +656,38 @@
       max-height: 48vh;
     }
     body.mobile-view .panel { width: 100vw; max-width: 100vw; }
+    body.mobile-view #contact-panel,
+    body.mobile-view #menu-panel {
+      justify-content: flex-start;
+      padding: 84px 20px 28px;
+    }
+    body.mobile-view #contact-panel .panel-label,
+    body.mobile-view #menu-panel .panel-label {
+      font-size: 7px;
+      letter-spacing: 0.34em;
+      margin-bottom: 18px;
+    }
+    body.mobile-view #contact-panel .panel-title {
+      font-size: clamp(1.2rem, 5.6vw, 1.6rem);
+      margin-bottom: 16px;
+    }
+    body.mobile-view #contact-panel .contact-row a {
+      font-size: clamp(1rem, 5vw, 1.25rem);
+    }
+    body.mobile-view #contact-panel .contact-row p {
+      font-size: 8px;
+      letter-spacing: 0.14em;
+    }
+    body.mobile-view #menu-panel .menu-nav a {
+      font-size: clamp(1.05rem, 5.8vw, 1.45rem);
+      letter-spacing: 0.04em;
+      padding: 7px 0;
+    }
+    body.mobile-view #menu-panel .menu-sub-nav a {
+      font-size: 8px;
+      letter-spacing: 0.18em;
+      padding: 4px 0;
+    }
     body.mobile-view .footer { padding: 2.25rem 1.1rem; }
     body.mobile-view .footer-grid { grid-template-columns: 1fr; gap: 1.15rem; }
     body.mobile-view .footer-bottom {
@@ -670,10 +756,6 @@
 </head>
  
 <body>
-  <!-- Custom cursor -->
-  <div class="cursor" id="cursor"></div>
-  <div class="cursor-ring" id="cursor-ring"></div>
- 
   <!-- Cart Alert -->
   <div id="cart-alert">Added to cart</div>
  
@@ -681,7 +763,7 @@
   <div class="topbar">
     <button class="contact-btn" onclick="openPanel('contact-panel')">
       <span class="plus">+</span>
-      <span>Contact</span>
+      <span>Contact Us</span>
     </button>
 
     <a href="index.html" class="topbar-logo">VELLEZA</a>
@@ -710,7 +792,7 @@
       </a>
 
       <!-- Menu -->
-      <button class="icon-btn" onclick="openPanel('menu-panel')" style="cursor:none;">
+      <button class="icon-btn" onclick="openPanel('menu-panel')">
         <i data-lucide="menu" style="width:18px;height:18px;"></i>
       </button>
     </div>
@@ -937,31 +1019,49 @@
   <!-- Contact Panel -->
   <div id="contact-panel" class="panel">
     <button class="panel-close" onclick="closePanel('contact-panel')">&times;</button>
-    <h2 class="panel-title">Contact</h2>
-    <a href="tel:+8801943869880" class="panel-link">Call +880 194 386 9880</a>
-    <a href="https://wa.me/8801943869880" class="panel-link">WhatsApp</a>
-    <a href="mailto:hello@velleza.com" class="panel-link">Email Support</a>
-    <p style="font-size:11px; color:#555; margin-top:24px; letter-spacing:0.05em; line-height:1.8;">
-      Our advisors are available<br>Monday - Sunday | 10AM - 8PM
-    </p>
+    <p class="panel-label">Client Services</p>
+    <h2 class="panel-title">Contact Us</h2>
+    <div class="panel-rule"></div>
+    <div class="contact-list">
+      <div class="contact-row">
+        <span class="contact-row-icon">📞</span>
+        <div>
+          <a href="tel:+8801943869880">+880 1943 869 880</a>
+          <p>Monday - Sunday, 10 AM - 8 PM</p>
+        </div>
+      </div>
+      <div class="contact-row">
+        <span class="contact-row-icon">🟢</span>
+        <div>
+          <a href="https://wa.me/8801943869880">WhatsApp</a>
+          <p>Monday - Sunday, 10 AM - 8 PM</p>
+        </div>
+      </div>
+      <div class="contact-row">
+        <span class="contact-row-icon">✉</span>
+        <div>
+          <a href="mailto:hello@velleza.com">hello@velleza.com</a>
+          <p>Replies during client service hours</p>
+        </div>
+      </div>
+    </div>
   </div>
  
   <!-- Menu Panel -->
   <div id="menu-panel" class="panel">
     <button class="panel-close" onclick="closePanel('menu-panel')">&times;</button>
-    <nav style="margin-top: 60px;">
-      <a href="index.html" class="menu-nav-title">Home</a>
-      <a href="new-in.html?gender=men" class="menu-nav-title">New In Men</a>
-      <a href="new-in.html?gender=women" class="menu-nav-title">New In Women</a>
-      <a href="men-section.html#mens-bags" class="menu-nav-title">Men's Bags</a>
-      <a href="men-section.html#mens-shoes" class="menu-nav-title">Men's Shoes</a>
-      <a href="women-section.html" class="menu-nav-title">Women's Section</a>
-    </nav>
-    <div style="margin-top: 40px; border-top: 1px solid #1a1a1a; padding-top: 32px;">
-      <a href="privacy-policy.html" class="panel-link">Privacy Policy</a>
-      <a href="terms.html" class="panel-link">Terms & Conditions</a>
-      <a href="cart.html" class="panel-link">My Cart</a>
-    </div>
+    <p class="panel-label">Navigation</p>
+    <ul class="menu-nav">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="men-section.html">Men's Section</a></li>
+      <li><a href="women-section.html">Women's Section</a></li>
+      <li><a href="new-in.html?gender=men">New In Men</a></li>
+      <li><a href="new-in.html?gender=women">New In Women</a></li>
+    </ul>
+    <ul class="menu-sub-nav">
+      <li><a href="privacy-policy.html">Privacy Policy</a></li>
+      <li><a href="terms.html">Terms &amp; Conditions</a></li>
+    </ul>
   </div>
  
   <!-- Overlay -->
@@ -972,31 +1072,35 @@
  
   <script>
     // ============================
-    // Custom Cursor
-    // ============================
-    const cursor = document.getElementById('cursor');
-    const ring = document.getElementById('cursor-ring');
-    document.addEventListener('mousemove', e => {
-      cursor.style.left = e.clientX - 4 + 'px';
-      cursor.style.top = e.clientY - 4 + 'px';
-      ring.style.left = e.clientX - 16 + 'px';
-      ring.style.top = e.clientY - 16 + 'px';
-    });
- 
-    // ============================
     // Panels
     // ============================
     function openPanel(id) {
       document.getElementById(id).classList.add('open');
       document.getElementById('overlay').classList.add('open');
+      if (id === 'contact-panel') {
+        document.body.classList.add('contact-open');
+      }
+      if (id === 'menu-panel') {
+        document.body.classList.add('menu-open');
+      }
     }
     function closePanel(id) {
       document.getElementById(id).classList.remove('open');
-      document.getElementById('overlay').classList.remove('open');
+      if (id === 'contact-panel') {
+        document.body.classList.remove('contact-open');
+      }
+      if (id === 'menu-panel') {
+        document.body.classList.remove('menu-open');
+      }
+      if (!document.querySelector('.panel.open')) {
+        document.getElementById('overlay').classList.remove('open');
+      }
     }
     function closeAllPanels() {
       document.querySelectorAll('.panel').forEach(p => p.classList.remove('open'));
       document.getElementById('overlay').classList.remove('open');
+      document.body.classList.remove('contact-open');
+      document.body.classList.remove('menu-open');
       document.getElementById('search-dropdown').classList.remove('open');
     }
 
@@ -1129,7 +1233,6 @@
       window.addEventListener('storage', updateCartCount);
 
       document.querySelectorAll('.product-img-wrap img').forEach(function (img) {
-        img.style.cursor = 'pointer';
         img.addEventListener('click', function () {
           openProductDetail(img.alt);
         });
