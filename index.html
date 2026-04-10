@@ -550,29 +550,8 @@
     @media (max-width: 768px) {
       .split-section { grid-template-columns: 1fr; }
 
-      #navbar {
-        padding-left: 16px;
-        padding-right: 16px;
-      }
-
-      #navbar {
-        grid-template-columns: auto 1fr auto;
-        gap: 12px;
-      }
-
-      .nav-logo {
-        justify-self: center;
-        font-size: 0.8rem;
-        letter-spacing: 0.28em;
-      }
-
       .brand-transition {
         font-size: clamp(2.1rem, 8vw, 4rem);
-      }
-
-      .contact-btn {
-        font-size: 9px;
-        letter-spacing: 0.18em;
       }
 
       .search-dropdown {
@@ -592,9 +571,6 @@
     }
 
     @media (max-width: 640px) {
-      #navbar { grid-template-columns: auto 1fr auto; }
-      .nav-left { display: none; }
-      .nav-logo { font-size: 0.78rem; letter-spacing: 0.24em; }
       .categories-section { padding: 80px 20px; }
       .split-content { padding: 40px 22px; }
       .footer-section { padding: 2.5rem 1.2rem; }
@@ -611,17 +587,6 @@
       .cta-link,
       .footer-col-link,
       .social-link { cursor: pointer; }
-    }
-
-    body.mobile-view .nav-btn {
-      width: 28px;
-      height: 28px;
-      flex-shrink: 0;
-    }
-    body.mobile-view .nav-btn i,
-    body.mobile-view .nav-btn svg {
-      width: 14px !important;
-      height: 14px !important;
     }
     body.mobile-view #dual-hero { height: 100svh; min-height: 680px; }
     body.mobile-view #dual-hero,
