@@ -94,6 +94,7 @@
       text-shadow: 0 10px 35px rgba(0, 0, 0, 0.18);
       backface-visibility: hidden;
       -webkit-font-smoothing: antialiased;
+      transition: text-shadow 180ms ease-out;
     }
 
     .brand-ghost {
@@ -1072,7 +1073,10 @@
         x: lerp(liveMetrics.startX, liveMetrics.endX, eased),
         y: lerp(liveMetrics.startY, liveMetrics.endY, eased),
         scale: lerp(1, liveMetrics.endWidth / liveMetrics.startWidth, eased),
-        opacity: lerp(1, 0.985, eased)
+        opacity: lerp(1, 0.985, eased),
+        tracking: lerp(mobile ? 0.12 : 0.42, mobile ? 0.34 : 0.45, eased),
+        shadowBlur: lerp(35, 12, eased),
+        shadowAlpha: lerp(0.18, 0.08, eased)
       };
     }
 
@@ -1081,6 +1085,9 @@
 
       brandTransition.style.transform = `translate3d(${state.x}px, ${state.y}px, 0) translate(-50%, -50%) scale(${state.scale})`;
       brandTransition.style.opacity = String(state.opacity);
+      brandTransition.style.letterSpacing = `${state.tracking}em`;
+      brandTransition.style.textIndent = `${state.tracking}em`;
+      brandTransition.style.textShadow = `0 ${lerp(10, 4, state.shadowAlpha / 0.18).toFixed(2)}px ${state.shadowBlur.toFixed(2)}px rgba(0, 0, 0, ${state.shadowAlpha.toFixed(3)})`;
     }
 
     function animateBrandTransition() {
