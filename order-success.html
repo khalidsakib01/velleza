@@ -6,6 +6,9 @@
   <title>Order Confirmed | VELLEZA</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="order-store.js"></script>
   <style>
     :root {
       --gold: #b8975a;
@@ -284,6 +287,7 @@
     const tranId = params.get('tran_id');
     const amount = params.get('amount');
     const method = params.get('method');
+    const valId = params.get('val_id');
 
     const lastOrder = (() => {
       try {
@@ -293,7 +297,70 @@
       }
     })();
 
-    document.addEventListener('DOMContentLoaded', () => {
+    const pendingOrder = (() => {
+      try {
+        return JSON.parse(localStorage.getItem('pending_order') || 'null');
+      } catch (_) {
+        return null;
+      }
+    })();
+
+    async function sendOrderNotification(payload) {
+      try {
+        await fetch('/api/order-notify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+      } catch (_) {
+      }
+    }
+
+    async function finalizeOnlineOrder() {
+      if (!pendingOrder || !tranId || pendingOrder.tran_id !== tranId) return;
+
+      if (!window.VellezaOrderStore || typeof window.VellezaOrderStore.saveOrder !== 'function') {
+        throw new Error('Order storage is not available.');
+      }
+
+      const finalAmount = Number(amount || pendingOrder.total_amount || 0);
+      const paymentLabel = method || 'SSLCommerz';
+
+      await window.VellezaOrderStore.saveOrder(pendingOrder, {
+        tran_id: tranId,
+        total_amount: finalAmount,
+        payment_method: 'sslcommerz',
+        order_status: 'confirmed',
+        payment_status: 'paid',
+        fulfillment_status: 'new',
+        payment_amount: finalAmount,
+        method_label: paymentLabel,
+        card_type: paymentLabel,
+        val_id: valId || ''
+      });
+
+      await sendOrderNotification({
+        event: 'payment_confirmed',
+        order: {
+          ...pendingOrder,
+          tran_id: tranId,
+          total_amount: finalAmount,
+          payment_method: 'sslcommerz',
+          payment_label: paymentLabel,
+          val_id: valId || '',
+          card_type: paymentLabel
+        }
+      });
+    }
+
+    function clearCheckoutState() {
+      sessionStorage.removeItem('checkout_submit_lock');
+      localStorage.removeItem('cart');
+      localStorage.removeItem('pending_order');
+      localStorage.removeItem('last_order');
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
       lucide.createIcons();
 
       if (status === 'success') {
@@ -302,10 +369,13 @@
         document.getElementById('out-method').textContent = method || 'Online Payment';
         document.getElementById('success-view').style.display = 'block';
 
-        sessionStorage.removeItem('checkout_submit_lock');
-        localStorage.removeItem('cart');
-        localStorage.removeItem('pending_order');
-        localStorage.removeItem('last_order');
+        try {
+          await finalizeOnlineOrder();
+        } catch (error) {
+          console.error('Online order finalization failed:', error);
+        }
+
+        clearCheckoutState();
       } else if (status === 'cod') {
         const order = lastOrder || {};
         const total = Number(order.total_amount || 0);
@@ -313,10 +383,7 @@
         document.getElementById('cod-reference').textContent = (tranId || order.tran_id) ? `Reference ${tranId || order.tran_id}` : '';
         document.getElementById('cod-view').style.display = 'block';
 
-        sessionStorage.removeItem('checkout_submit_lock');
-        localStorage.removeItem('cart');
-        localStorage.removeItem('pending_order');
-        localStorage.removeItem('last_order');
+        clearCheckoutState();
       } else {
         sessionStorage.removeItem('checkout_submit_lock');
         document.getElementById('failed-view').style.display = 'block';

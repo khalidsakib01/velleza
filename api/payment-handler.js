@@ -220,7 +220,7 @@ module.exports = async (req, res) => {
         if (data.status === 'VALID' || data.status === 'VALIDATED') {
           return res.redirect(
             303,
-            `${FRONTEND_URL}/order-success.html?tran_id=${encodeURIComponent(tran_id || '')}&amount=${encodeURIComponent(amount || '')}&method=${encodeURIComponent(card_type || '')}&status=success`
+            `${FRONTEND_URL}/order-success.html?tran_id=${encodeURIComponent(tran_id || '')}&amount=${encodeURIComponent(amount || '')}&method=${encodeURIComponent(card_type || '')}&val_id=${encodeURIComponent(val_id || '')}&status=success`
           );
         }
       } catch (_) {

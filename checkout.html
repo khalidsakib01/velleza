@@ -759,7 +759,7 @@
         localStorage.removeItem('cart');
         localStorage.setItem('last_order', JSON.stringify({ ...orderData, status: 'COD Confirmed' }));
         sendOrderNotification({
-          event: 'cod_created',
+          event: 'cod_confirmed',
           order: {
             tran_id: orderData.tran_id,
             total_amount: orderData.total_amount,
