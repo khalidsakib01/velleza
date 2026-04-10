@@ -41,9 +41,9 @@
       align-items: center;
       gap: 12px;
       padding: 24px 48px;
-      background: rgba(10,10,10,0.96);
-      border-bottom: 1px solid rgba(184,150,46,0.12);
-      backdrop-filter: blur(12px);
+      background: transparent;
+      border-bottom: none;
+      backdrop-filter: none;
     }
     .topbar-logo {
       justify-self: center;
@@ -54,6 +54,37 @@
       color: var(--cream);
       text-decoration: none;
       white-space: nowrap;
+      visibility: hidden;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .page-transition {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 160;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.1rem, 8vw, 5rem);
+      font-weight: 300;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      text-indent: 0.18em;
+      color: var(--cream);
+      text-decoration: none;
+      white-space: nowrap;
+      transform-origin: center center;
+      will-change: transform, letter-spacing, opacity;
+      text-shadow: 0 10px 35px rgba(0, 0, 0, 0.18);
+      backface-visibility: hidden;
+      -webkit-font-smoothing: antialiased;
+      pointer-events: none;
+    }
+
+    .page-ghost {
+      visibility: hidden;
+      user-select: none;
+      pointer-events: none;
     }
  
     .contact-btn {
@@ -547,7 +578,9 @@
     .overlay.open { opacity: 1; pointer-events: all; }
 
     body.menu-open .topbar-logo,
-    body.contact-open .topbar-logo {
+    body.contact-open .topbar-logo,
+    body.menu-open #page-transition,
+    body.contact-open #page-transition {
       opacity: 0;
       pointer-events: none;
     }
@@ -604,8 +637,8 @@
       padding: 12px;
       width: 100vw;
       max-width: 100vw;
-      background: rgba(10,10,10,0.96);
-      backdrop-filter: blur(10px);
+      background: transparent;
+      backdrop-filter: none;
     }
     body.mobile-view .topbar-logo {
       grid-column: 2;
@@ -758,6 +791,7 @@
 <body>
   <!-- Cart Alert -->
   <div id="cart-alert">Added to cart</div>
+  <a href="men-section.html" class="page-transition" id="page-transition" aria-label="Men Section">Men Section</a>
  
   <!-- Top Bar -->
   <div class="topbar">
@@ -766,7 +800,7 @@
       <span>Contact Us</span>
     </button>
 
-    <a href="index.html" class="topbar-logo">VELLEZA</a>
+    <div class="topbar-logo page-ghost" id="page-nav-ghost">Men Section</div>
  
     <div class="topbar-right">
       <!-- Search -->
@@ -803,7 +837,7 @@
     <img src="cycle.jpg" alt="Men Collection">
     <div class="hero-content">
       <p class="hero-label">Velleza — New Collection</p>
-      <h1 class="hero-title">MEN</h1>
+      <h1 class="hero-title page-ghost" id="page-hero-ghost">Men Section</h1>
       <p class="hero-sub">Crafted for the distinguished</p>
       <div class="hero-line"></div>
     </div>
@@ -1071,6 +1105,74 @@
   <script src="products.js"></script>
  
   <script>
+    const pageTransition = document.getElementById('page-transition');
+    const pageHeroGhost = document.getElementById('page-hero-ghost');
+    const pageNavGhost = document.getElementById('page-nav-ghost');
+    let pageMetrics = null;
+    let pageTicking = false;
+
+    function clamp(value, min, max) {
+      return Math.min(Math.max(value, min), max);
+    }
+
+    function easeOutQuart(value) {
+      return 1 - Math.pow(1 - value, 4);
+    }
+
+    function lerp(start, end, amount) {
+      return start + ((end - start) * amount);
+    }
+
+    function calculatePageMetrics() {
+      const startRect = pageHeroGhost.getBoundingClientRect();
+      const endRect = pageNavGhost.getBoundingClientRect();
+      if (!startRect.width || !endRect.width) return null;
+
+      return {
+        startX: startRect.left + (startRect.width / 2),
+        startY: startRect.top + (startRect.height / 2),
+        endX: endRect.left + (endRect.width / 2),
+        endY: endRect.top + (endRect.height / 2),
+        startWidth: startRect.width,
+        endWidth: endRect.width
+      };
+    }
+
+    function measurePageTransition() {
+      const nextMetrics = calculatePageMetrics();
+      if (!nextMetrics) return;
+      pageMetrics = nextMetrics;
+      updatePageTransition();
+    }
+
+    function updatePageTransition() {
+      pageTicking = false;
+      if (!pageMetrics) return;
+
+      const heroRect = document.querySelector('.hero').getBoundingClientRect();
+      const mobile = document.body.classList.contains('mobile-view');
+      const mobileRange = Math.max(heroRect.height * 0.72, window.innerHeight * 0.52, 320);
+      const desktopRange = Math.max(heroRect.height * 0.68, window.innerHeight * 0.46, 360);
+      const travel = clamp(-heroRect.top, 0, mobile ? mobileRange : desktopRange);
+      const progress = clamp(travel / (mobile ? mobileRange : desktopRange), 0, 1);
+      const eased = easeOutQuart(progress);
+      const tracking = lerp(mobile ? 0.08 : 0.18, mobile ? 0.16 : 0.34, eased);
+      const shadowBlur = lerp(35, 12, eased);
+      const shadowAlpha = lerp(0.18, 0.08, eased);
+
+      pageTransition.style.transform = `translate3d(${lerp(pageMetrics.startX, pageMetrics.endX, eased)}px, ${lerp(pageMetrics.startY, pageMetrics.endY, eased)}px, 0) translate(-50%, -50%) scale(${lerp(1, pageMetrics.endWidth / pageMetrics.startWidth, eased)})`;
+      pageTransition.style.opacity = String(lerp(1, 0.985, eased));
+      pageTransition.style.letterSpacing = `${tracking}em`;
+      pageTransition.style.textIndent = `${tracking}em`;
+      pageTransition.style.textShadow = `0 ${lerp(10, 4, shadowAlpha / 0.18).toFixed(2)}px ${shadowBlur.toFixed(2)}px rgba(0, 0, 0, ${shadowAlpha.toFixed(3)})`;
+    }
+
+    function requestPageTransitionUpdate() {
+      if (pageTicking) return;
+      pageTicking = true;
+      window.requestAnimationFrame(updatePageTransition);
+    }
+
     // ============================
     // Panels
     // ============================
@@ -1195,6 +1297,7 @@
     document.addEventListener('DOMContentLoaded', function () {
       lucide.createIcons();
       applyMobileMode();
+      measurePageTransition();
       updateCartCount();
  
       // Search button
@@ -1238,7 +1341,17 @@
         });
       });
 
+      window.addEventListener('scroll', requestPageTransitionUpdate, { passive: true });
       window.addEventListener('resize', applyMobileMode);
+      window.addEventListener('resize', measurePageTransition);
+      if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', measurePageTransition);
+        window.visualViewport.addEventListener('scroll', requestPageTransitionUpdate);
+      }
+      window.addEventListener('load', measurePageTransition);
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(measurePageTransition).catch(() => {});
+      }
     });
   </script>
 </body>
