@@ -31,28 +31,7 @@
       justify-content: center;
       text-align: center;
       padding: 40px 24px;
-      cursor: none;
-    }
-    #cursor-dot {
-      width: 8px;
-      height: 8px;
-      background: var(--gold);
-      border-radius: 50%;
-      position: fixed;
-      pointer-events: none;
-      z-index: 99999;
-      transform: translate(-50%, -50%);
-    }
-    #cursor-ring {
-      width: 34px;
-      height: 34px;
-      border: 1px solid rgba(184,151,90,0.5);
-      border-radius: 50%;
-      position: fixed;
-      pointer-events: none;
-      z-index: 99998;
-      transform: translate(-50%, -50%);
-      transition: left 0.12s ease, top 0.12s ease;
+      cursor: auto;
     }
     .success-ring {
       width: 100px;
@@ -157,7 +136,7 @@
       color: var(--obsidian);
       border: none;
       text-decoration: none;
-      cursor: none;
+      cursor: auto;
       transition: background 0.3s, letter-spacing 0.3s;
       font-weight: 500;
     }
@@ -171,7 +150,7 @@
       color: rgba(245,240,232,0.4);
       border: 1px solid var(--ash);
       text-decoration: none;
-      cursor: none;
+      cursor: auto;
       margin-left: 12px;
       transition: border-color 0.3s, color 0.3s;
     }
@@ -196,9 +175,7 @@
   </style>
 </head>
 <body>
-  <div id="cursor-dot"></div>
-  <div id="cursor-ring"></div>
-
+  
   <div id="success-view" style="display:none; width:100%;">
     <div class="success-ring">
       <i data-lucide="check" class="check-icon" style="width:40px;height:40px;"></i>
@@ -273,15 +250,6 @@
   </div>
 
   <script>
-    const dot = document.getElementById('cursor-dot');
-    const ring = document.getElementById('cursor-ring');
-    document.addEventListener('mousemove', (e) => {
-      dot.style.left = e.clientX + 'px';
-      dot.style.top = e.clientY + 'px';
-      ring.style.left = e.clientX + 'px';
-      ring.style.top = e.clientY + 'px';
-    });
-
     const params = new URLSearchParams(window.location.search);
     const status = params.get('status');
     const tranId = params.get('tran_id');
@@ -392,3 +360,4 @@
   </script>
 </body>
 </html>
+

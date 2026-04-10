@@ -32,32 +32,9 @@
       background: var(--obsidian);
       color: var(--ivory);
       min-height: 100vh;
-      cursor: none;
+      cursor: auto;
       overflow-x: hidden;
     }
- 
-    #cursor-dot {
-      width: 8px; height: 8px;
-      background: var(--gold);
-      border-radius: 50%;
-      position: fixed;
-      pointer-events: none;
-      z-index: 99999;
-      transform: translate(-50%, -50%);
-    }
- 
-    #cursor-ring {
-      width: 34px; height: 34px;
-      border: 1px solid rgba(184,151,90,0.5);
-      border-radius: 50%;
-      position: fixed;
-      pointer-events: none;
-      z-index: 99998;
-      transform: translate(-50%, -50%);
-      transition: left 0.12s ease, top 0.12s ease, width 0.3s, height 0.3s, border-color 0.3s;
-    }
- 
-    body.hovering #cursor-ring { width: 50px; height: 50px; border-color: var(--gold); }
  
     .topbar {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
@@ -139,7 +116,6 @@
     }
     @media (hover: none), (pointer: coarse) {
       body { cursor: auto; }
-      #cursor-dot, #cursor-ring { display: none; }
       .topbar-back,
       .payment-option,
       .place-order-btn,
@@ -195,7 +171,7 @@
     .payment-option {
       display: flex; align-items: center; gap: 16px;
       padding: 16px 18px; border: 1px solid var(--ash);
-      cursor: none; transition: border-color 0.3s, background 0.3s; position: relative;
+      cursor: auto; transition: border-color 0.3s, background 0.3s; position: relative;
     }
     .payment-option:hover { border-color: rgba(184,151,90,0.3); background: rgba(184,151,90,0.04); }
     .payment-option.selected { border-color: var(--gold); background: rgba(184,151,90,0.07); }
@@ -230,7 +206,7 @@
       font-family: 'Montserrat', sans-serif; font-size: 10px;
       letter-spacing: 0.4em; text-transform: uppercase;
       background: var(--gold); color: var(--obsidian);
-      border: none; cursor: none; font-weight: 500;
+      border: none; cursor: auto; font-weight: 500;
       transition: background 0.3s, letter-spacing 0.4s;
     }
     .place-order-btn:hover:not(:disabled) { background: var(--gold-light); letter-spacing: 0.5em; }
@@ -277,9 +253,7 @@
   </style>
 </head>
 <body>
-  <div id="cursor-dot"></div>
-  <div id="cursor-ring"></div>
-  <div id="toast"></div>
+    <div id="toast"></div>
  
   <div id="loading-overlay">
     <div class="spinner"></div>
@@ -428,8 +402,6 @@
   </div>
  
   <script>
-    const dot = document.getElementById('cursor-dot');
-    const ring = document.getElementById('cursor-ring');
     const toastEl = document.getElementById('toast');
     const loadingOverlay = document.getElementById('loading-overlay');
     const checkoutForm = document.getElementById('checkout-form');
@@ -441,20 +413,6 @@
     const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
       ? 'http://localhost:4000'
       : '';
- 
-    document.addEventListener('mousemove', (e) => {
-      dot.style.left = e.clientX + 'px';
-      dot.style.top = e.clientY + 'px';
-      ring.style.left = e.clientX + 'px';
-      ring.style.top = e.clientY + 'px';
-    });
- 
-    function addCursorEvents() {
-      document.querySelectorAll('a, button, label, select, input, textarea').forEach((el) => {
-        el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
-        el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
-      });
-    }
  
     function showToast(message) {
       toastEl.textContent = message;
@@ -816,11 +774,11 @@
       if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
       renderSummary();
       prefillKnownCustomer();
-      addCursorEvents();
       const statusNotice = getCheckoutStatusNotice();
       if (statusNotice) showToast(statusNotice);
     });
   </script>
 </body>
 </html>
+
 

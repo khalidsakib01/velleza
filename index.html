@@ -41,7 +41,6 @@
       font-weight: 300;
       background: var(--obsidian);
       color: var(--ivory);
-      cursor: none;
       overflow-x: hidden;
     }
 
@@ -54,65 +53,8 @@
       opacity: 0.45;
     }
 
-    #cursor-dot {
-      width: 6px; height: 6px;
-      background: var(--gold);
-      border-radius: 50%;
-      position: fixed; pointer-events: none; z-index: 99999;
-      transform: translate(-50%, -50%);
-      transition: width .2s, height .2s, background .2s;
-    }
-
-    #cursor-ring {
-      width: 36px; height: 36px;
-      border: 1px solid rgba(184,151,90,0.45);
-      border-radius: 50%;
-      position: fixed; pointer-events: none; z-index: 99998;
-      transform: translate(-50%, -50%);
-      transition: left .1s ease, top .1s ease, width .3s, height .3s, border-color .3s;
-    }
-
-    body.hovering #cursor-dot { width: 10px; height: 10px; background: var(--gold-light); }
-    body.hovering #cursor-ring { width: 52px; height: 52px; border-color: var(--gold); }
-
-    #top-bar {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 500;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 22px 28px;
-      pointer-events: none;
-      transition: opacity .35s ease, transform .35s ease;
-    }
-
-    #top-bar > * { pointer-events: all; }
-
-    #top-bar.hidden {
-      opacity: 0;
-      transform: translateY(-14px);
-      pointer-events: none;
-    }
-
-    #top-bar.hidden > * { pointer-events: none; }
-
-    .contact-floating-button {
-      font-family: 'Playfair Display', serif;
-      font-weight: 500; font-size: 15px; letter-spacing: 0.05em;
-      color: white; display: inline-flex; align-items: center; gap: 0.4rem;
-      background: none; padding: 0; border: none;
-      text-decoration: none; transition: color 0.3s ease; cursor: none;
-    }
-
-    .contact-floating-button:hover { color: #d4d4d4; }
-
-    .plus-icon { display: inline-block; transition: transform 0.8s ease; }
-
-    #top-bar:hover .plus-icon { transform: rotate(180deg); }
-
-    .top-icons {
-      display: flex; align-items: center; gap: 8px;
-    }
-
     #navbar {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 499;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 500;
       display: grid;
       grid-template-columns: 1fr auto 1fr;
       align-items: center;
@@ -121,11 +63,7 @@
       background: rgba(8,8,8,0.97);
       border-bottom: 1px solid rgba(184,151,90,0.1);
       backdrop-filter: blur(12px);
-      transform: translateY(-100%);
-      transition: transform .45s cubic-bezier(0.23,1,0.32,1);
     }
-
-    #navbar.scrolled { transform: translateY(0); }
 
     .nav-logo {
       font-family: 'Playfair Display', serif;
@@ -154,7 +92,7 @@
       border-radius: 50%;
       background: rgba(255,255,255,0.07);
       border: 1px solid rgba(255,255,255,0.08);
-      color: var(--ivory); cursor: none;
+      color: var(--ivory);
       transition: background .3s, border-color .3s, color .3s;
       text-decoration: none;
       position: relative;
@@ -166,7 +104,7 @@
     .contact-btn {
       font-family: 'Montserrat', sans-serif; font-weight: 300;
       font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase;
-      color: rgba(245,240,232,0.7); background: none; border: none; cursor: none;
+      color: rgba(245,240,232,0.7); background: none; border: none;
       padding: 6px 0; transition: color .3s;
     }
 
@@ -239,7 +177,7 @@
       backdrop-filter: blur(4px);
       display: flex; align-items: center; justify-content: center;
       color: white; font-size: 1.4rem;
-      border: none; transition: background 0.3s; cursor: none;
+      border: none; transition: background 0.3s;
     }
 
     .hero-pause-btn:hover { background: rgba(255,255,255,0.3); }
@@ -261,14 +199,14 @@
       display: flex; align-items: center; justify-content: space-between; gap: 1rem;
     }
 
-    .vc-btn { font-size: 1rem; color: white; background: none; border: none; transition: color 0.2s; cursor: none; }
+    .vc-btn { font-size: 1rem; color: white; background: none; border: none; transition: color 0.2s; }
     .vc-btn:hover { color: #d4d4d4; }
     .vc-time { font-size: 0.65rem; color: white; min-width: 40px; }
 
     #video-progress {
       flex: 1; -webkit-appearance: none;
       height: 3px; background: rgba(255,255,255,0.2);
-      border-radius: 2px; cursor: none;
+      border-radius: 2px;
       accent-color: white; outline: none;
     }
 
@@ -310,7 +248,7 @@
 
     .cat-card {
       position: relative; overflow: hidden;
-      cursor: none; aspect-ratio: 3/4;
+      aspect-ratio: 3/4;
       display: block;
     }
 
@@ -367,7 +305,7 @@
       font-size: 9px; letter-spacing: 0.4em; text-transform: uppercase;
       color: rgba(245,240,232,0.75);
       border: 1px solid rgba(245,240,232,0.15);
-      text-decoration: none; cursor: none;
+      text-decoration: none;
       transition: color .4s, border-color .4s, background .4s;
       position: relative; overflow: hidden;
     }
@@ -388,7 +326,7 @@
 
     .split-block {
       position: relative; overflow: hidden;
-      min-height: 85vh; cursor: none;
+      min-height: 85vh;
     }
 
     .split-block img {
@@ -425,7 +363,7 @@
       font-size: 9px; letter-spacing: 0.4em; text-transform: uppercase;
       color: var(--ivory);
       border: 1px solid rgba(245,240,232,0.4);
-      text-decoration: none; cursor: none;
+      text-decoration: none;
       transition: border-color .4s, color .4s, background .4s;
     }
 
@@ -500,7 +438,7 @@
       background: none; border: 1px solid rgba(0,0,0,0.12);
       color: #888; font-size: 1.1rem;
       display: flex; align-items: center; justify-content: center;
-      cursor: none; transition: border-color .3s, color .3s;
+      transition: border-color .3s, color .3s;
     }
 
     #menu-panel .panel-close { border-color: rgba(184,151,90,0.25); color: #1a1a1a; }
@@ -580,7 +518,6 @@
     #toast.show { opacity: 1; transform: translateX(-50%) translateY(-6px); }
 
     a { text-decoration: none; }
-    * { cursor: none !important; }
 
     @media (max-width: 900px) {
       .categories-grid { grid-template-columns: repeat(2, 1fr); }
@@ -589,7 +526,6 @@
     @media (max-width: 768px) {
       .split-section { grid-template-columns: 1fr; }
 
-      #top-bar,
       #navbar {
         padding-left: 16px;
         padding-right: 16px;
@@ -628,11 +564,7 @@
     }
 
     @media (max-width: 640px) {
-      #top-bar { display: none; }
-      #navbar {
-        transform: translateY(0);
-        grid-template-columns: auto 1fr auto;
-      }
+      #navbar { grid-template-columns: auto 1fr auto; }
       .nav-left { display: none; }
       .nav-logo { font-size: 0.78rem; letter-spacing: 0.24em; }
       .categories-section { padding: 80px 20px; }
@@ -644,10 +576,8 @@
 
     @media (hover: none), (pointer: coarse) {
       body { cursor: auto; }
-      #cursor-dot, #cursor-ring { display: none; }
       .nav-btn,
       .contact-btn,
-      .contact-floating-button,
       .quick-add-btn,
       .hero-pause-btn,
       .cta-link,
@@ -655,27 +585,6 @@
       .social-link { cursor: pointer; }
     }
 
-    body.mobile-view #top-bar {
-      display: grid !important;
-      grid-template-columns: minmax(0, 1fr) auto;
-      padding: 12px 12px;
-      align-items: center;
-      gap: 8px;
-      background: linear-gradient(to bottom, rgba(8,8,8,0.92), rgba(8,8,8,0.15));
-      width: 100vw;
-      max-width: 100vw;
-    }
-    body.mobile-view #navbar { display: none; }
-    body.mobile-view .contact-floating-button {
-      font-size: 9px;
-      letter-spacing: 0.05em;
-      white-space: nowrap;
-      gap: 0.2rem;
-      min-width: 0;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    body.mobile-view .top-icons { gap: 4px; }
     body.mobile-view .nav-btn {
       width: 28px;
       height: 28px;
@@ -686,7 +595,6 @@
       width: 14px !important;
       height: 14px !important;
     }
-    body.mobile-view #top-bar .search-container { position: static; }
     body.mobile-view #dual-hero { height: 100svh; min-height: 680px; }
     body.mobile-view #dual-hero,
     body.mobile-view .hero-video-wrap,
@@ -765,8 +673,6 @@
       gap: 18px;
     }
     @media (max-width: 430px) {
-      body.mobile-view #top-bar { padding: 10px 10px; gap: 6px; }
-      body.mobile-view .contact-floating-button { font-size: 8px; letter-spacing: 0.04em; }
       body.mobile-view .brand-title {
         font-size: clamp(1.7rem, 9vw, 2.4rem);
         letter-spacing: 0.12em;
@@ -802,40 +708,7 @@
   </style>
 </head>
 <body>
-  <div id="cursor-dot"></div>
-  <div id="cursor-ring"></div>
   <div id="toast"></div>
-
-  <div id="top-bar">
-    <button onclick="openPanel('contact-panel')" class="contact-floating-button">
-      <span class="plus-icon">+</span> Contact Us
-    </button>
-
-    <div class="top-icons">
-      <div class="search-container">
-        <button class="nav-btn search-toggle" aria-label="Search">
-          <i data-lucide="search"></i>
-        </button>
-        <div class="search-dropdown">
-          <input type="text" class="search-input" placeholder="Search products...">
-          <div class="search-results"></div>
-        </div>
-      </div>
-
-      <a href="login.html" class="nav-btn" aria-label="Account">
-        <i data-lucide="user"></i>
-      </a>
-
-      <a href="cart.html" class="nav-btn" id="cart-btn" aria-label="Cart">
-        <i data-lucide="shopping-bag"></i>
-        <span class="cart-badge" id="cart-count">0</span>
-      </a>
-
-      <button class="nav-btn" onclick="openPanel('menu-panel')" aria-label="Menu">
-        <i data-lucide="menu"></i>
-      </button>
-    </div>
-  </div>
 
   <nav id="navbar">
     <div class="nav-left">
@@ -861,7 +734,7 @@
 
       <a href="cart.html" class="nav-btn" aria-label="Cart">
         <i data-lucide="shopping-bag"></i>
-        <span class="cart-badge" id="cart-count-nav">0</span>
+        <span class="cart-badge" id="cart-count">0</span>
       </a>
 
       <button class="nav-btn" onclick="openPanel('menu-panel')" aria-label="Menu">
@@ -1071,46 +944,16 @@
   <script src="products.js"></script>
 
   <script>
-    const dot = document.getElementById('cursor-dot');
-    const ring = document.getElementById('cursor-ring');
-
-    document.addEventListener('mousemove', e => {
-      dot.style.left = e.clientX + 'px';
-      dot.style.top = e.clientY + 'px';
-      ring.style.left = e.clientX + 'px';
-      ring.style.top = e.clientY + 'px';
-    });
-
-    function bindCursorHover() {
-      document.querySelectorAll('a, button, input, [data-hover]').forEach(el => {
-        el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
-        el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
-      });
-    }
-
     function applyMobileMode() {
       const mobile = window.matchMedia('(max-width: 768px), (pointer: coarse)').matches;
       document.body.classList.toggle('mobile-view', mobile);
     }
 
-    function handleNavbarScroll() {
-      if (document.body.classList.contains('mobile-view')) {
-        document.getElementById('navbar').classList.remove('scrolled');
-        document.getElementById('top-bar').classList.remove('hidden');
-        return;
-      }
-      const past = window.scrollY > window.innerHeight * 0.6;
-      document.getElementById('navbar').classList.toggle('scrolled', past);
-      document.getElementById('top-bar').classList.toggle('hidden', past);
-    }
-
-    window.addEventListener('scroll', handleNavbarScroll);
-
     function updateCartCount() {
       const cart = JSON.parse(localStorage.getItem('cart')) || [];
       const total = cart.reduce((s, i) => s + (i.quantity || i.qty || 1), 0);
 
-      ['cart-count', 'cart-count-nav'].forEach(id => {
+      ['cart-count'].forEach(id => {
         const el = document.getElementById(id);
         if (el) {
           el.textContent = total;
@@ -1328,13 +1171,10 @@
       AOS.init({ duration: 1000, once: true, easing: 'ease-out-quart' });
       lucide.createIcons();
       applyMobileMode();
-      bindCursorHover();
       updateCartCount();
       initSearchDropdowns();
-      handleNavbarScroll();
       window.addEventListener('resize', () => {
         applyMobileMode();
-        handleNavbarScroll();
       });
     });
   </script>
