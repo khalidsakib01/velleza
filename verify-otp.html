@@ -6,13 +6,13 @@
   <title>Verify OTP - VELLEZA</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@400;500;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet" />
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 
-  <link rel="stylesheet" href="auth-shared.css" />
+  <link rel="stylesheet" href="auth-shared.css?v=3" />
 </head>
 <body>
   <nav id="navbar">
@@ -27,7 +27,7 @@
       <div class="search-container">
         <button class="nav-btn search-toggle" aria-label="Search"><i data-lucide="search"></i></button>
         <div class="search-dropdown">
-          <input type="text" class="search-input" placeholder="Search products..." />
+          <input type="text" class="search-input" placeholder="Search" />
           <div class="search-results"></div>
         </div>
       </div>
@@ -116,7 +116,8 @@
 
   <div id="overlay" onclick="closePanels()"></div>
 
-  <script src="products.js"></script>
+  <script src="products.js?v=2"></script>
+  <script src="search-shared.js?v=4"></script>
   <script src="auth-shared.js"></script>
 
   <script>

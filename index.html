@@ -141,7 +141,7 @@
       padding: 6px 0; transition: color .3s, opacity .3s;
       display: inline-flex;
       align-items: center;
-      gap: 0.45rem;
+      gap: 0.22rem;
     }
 
     .contact-btn:hover { color: var(--gold); }
@@ -150,7 +150,7 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 0.9rem;
+      width: 0.65rem;
       transition: transform .45s cubic-bezier(0.23,1,0.32,1);
       transform-origin: center center;
     }
@@ -801,7 +801,51 @@
     }
     body.mobile-view .split-content,
     body.mobile-view .split-text { padding: 40px 22px; }
-    body.mobile-view .search-dropdown { max-height: 48vh; }
+    body.mobile-view .search-container { position: relative !important; }
+    body.mobile-view .search-dropdown {
+      position: fixed !important;
+      top: calc(var(--mobile-nav-height) + 6px) !important;
+      right: 8px !important;
+      left: auto !important;
+      width: min(286px, calc(100vw - 16px)) !important;
+      max-width: min(286px, calc(100vw - 16px)) !important;
+      max-height: min(52vh, 360px);
+      border-radius: 16px;
+      z-index: 650;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.38);
+    }
+    body.mobile-view .search-results {
+      max-height: min(44vh, 300px);
+    }
+    body.mobile-view .search-result-item {
+      display: grid;
+      grid-template-columns: 36px minmax(0, 1fr);
+      align-items: center;
+      gap: 9px;
+      min-width: 0;
+      padding: 9px 12px;
+    }
+    body.mobile-view .search-result-item > div {
+      min-width: 0;
+    }
+    body.mobile-view .search-result-item img {
+      width: 36px;
+      height: 36px;
+    }
+    body.mobile-view .search-result-name {
+      font-size: 12px;
+      line-height: 1.12;
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+    body.mobile-view .search-result-meta {
+      margin-top: 3px;
+      font-size: 8px;
+      line-height: 1.28;
+      letter-spacing: 0.06em;
+      white-space: normal;
+    }
     body.mobile-view .panel { width: 100vw; max-width: 100vw; }
     body.mobile-view .footer-section { padding: 2.25rem 1.1rem; }
     body.mobile-view .footer-grid { grid-template-columns: 1fr !important; gap: 1.15rem !important; }
@@ -903,7 +947,7 @@
           <i data-lucide="search"></i>
         </button>
         <div class="search-dropdown">
-          <input type="text" class="search-input" placeholder="Search products...">
+          <input type="text" class="search-input" placeholder="Search">
           <div class="search-results"></div>
         </div>
       </div>
@@ -1115,7 +1159,8 @@
   <div id="overlay" onclick="closePanels()"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-  <script src="products.js"></script>
+  <script src="products.js?v=2"></script>
+  <script src="search-shared.js?v=4"></script>
 
   <script>
     const brandTransition = document.getElementById('brand-transition');
@@ -1381,85 +1426,19 @@
       t._timer = setTimeout(() => t.classList.remove('show'), 2400);
     }
 
-    function closeSearchDropdowns() {
-      document.querySelectorAll('.search-dropdown.open').forEach(dropdown => {
-        dropdown.classList.remove('open');
-      });
-    }
-
-    function filterProducts(q, resultsEl) {
-      if (typeof products === 'undefined' || !resultsEl) return;
-
-      const list = q.trim() === ''
-        ? products
-        : products.filter(p =>
-            p.name.toLowerCase().includes(q.toLowerCase()) ||
-            p.category.toLowerCase().includes(q.toLowerCase())
-          );
-
-      if (list.length === 0) {
-        resultsEl.innerHTML = '<p style="padding:14px 16px;font-size:11px;color:#aaa;letter-spacing:0.1em">No results found.</p>';
-        return;
-      }
-
-      resultsEl.innerHTML = list.map(p => `
-        <a href="product.html?product=${encodeURIComponent(p.name)}" class="search-result-item">
-          <img src="${p.image}" alt="${p.name}" onerror="this.src='gucci1.png'">
-          <div>
-            <p class="search-result-name">${p.name}</p>
-            <p class="search-result-meta">${p.currency}${p.price} - ${p.category}</p>
-          </div>
-        </a>
-      `).join('');
-    }
-
-    function findSearchMatch(query) {
-      if (typeof products === 'undefined') return null;
-      const normalized = query.trim().toLowerCase();
-      if (!normalized) return null;
-
-      return products.find(p => p.name.toLowerCase() === normalized)
-        || products.find(p => p.name.toLowerCase().includes(normalized))
-        || products.find(p => p.category.toLowerCase().includes(normalized));
-    }
-
     function initSearchDropdowns() {
-      document.querySelectorAll('.search-container').forEach(container => {
-        const toggle = container.querySelector('.search-toggle');
-        const dropdown = container.querySelector('.search-dropdown');
-        const input = container.querySelector('.search-input');
-        const results = container.querySelector('.search-results');
-
-        if (!toggle || !dropdown || !input || !results) return;
-
-        toggle.addEventListener('click', e => {
-          e.stopPropagation();
-          const willOpen = !dropdown.classList.contains('open');
-          closeSearchDropdowns();
-          dropdown.classList.toggle('open', willOpen);
-
-          if (willOpen) {
-            input.focus();
-            filterProducts('', results);
-          }
-        });
-
-        dropdown.addEventListener('click', e => e.stopPropagation());
-        input.addEventListener('input', () => filterProducts(input.value, results));
-        input.addEventListener('keydown', e => {
-          if (e.key !== 'Enter') return;
-          e.preventDefault();
-          const match = findSearchMatch(input.value);
-          if (match) {
-            window.location.href = `product.html?product=${encodeURIComponent(match.name)}`;
-            return;
-          }
-          filterProducts(input.value, results);
-          showToast('Product not found');
-        });
+      if (!window.VellezaSearch) return;
+      window.VellezaSearch.initDropdownSearches({
+        containerSelector: '.search-container',
+        toggleSelector: '.search-toggle',
+        dropdownSelector: '.search-dropdown',
+        inputSelector: '.search-input',
+        resultsSelector: '.search-results',
+        itemClass: 'search-result-item',
+        nameClass: 'search-result-name',
+        metaClass: 'search-result-meta',
+        noResultsText: 'No matching products found.'
       });
-
-      document.addEventListener('click', closeSearchDropdowns);
     }
 
     document.addEventListener('DOMContentLoaded', () => {

@@ -6,19 +6,18 @@
   <title>Phone Login - VELLEZA</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@400;500;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet" />
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 
-  <link rel="stylesheet" href="auth-shared.css" />
+  <link rel="stylesheet" href="auth-shared.css?v=3" />
 </head>
-<body>
+<body class="phone-page">
   <nav id="navbar">
     <div class="nav-left">
-      <a href="index.html" class="pill-btn">Home</a>
-      <button class="pill-btn" type="button" onclick="openPanel('contact-panel')">Contact</button>
+      <button onclick="openPanel('contact-panel')" class="contact-btn"><span class="contact-btn-mark">+</span><span>Contact Us</span></button>
     </div>
 
     <a href="index.html" class="nav-logo">VELLEZA</a>
@@ -27,7 +26,7 @@
       <div class="search-container">
         <button class="nav-btn search-toggle" aria-label="Search"><i data-lucide="search"></i></button>
         <div class="search-dropdown">
-          <input type="text" class="search-input" placeholder="Search products..." />
+          <input type="text" class="search-input" placeholder="Search" />
           <div class="search-results"></div>
         </div>
       </div>
@@ -42,11 +41,16 @@
   </nav>
 
   <main class="auth-wrapper">
-    <section class="auth-shell" style="width:min(560px,100%);">
+    <section class="auth-shell">
       <section class="form-pane">
         <p class="brand-kicker">Velleza Secure Access</p>
         <h1 class="brand-title" style="margin-top:8px;">Phone Sign In</h1>
         <p class="brand-copy" style="max-width:100%;">Enter your number in international format. We will send a one-time secure code.</p>
+        <div class="social-strip" aria-hidden="true" style="margin-top:18px;">
+          <span class="social-badge"><i data-lucide="smartphone"></i></span>
+          <span class="social-badge"><i data-lucide="message-square"></i></span>
+          <span class="social-badge"><i data-lucide="shield-check"></i></span>
+        </div>
 
         <label for="phoneNumber">Phone Number</label>
         <input id="phoneNumber" type="tel" placeholder="+8801XXXXXXXXX" autocomplete="tel" required />
@@ -68,18 +72,27 @@
   <footer class="footer-section">
     <div class="footer-inner">
       <div class="footer-grid">
-        <div><p class="footer-col-heading">VELLEZA Boutiques</p><a href="#" class="footer-col-link">VELLEZA FOOTWEAR</a></div>
-        <div><p class="footer-col-heading">Client Services</p><a href="#" class="footer-col-link">FAQ</a></div>
         <div>
-          <p class="footer-col-heading">The House of VELLEZA</p>
-          <a href="#" class="footer-col-link">Sustainability</a>
-          <a href="#" class="footer-col-link">Ethics &amp; Compliance</a>
-          <a href="#" class="footer-col-link">Careers</a>
+          <p class="footer-col-heading">VELLEZA Boutiques</p>
+          <a href="new-in.html?gender=men" class="footer-col-link">New In Men</a>
+          <a href="new-in.html?gender=women" class="footer-col-link">New In Women</a>
         </div>
         <div>
-          <p class="footer-col-heading">Legal Terms</p>
-          <a href="#" class="footer-col-link">Privacy Policy</a>
-          <a href="#" class="footer-col-link">Terms &amp; Conditions</a>
+          <p class="footer-col-heading">Client Services</p>
+          <a href="shipping-policy.html" class="footer-col-link">Shipping Policy</a>
+          <a href="refund-policy.html" class="footer-col-link">Refund & Returns</a>
+        </div>
+        <div>
+          <p class="footer-col-heading">The House</p>
+          <a href="women-section.html" class="footer-col-link">Women's Section</a>
+          <a href="men-section.html" class="footer-col-link">Men's Section</a>
+          <a href="cart.html" class="footer-col-link">Your Cart</a>
+        </div>
+        <div>
+          <p class="footer-col-heading">Legal</p>
+          <a href="privacy-policy.html" class="footer-col-link">Privacy Policy</a>
+          <a href="terms.html" class="footer-col-link">Terms &amp; Conditions</a>
+          <a href="refund-policy.html" class="footer-col-link">Refund Policy</a>
         </div>
       </div>
 
@@ -91,9 +104,9 @@
         </div>
 
         <div class="footer-social-links">
-          <a href="#" class="footer-social-link">Instagram</a><a href="#" class="footer-social-link">Facebook</a>
-          <a href="#" class="footer-social-link">X</a><a href="#" class="footer-social-link">TikTok</a>
-          <a href="#" class="footer-social-link">LinkedIn</a>
+          <a href="https://www.instagram.com" class="footer-social-link">Instagram</a><a href="https://www.facebook.com" class="footer-social-link">Facebook</a>
+          <a href="https://x.com" class="footer-social-link">X</a><a href="https://www.tiktok.com" class="footer-social-link">TikTok</a>
+          <a href="https://www.linkedin.com" class="footer-social-link">LinkedIn</a>
         </div>
       </div>
     </div>
@@ -104,21 +117,44 @@
     <p class="panel-label">Client Services</p>
     <h2 class="panel-title">Contact Us</h2>
     <div class="panel-rule"></div>
-    <div class="contact-row"><div><a href="tel:+8801943869880">+880 1943 869 880</a><p>Monday - Sunday, 10 AM - 8 PM</p></div></div>
-    <div class="contact-row"><div><a href="#">WhatsApp Support</a><p>Monday - Sunday, 10 AM - 8 PM</p></div></div>
+    <div class="contact-list">
+      <div class="contact-row">
+        <span class="contact-row-icon">📞</span>
+        <div>
+          <a href="tel:+8801943869880">+880 1943 869 880</a>
+          <p>Monday - Sunday, 10 AM - 8 PM</p>
+        </div>
+      </div>
+      <div class="contact-row">
+        <span class="contact-row-icon">💬</span>
+        <div>
+          <a href="#">WhatsApp Support</a>
+          <p>Monday - Sunday, 10 AM - 8 PM</p>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div id="menu-panel" class="panel">
     <button class="panel-close" onclick="closePanel('menu-panel')">&times;</button>
     <p class="panel-label">Navigation</p>
-    <div style="width:28px;height:1px;background:linear-gradient(90deg,var(--gold),transparent);margin-bottom:36px"></div>
-    <ul class="menu-nav"><li><a href="index.html">Home</a></li><li><a href="women-section.html">Women</a></li><li><a href="men-section.html">Men</a></li><li><a href="cart.html">Cart</a></li><li><a href="login.html">Account</a></li></ul>
-    <ul class="menu-sub-nav"><li><a href="#">Velleza Services</a></li><li><a href="#">World of Velleza</a></li><li><a href="#">Store Locator</a></li></ul>
+    <ul class="menu-nav">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="men-section.html">Men's Section</a></li>
+      <li><a href="women-section.html">Women's Section</a></li>
+      <li><a href="new-in.html?gender=men">New In Men</a></li>
+      <li><a href="new-in.html?gender=women">New In Women</a></li>
+    </ul>
+    <ul class="menu-sub-nav">
+      <li><a href="privacy-policy.html">Privacy Policy</a></li>
+      <li><a href="terms.html">Terms &amp; Conditions</a></li>
+    </ul>
   </div>
 
   <div id="overlay" onclick="closePanels()"></div>
 
-  <script src="products.js"></script>
+  <script src="products.js?v=2"></script>
+  <script src="search-shared.js?v=4"></script>
   <script src="auth-shared.js"></script>
 
   <script>
@@ -181,5 +217,3 @@
   </script>
 </body>
 </html>
-
-

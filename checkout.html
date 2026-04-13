@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Checkout | VELLEZA</title>
  
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Montserrat:wght@300;400;500&family=Playfair+Display:wght@400;500;700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
@@ -38,81 +38,86 @@
  
     .topbar {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 22px 48px;
-      background: rgba(8,8,8,0.98);
-      border-bottom: 1px solid rgba(184,151,90,0.1);
+      display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+      padding: 0 28px;
+      height: 68px;
+      background: rgba(8,8,8,0.96);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      backdrop-filter: blur(12px);
     }
  
     .topbar-logo {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.4rem; letter-spacing: 0.4em;
-      color: var(--ivory); text-decoration: none; font-weight: 400;
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem; letter-spacing: 0.45em;
+      color: var(--ivory); text-decoration: none; font-weight: 500;
+      text-transform: uppercase;
+      white-space: nowrap;
+      justify-self: center;
     }
  
     .topbar-back {
       font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase;
-      color: rgba(245,240,232,0.4); text-decoration: none;
-      display: flex; align-items: center; gap: 8px; transition: color 0.3s;
+      color: rgba(245,240,232,0.7); text-decoration: none;
+      display: inline-flex; align-items: center; gap: 8px; transition: color 0.3s;
+      justify-self: start;
     }
     .topbar-back:hover { color: var(--gold); }
  
     .secure-badge {
-      display: flex; align-items: center; gap: 6px;
+      display: inline-flex; align-items: center; gap: 6px;
       font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase;
-      color: rgba(245,240,232,0.3);
+      color: rgba(245,240,232,0.45);
+      justify-self: end;
     }
  
     .page-wrap {
-      max-width: 1100px; margin: 0 auto;
+      max-width: 860px; margin: 0 auto;
       padding: 130px 48px 80px;
-      display: grid; grid-template-columns: 1fr 360px;
-      gap: 60px; align-items: start;
     }
  
     @media (max-width: 860px) {
-      .page-wrap { grid-template-columns: 1fr; padding: 110px 24px 60px; }
+      .page-wrap { padding: 110px 24px 60px; }
     }
     @media (max-width: 640px) {
-      .topbar {
-        padding: 14px 16px;
-        min-height: 60px;
-      }
+      .topbar { padding: 0 12px; height: 58px; }
       .topbar-logo {
         font-size: 0.82rem;
         letter-spacing: 0.16em;
       }
+      .topbar-back { font-size: 7px; letter-spacing: 0.16em; gap: 6px; }
       .secure-badge { display: none; }
-      .page-wrap { padding: 88px 16px 40px; gap: 26px; }
-      .form-block,
-      .summary-panel { padding: 22px 16px; }
-      .summary-panel { position: static; top: auto; }
+      .page-wrap { padding: 88px 16px 40px; }
+      .form-block { padding: 22px 16px; }
       .phone-wrap { flex-direction: row; }
       .payment-option { align-items: flex-start; }
       .place-order-btn { letter-spacing: 0.24em; }
     }
     @media (max-width: 430px) {
-      .topbar { padding: 12px 10px; min-height: 54px; }
-      .topbar-back { font-size: 8px; letter-spacing: 0.14em; }
-      .topbar-logo { font-size: 0.72rem; letter-spacing: 0.12em; }
+      .topbar { padding: 0 9px; height: 54px; }
+      .topbar-back { font-size: 6px; letter-spacing: 0.12em; gap: 4px; }
+      .topbar-logo { font-size: 0.68rem; letter-spacing: 0.12em; }
       .secure-badge { font-size: 8px; letter-spacing: 0.12em; }
-      .page-wrap { padding: 76px 12px 30px; gap: 20px; }
-      .form-block,
-      .summary-panel { padding: 18px 12px; }
+      .page-wrap { padding: 76px 12px 30px; }
+      .form-block { padding: 18px 12px; }
       .section-title { font-size: clamp(1.35rem, 8vw, 1.9rem); letter-spacing: 0.06em; }
-      .payment-option { gap: 12px; padding: 14px 12px; }
-      .payment-option-label strong { font-size: 10px; letter-spacing: 0.12em; }
-      .payment-option-label span,
-      .ssl-note { font-size: 9px; }
-      .place-order-btn { padding: 14px 12px; font-size: 8px; letter-spacing: 0.16em; }
+      .payment-option { gap: 10px; padding: 12px 10px; }
+      .payment-option-label strong { font-size: 9px; letter-spacing: 0.1em; }
+      .place-order-btn { padding: 13px 10px; font-size: 8px; letter-spacing: 0.14em; }
       .payment-methods {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 10px;
+        gap: 8px;
       }
       .payment-option { min-height: 100%; }
       .payment-option-label strong,
       .payment-option-label span { word-break: break-word; }
+      .form-block-title { margin-bottom: 18px; }
+      .field { margin-bottom: 14px; }
+      .field label { font-size: 8px; letter-spacing: 0.22em; margin-bottom: 7px; }
+      .field input, .field select, .field textarea { padding: 11px 12px; font-size: 11px; }
+      .phone-prefix { padding: 11px 12px; font-size: 11px; }
+      .security-strip { margin-top: 12px; font-size: 7px; letter-spacing: 0.12em; }
+      .policy-links { gap: 10px; margin-top: 14px; padding-top: 14px; font-size: 8px; letter-spacing: 0.12em; }
     }
     @media (hover: none), (pointer: coarse) {
       body { cursor: auto; }
@@ -127,9 +132,7 @@
       label { cursor: pointer; }
     }
  
-    .section-label { font-size: 9px; letter-spacing: 0.45em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
-    .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 300; letter-spacing: 0.1em; margin-bottom: 6px; }
-    .section-divider { width: 36px; height: 1px; background: linear-gradient(90deg, var(--gold), transparent); margin-bottom: 40px; }
+    .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 300; letter-spacing: 0.1em; margin-bottom: 28px; text-transform: uppercase; }
  
     .form-block { background: var(--charcoal); border: 1px solid var(--ash); padding: 32px; margin-bottom: 20px; }
  
@@ -161,6 +164,100 @@
     .field.has-error .err-msg { display: block; }
     .field select option { background: var(--smoke); }
     .field textarea { resize: vertical; min-height: 80px; }
+
+    .smart-select {
+      position: relative;
+    }
+
+    .smart-select-input {
+      padding-right: 46px !important;
+      cursor: text;
+    }
+
+    .smart-select-toggle {
+      position: absolute;
+      top: 1px;
+      right: 1px;
+      width: 42px;
+      height: calc(100% - 2px);
+      border: none;
+      background: transparent;
+      color: rgba(245,240,232,0.72);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: color .25s ease, transform .25s ease;
+    }
+
+    .smart-select-toggle svg {
+      width: 15px;
+      height: 15px;
+      stroke-width: 1.7;
+    }
+
+    .smart-select.open .smart-select-toggle {
+      color: var(--gold-light);
+      transform: rotate(180deg);
+    }
+
+    .smart-select-panel {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      right: 0;
+      z-index: 40;
+      background: #141b1f;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px;
+      box-shadow: 0 22px 50px rgba(0,0,0,0.42);
+      padding: 8px 0;
+      opacity: 0;
+      transform: translateY(6px);
+      pointer-events: none;
+      transition: opacity .2s ease, transform .2s ease;
+    }
+
+    .smart-select.open .smart-select-panel {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .smart-select-list {
+      max-height: 240px;
+      overflow-y: auto;
+      padding: 0 8px;
+    }
+
+    .smart-select-option,
+    .smart-select-empty {
+      width: 100%;
+      border: none;
+      background: transparent;
+      color: var(--ivory);
+      text-align: left;
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 11px;
+      letter-spacing: 0.03em;
+    }
+
+    .smart-select-option {
+      cursor: pointer;
+      transition: background .18s ease, color .18s ease;
+    }
+
+    .smart-select-option:hover,
+    .smart-select-option.active {
+      background: rgba(255,255,255,0.05);
+      color: #ffffff;
+    }
+
+    .smart-select-empty {
+      color: rgba(245,240,232,0.42);
+      cursor: default;
+    }
  
     .phone-wrap { display: flex; }
     .phone-prefix { padding: 12px 14px; background: var(--ash); border: 1px solid var(--ash); border-right: none; color: rgba(245,240,232,0.5); font-size: 12px; letter-spacing: 0.05em; white-space: nowrap; }
@@ -170,7 +267,7 @@
  
     .payment-option {
       display: flex; align-items: center; gap: 16px;
-      padding: 16px 18px; border: 1px solid var(--ash);
+      padding: 15px 16px; border: 1px solid var(--ash);
       cursor: auto; transition: border-color 0.3s, background 0.3s; position: relative;
     }
     .payment-option:hover { border-color: rgba(184,151,90,0.3); background: rgba(184,151,90,0.04); }
@@ -183,23 +280,8 @@
     .payment-option.selected .radio-dot::after { opacity: 1; }
  
     .payment-option-label { flex: 1; }
-    .payment-option-label strong { display: block; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; margin-bottom: 3px; }
-    .payment-option-label span { font-size: 10px; color: rgba(245,240,232,0.4); letter-spacing: 0.05em; }
- 
-    .ssl-note { font-size: 10px; letter-spacing: 0.05em; color: rgba(245,240,232,0.35); line-height: 1.7; padding: 14px; background: var(--smoke); border-left: 2px solid var(--gold); margin-top: 12px; }
- 
-    .summary-panel { background: var(--charcoal); border: 1px solid var(--ash); padding: 32px; position: sticky; top: 100px; }
-    .summary-title { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 300; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--ash); }
- 
-    .summary-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgba(42,42,42,0.5); }
-    .summary-item img { width: 48px; height: 56px; object-fit: cover; }
-    .summary-item-info { flex: 1; min-width: 0; }
-    .summary-item-name { font-size: 11px; letter-spacing: 0.05em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 3px; }
-    .summary-item-qty { font-size: 9px; letter-spacing: 0.15em; color: rgba(245,240,232,0.35); }
-    .summary-item-price { font-size: 11px; letter-spacing: 0.1em; white-space: nowrap; }
- 
-    .summary-row { display: flex; justify-content: space-between; font-size: 11px; letter-spacing: 0.08em; color: rgba(245,240,232,0.5); padding: 7px 0; }
-    .summary-row.total { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: var(--ivory); letter-spacing: 0.12em; border-top: 1px solid var(--ash); margin-top: 12px; padding-top: 18px; }
+    .payment-option-label strong { display: block; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 500; margin-bottom: 5px; }
+    .payment-option-label span { font-size: 9px; color: rgba(245,240,232,0.4); letter-spacing: 0.04em; line-height: 1.6; }
  
     .place-order-btn {
       width: 100%; margin-top: 24px; padding: 16px;
@@ -237,16 +319,20 @@
  
     .security-strip {
       display: flex; align-items: center; justify-content: center; gap: 8px;
-      margin-top: 16px; font-size: 9px; letter-spacing: 0.2em;
+      margin-top: 14px; font-size: 9px; letter-spacing: 0.18em;
       text-transform: uppercase; color: rgba(245,240,232,0.25);
     }
     .policy-links {
       display: flex;
+      justify-content: center;
       flex-wrap: wrap;
-      gap: 14px;
+      gap: 16px;
       margin-top: 18px;
-      font-size: 10px;
-      letter-spacing: 0.08em;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
     }
     .policy-links a { color: rgba(245,240,232,0.52); text-decoration: none; }
     .policy-links a:hover { color: var(--gold); }
@@ -265,7 +351,7 @@
       <i data-lucide="arrow-left" style="width:14px;height:14px;"></i>
       Back to Cart
     </a>
-    <a href="index.html" class="topbar-logo">Velleza</a>
+    <a href="index.html" class="topbar-logo">VELLEZA</a>
     <div class="secure-badge">
       <i data-lucide="lock" style="width:12px;height:12px;"></i>
       Secure Checkout
@@ -274,9 +360,7 @@
  
   <div class="page-wrap">
     <div>
-      <p class="section-label">Step 1 of 2</p>
       <h1 class="section-title">Checkout</h1>
-      <div class="section-divider"></div>
  
       <form id="checkout-form" novalidate>
         <div class="form-block">
@@ -284,12 +368,12 @@
           <div class="form-row">
             <div class="field" id="field-name">
               <label for="name">Full Name *</label>
-              <input type="text" id="name" placeholder="e.g. Rahman Ahmed">
+              <input type="text" id="name">
               <p class="err-msg">Please enter your full name</p>
             </div>
             <div class="field" id="field-email">
               <label for="email">Email Address *</label>
-              <input type="email" id="email" placeholder="you@example.com">
+              <input type="email" id="email">
               <p class="err-msg">Please enter a valid email</p>
             </div>
           </div>
@@ -297,7 +381,7 @@
             <label for="phone">Phone Number *</label>
             <div class="phone-wrap">
               <span class="phone-prefix">+880</span>
-              <input type="tel" id="phone" placeholder="017XXXXXXXX or 17XXXXXXXX" maxlength="11">
+              <input type="tel" id="phone" maxlength="11">
             </div>
             <p class="err-msg">Please enter a valid BD phone number</p>
           </div>
@@ -306,27 +390,45 @@
         <div class="form-block">
           <p class="form-block-title">Shipping Address</p>
           <div class="form-row">
+            <div class="field" id="field-division">
+              <label for="division">Division *</label>
+              <div class="smart-select" data-select="division">
+                <input type="text" id="division" class="smart-select-input" autocomplete="off">
+                <button type="button" class="smart-select-toggle" data-toggle="division" aria-label="Open division options">
+                  <i data-lucide="chevron-down"></i>
+                </button>
+                <div class="smart-select-panel" id="division-panel">
+                  <div class="smart-select-list" id="division-list"></div>
+                </div>
+              </div>
+              <p class="err-msg">Please select your division</p>
+            </div>
             <div class="field" id="field-city">
               <label for="city">City *</label>
-              <select id="city">
-                <option value="">Select city</option>
-                <option value="Dhaka">Dhaka</option>
-                <option value="Chittagong">Chittagong</option>
-                <option value="Sylhet">Sylhet</option>
-                <option value="Rajshahi">Rajshahi</option>
-                <option value="Khulna">Khulna</option>
-                <option value="Barisal">Barisal</option>
-                <option value="Rangpur">Rangpur</option>
-                <option value="Mymensingh">Mymensingh</option>
-                <option value="Comilla">Comilla</option>
-                <option value="Other">Other</option>
-              </select>
+              <div class="smart-select" data-select="city">
+                <input type="text" id="city" class="smart-select-input" autocomplete="off">
+                <button type="button" class="smart-select-toggle" data-toggle="city" aria-label="Open city options">
+                  <i data-lucide="chevron-down"></i>
+                </button>
+                <div class="smart-select-panel" id="city-panel">
+                  <div class="smart-select-list" id="city-list"></div>
+                </div>
+              </div>
               <p class="err-msg">Please select your city</p>
             </div>
-            <div class="field">
-              <label for="district">District</label>
-              <input type="text" id="district" placeholder="e.g. Gulshan">
+          </div>
+          <div class="field" id="field-area">
+            <label for="area">Area *</label>
+            <div class="smart-select" data-select="area">
+              <input type="text" id="area" class="smart-select-input" autocomplete="off">
+              <button type="button" class="smart-select-toggle" data-toggle="area" aria-label="Open area options">
+                <i data-lucide="chevron-down"></i>
+              </button>
+              <div class="smart-select-panel" id="area-panel">
+                <div class="smart-select-list" id="area-list"></div>
+              </div>
             </div>
+            <p class="err-msg">Please select your area</p>
           </div>
           <div class="field form-row single" id="field-address">
             <label for="address">Street Address *</label>
@@ -335,7 +437,7 @@
           </div>
           <div class="field">
             <label for="postal">Postal Code</label>
-            <input type="text" id="postal" placeholder="e.g. 1212" maxlength="6">
+            <input type="text" id="postal" maxlength="6">
           </div>
         </div>
  
@@ -346,8 +448,7 @@
               <input type="radio" name="payment" value="sslcommerz">
               <div class="radio-dot"></div>
               <div class="payment-option-label">
-                <strong>bKash / Nagad / Cards / Net Banking</strong>
-                <span>Demo sandbox payment flow for testing checkout experience</span>
+                <strong>Online Payment</strong>
               </div>
             </label>
             <label class="payment-option selected">
@@ -355,15 +456,8 @@
               <div class="radio-dot"></div>
               <div class="payment-option-label">
                 <strong>Cash on Delivery</strong>
-                <span>Recommended for real orders. Pay when your package arrives.</span>
               </div>
             </label>
-          </div>
-          <div class="ssl-note" id="ssl-note">
-            Online payment is connected to the SSLCommerz demo sandbox.
-            <br><br>
-            <strong style="color:rgba(245,240,232,0.6);">Use Cash on Delivery for real customer orders.</strong>
-            Demo payment is only for testing. Orders are still saved before redirect either way.
           </div>
         </div>
  
@@ -371,7 +465,7 @@
           <p class="form-block-title">Order Note</p>
           <div class="field">
             <label for="note">Special Instructions (optional)</label>
-            <textarea id="note" placeholder="Any note for delivery..."></textarea>
+            <textarea id="note"></textarea>
           </div>
         </div>
  
@@ -388,17 +482,6 @@
         </div>
       </form>
     </div>
- 
-    <div>
-      <div class="summary-panel" id="summary-panel">
-        <h2 class="summary-title">Your Order</h2>
-        <div class="summary-items" id="summary-items">
-          <p style="font-size:11px;color:rgba(245,240,232,0.3);">Loading...</p>
-        </div>
-        <div id="summary-totals"></div>
-        <button type="button" class="place-order-btn js-place-order" style="margin-top:20px;">Confirm Order (COD)</button>
-      </div>
-    </div>
   </div>
  
   <script>
@@ -407,8 +490,87 @@
     const checkoutForm = document.getElementById('checkout-form');
     const paymentOptions = document.querySelectorAll('.payment-option');
     const orderButtons = document.querySelectorAll('.js-place-order');
-    const sslNote = document.getElementById('ssl-note');
     let isSubmittingOrder = false;
+
+    const LOCATION_API = 'https://bdapis.vercel.app/geo/v2.0';
+    const locationCache = {
+      divisions: [],
+      districts: [],
+      upazilasByDistrict: {}
+    };
+    const selectedLocationIds = {
+      divisionId: '',
+      districtId: ''
+    };
+    let locationInitPromise = null;
+    const DISTRICT_AREA_OVERRIDES = {
+      Dhaka: [
+        'Adabar', 'Aftabnagar', 'Agargaon', 'Azimpur', 'Badda', 'Banasree', 'Banglamotor',
+        'Bangshal', 'Banani', 'Basabo', 'Bashundhara', 'Cantonment', 'Chawkbazar',
+        'Dakshinkhan', 'Darus Salam', 'Demra', 'Dhamrai', 'Dhanmondi', 'Dohar', 'Elephant Road',
+        'Eskaton', 'Farmgate', 'Gendaria', 'Gopibagh', 'Gulshan', 'Hatirjheel', 'Hazaribagh',
+        'Islampur', 'Jatrabari', 'Jurain', 'Kachukhet', 'Kadamtali', 'Kafrul', 'Kalabagan',
+        'Kamalapur', 'Kamrangirchar', 'Karwan Bazar', 'Kathalbagan', 'Keraniganj', 'Khilgaon',
+        'Khilkhet', 'Kotwali', 'Kuril', 'Lalbagh', 'Malibagh', 'Merul Badda', 'Mirpur',
+        'Mohakhali', 'Mohammadpur', 'Moghbazar', 'Mohakhali DOHS', 'Motijheel', 'Mugda',
+        'Nawabganj', 'Niketan', 'Nikunja', 'Pallabi', 'Paltan', 'Panthapath', 'Postogola',
+        'Purana Paltan', 'Ramna', 'Rampura', 'Rayerbazar', 'Sabujbagh', 'Savar', 'Segunbagicha',
+        'Shah Ali', 'Shahbagh', 'Shajahanpur', 'Shewrapara', 'Sher-e-Bangla Nagar', 'Shyampur',
+        'Sutrapur', 'Tejgaon', 'Tejgaon Industrial Area', 'Turag', 'Uttara', 'Vatara', 'Wari'
+      ],
+      Chattogram: [
+        'Agrabad', 'Anderkilla', 'Bakalia', 'Bayezid', 'CEPZ', 'Chandgaon', 'Double Mooring',
+        'EPZ', 'Fatikchhari', 'GEC', 'Halishahar', 'Hathazari', 'Jamal Khan', 'Khulshi',
+        'Kotwali', 'Lalkhan Bazar', 'Mehedibag', 'Muradpur', 'Nasirabad', 'Pahartali',
+        'Panchlaish', 'Patenga', 'Port Area', 'Probartak', 'Raozan', 'Sitakunda'
+      ],
+      Gazipur: [
+        'Board Bazar', 'Gazipur Chowrasta', 'Joydebpur', 'Kaliakair', 'Kapasia', 'Konabari',
+        'Pubail', 'Sreepur', 'Tongi'
+      ],
+      Narayanganj: [
+        'Araihazar', 'Bandar', 'Fatullah', 'Kanchpur', 'Narayanganj Sadar', 'Rupganj',
+        'Shiddhirganj', 'Sonargaon'
+      ],
+      Sylhet: [
+        'Amberkhana', 'Beanibazar', 'Bishwanath', 'Chhatak', 'Golapganj', 'Jalalabad', 'Jindabazar',
+        'Kadamtali', 'Kotwali', 'Moulvibazar Road', 'Osmani Nagar', 'Subhanighat', 'Sunamganj Road',
+        'Sylhet Sadar', 'Tilagor'
+      ],
+      Khulna: [
+        'Batiaghata', 'Boyra', 'Daulatpur', 'Dighalia', 'Khalishpur', 'Khan Jahan Ali',
+        'Khulna Sadar', 'Koyra', 'Paikgachha', 'Rupsha', 'Sonadanga', 'Terokhada'
+      ],
+      Rajshahi: [
+        'Boalia', 'Kazla', 'Laxmipur', 'Motihar', 'Paba', 'Rajpara', 'Rajshahi Court', 'Rajshahi Sadar',
+        'Saheb Bazar', 'Shaheb Bazar', 'Shiroil', 'Uposhohor'
+      ],
+      Barishal: [
+        'Alekanda', 'Amtala', 'Barishal Sadar', 'Bells Park', 'C&B Road', 'Chowmatha',
+        'Kawnia', 'Nathullabad', 'Rupatali', 'Sadar Road'
+      ],
+      Rangpur: [
+        'Badarganj', 'Jahaj Company', 'Mahiganj', 'Mithapukur', 'Modern Mor', 'Payra Chattar',
+        'Rangpur Sadar', 'Shapla Chattar'
+      ],
+      Mymensingh: [
+        'Bhaluka', 'Charpara', 'Ganginarpar', 'Maskanda', 'Mymensingh Sadar', 'Shambhuganj',
+        'Tarakanda', 'Trishal', 'Valuka'
+      ],
+      Cumilla: [
+        'Brahmanpara', 'Burichang', 'Chandina', 'Chouddagram', 'Cumilla Cantonment', 'Cumilla Sadar',
+        'Daudkandi', 'Kotbari', 'Laksham'
+      ],
+      "Cox's Bazar": [
+        "Cox's Bazar Sadar", 'Kolatoli', 'Marine Drive', 'Ramu', 'Teknaf', 'Ukhia'
+      ],
+      Jashore: [
+        'Bagherpara', 'Benapole', 'Jashore Cantonment', 'Jashore Sadar', 'Jhikargacha', 'Noapara'
+      ],
+      Bogura: [
+        'Bogura Sadar', 'Gabtali', 'Nandigram', 'Sherpur', 'Shibganj'
+      ]
+    };
  
     const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
       ? 'http://localhost:4000'
@@ -456,35 +618,6 @@
       } catch { return []; }
     }
  
-    function renderSummary() {
-      const cart = getCart();
-      const itemsEl = document.getElementById('summary-items');
-      const totalsEl = document.getElementById('summary-totals');
- 
-      if (cart.length === 0) {
-        itemsEl.innerHTML = '<p style="font-size:11px;color:rgba(245,240,232,0.3);">Your cart is empty. <a href="index.html" style="color:var(--gold);">Shop now</a></p>';
-        totalsEl.innerHTML = '';
-        return;
-      }
- 
-      itemsEl.innerHTML = cart.map((item) => `
-        <div class="summary-item">
-          <img src="${item.image}" alt="${item.name}" onerror="this.src='gucci1.png'">
-          <div class="summary-item-info">
-            <p class="summary-item-name">${item.name}</p>
-            <p class="summary-item-qty">Qty: ${item.quantity} | Size: ${item.size}</p>
-          </div>
-          <span class="summary-item-price">BDT ${(item.price * item.quantity).toLocaleString()}</span>
-        </div>
-      `).join('');
- 
-      const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-      totalsEl.innerHTML = `
-        <div class="summary-row"><span>Shipping</span><span>TBD</span></div>
-        <div class="summary-row total"><span>Total</span><span>BDT ${total.toLocaleString()}</span></div>
-      `;
-    }
-
     function prefillKnownCustomer() {
       const user = getStoredUser();
       if (!user) return;
@@ -560,7 +693,6 @@
         option.querySelector('input[type="radio"]').checked = true;
         const method = option.querySelector('input[type="radio"]').value;
         orderButtons.forEach((btn) => { btn.textContent = method === 'cod' ? 'Confirm Order (COD)' : 'Place Order & Pay'; });
-        sslNote.style.display = method === 'sslcommerz' ? 'block' : 'none';
       });
     });
  
@@ -578,14 +710,202 @@
       wrapper.classList.toggle('has-error', !isValid);
       input.classList.toggle('error', !isValid);
     }
+
+    async function fetchLocationJson(url) {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('Could not load location data.');
+      const payload = await response.json();
+      return Array.isArray(payload.data) ? payload.data : [];
+    }
+
+    function buildAreaOptions(districtId, districtName) {
+      const apiAreas = locationCache.upazilasByDistrict[districtId] || [];
+      const overrideAreas = (DISTRICT_AREA_OVERRIDES[districtName] || []).map((name, index) => ({
+        id: `${districtId}-custom-${index}`,
+        name
+      }));
+      return [...overrideAreas, ...apiAreas].filter((option, index, list) => {
+        return list.findIndex(item => item.name.toLowerCase() === option.name.toLowerCase()) === index;
+      });
+    }
+
+    async function setupLocationFields() {
+      const divisionInput = document.getElementById('division');
+      const cityInput = document.getElementById('city');
+      const areaInput = document.getElementById('area');
+
+      const selectState = {
+        division: { input: divisionInput, shell: divisionInput.closest('.smart-select'), list: document.getElementById('division-list'), options: [] },
+        city: { input: cityInput, shell: cityInput.closest('.smart-select'), list: document.getElementById('city-list'), options: [] },
+        area: { input: areaInput, shell: areaInput.closest('.smart-select'), list: document.getElementById('area-list'), options: [] }
+      };
+
+      let openKey = null;
+
+      function closeAllSelects() {
+        Object.values(selectState).forEach(state => state.shell.classList.remove('open'));
+        openKey = null;
+      }
+
+      function renderOptions(key) {
+        const state = selectState[key];
+        const query = state.input.value.trim().toLowerCase();
+        const filtered = state.options.filter(option => option.name.toLowerCase().includes(query));
+
+        if (!filtered.length) {
+          state.list.innerHTML = '<div class="smart-select-empty">No matching results</div>';
+          return;
+        }
+
+        state.list.innerHTML = filtered.map(option => `
+          <button type="button" class="smart-select-option${state.input.value.trim() === option.name ? ' active' : ''}" data-id="${option.id}" data-value="${option.name}">
+            ${option.name}
+          </button>
+        `).join('');
+
+        state.list.querySelectorAll('.smart-select-option').forEach(button => {
+          button.addEventListener('click', () => {
+            state.input.value = button.dataset.value || '';
+            if (key === 'division') selectedLocationIds.divisionId = button.dataset.id || '';
+            if (key === 'city') selectedLocationIds.districtId = button.dataset.id || '';
+            state.input.dispatchEvent(new Event('change', { bubbles: true }));
+            closeAllSelects();
+          });
+        });
+      }
+
+      function openSelect(key) {
+        if (openKey && openKey !== key) {
+          selectState[openKey].shell.classList.remove('open');
+        }
+        openKey = key;
+        selectState[key].shell.classList.add('open');
+        renderOptions(key);
+      }
+
+      function setOptions(key, options) {
+        selectState[key].options = options;
+        if (!options.some(option => option.name === selectState[key].input.value.trim())) {
+          selectState[key].input.value = '';
+        }
+        renderOptions(key);
+      }
+
+      async function updateCityOptions() {
+        const selectedDivisionId = selectedLocationIds.divisionId;
+        if (!selectedDivisionId) {
+          setOptions('city', []);
+          setOptions('area', []);
+          selectedLocationIds.districtId = '';
+          return;
+        }
+
+        const cities = locationCache.districts.filter(district => district.division_id === selectedDivisionId);
+        setOptions('city', cities.map(district => ({ id: district.id, name: district.name })));
+        await updateAreaOptions();
+      }
+
+      async function updateAreaOptions() {
+        const selectedDistrictId = selectedLocationIds.districtId;
+        if (!selectedDistrictId) {
+          setOptions('area', []);
+          return;
+        }
+
+        const districtName = cityInput.value.trim();
+        if (!locationCache.upazilasByDistrict[selectedDistrictId]) {
+          const upazilas = await fetchLocationJson(`${LOCATION_API}/upazilas/${selectedDistrictId}`);
+          locationCache.upazilasByDistrict[selectedDistrictId] = upazilas.map(item => ({ id: item.id, name: item.name }));
+        }
+
+        setOptions('area', buildAreaOptions(selectedDistrictId, districtName));
+      }
+
+      Object.entries(selectState).forEach(([key, state]) => {
+        state.input.addEventListener('focus', () => openSelect(key));
+        state.input.addEventListener('input', () => {
+          openSelect(key);
+          if (key === 'division') {
+            const match = selectState.division.options.find(option => option.name === state.input.value.trim());
+            selectedLocationIds.divisionId = match ? match.id : '';
+            selectedLocationIds.districtId = '';
+            cityInput.value = '';
+            areaInput.value = '';
+            updateCityOptions();
+          }
+          if (key === 'city') {
+            const match = selectState.city.options.find(option => option.name === state.input.value.trim());
+            selectedLocationIds.districtId = match ? match.id : '';
+            areaInput.value = '';
+            updateAreaOptions();
+          }
+          renderOptions(key);
+        });
+        state.input.addEventListener('change', () => {
+          if (key === 'division') {
+            const match = selectState.division.options.find(option => option.name === state.input.value.trim());
+            selectedLocationIds.divisionId = match ? match.id : '';
+            selectedLocationIds.districtId = '';
+            cityInput.value = '';
+            areaInput.value = '';
+            updateCityOptions();
+          }
+          if (key === 'city') {
+            const match = selectState.city.options.find(option => option.name === state.input.value.trim());
+            selectedLocationIds.districtId = match ? match.id : '';
+            areaInput.value = '';
+            updateAreaOptions();
+          }
+        });
+
+        const toggle = state.shell.querySelector('.smart-select-toggle');
+        toggle.addEventListener('click', event => {
+          event.preventDefault();
+          if (openKey === key) {
+            closeAllSelects();
+            state.input.blur();
+            return;
+          }
+          openSelect(key);
+          state.input.focus();
+        });
+      });
+
+      document.addEventListener('click', event => {
+        if (!event.target.closest('.smart-select')) {
+          closeAllSelects();
+        }
+      });
+
+      try {
+        const [divisions, districts] = await Promise.all([
+          fetchLocationJson(`${LOCATION_API}/divisions`),
+          fetchLocationJson(`${LOCATION_API}/districts`)
+        ]);
+        locationCache.divisions = divisions;
+        locationCache.districts = districts;
+        setOptions('division', divisions.map(item => ({ id: item.id, name: item.name })));
+      } catch (error) {
+        console.error(error);
+        showToast('Could not load location list right now.');
+      }
+    }
  
     function validateForm() {
       const name = document.getElementById('name').value.trim();
       const email = document.getElementById('email').value.trim();
       const phone = normalizePhone(document.getElementById('phone').value);
+      const division = document.getElementById('division').value.trim();
       const city = document.getElementById('city').value.trim();
+      const area = document.getElementById('area').value.trim();
       const address = document.getElementById('address').value.trim();
       const errors = [];
+      const divisionMatch = locationCache.divisions.find(item => item.name.toLowerCase() === division.toLowerCase());
+      const districtMatch = divisionMatch
+        ? locationCache.districts.find(item => item.division_id === divisionMatch.id && item.name.toLowerCase() === city.toLowerCase())
+        : locationCache.districts.find(item => item.name.toLowerCase() === city.toLowerCase());
+      const areaOptions = districtMatch ? buildAreaOptions(districtMatch.id, districtMatch.name) : [];
+      const areaMatch = areaOptions.find(item => item.name.toLowerCase() === area.toLowerCase());
  
       const nameOk = name.length >= 2;
       setFieldState('name', 'field-name', nameOk);
@@ -599,15 +919,35 @@
       setFieldState('phone', 'field-phone', phoneOk);
       if (!phoneOk) errors.push('phone number');
  
-      const cityOk = city !== '';
+      const divisionOk = Boolean(divisionMatch);
+      setFieldState('division', 'field-division', divisionOk);
+      if (!divisionOk) errors.push('division');
+      selectedLocationIds.divisionId = divisionMatch ? divisionMatch.id : '';
+
+      const cityOk = Boolean(districtMatch);
       setFieldState('city', 'field-city', cityOk);
       if (!cityOk) errors.push('city');
+      selectedLocationIds.districtId = districtMatch ? districtMatch.id : '';
+
+      const areaOk = Boolean(areaMatch);
+      setFieldState('area', 'field-area', areaOk);
+      if (!areaOk) errors.push('area');
  
       const addressOk = address.length >= 10;
       setFieldState('address', 'field-address', addressOk);
       if (!addressOk) errors.push('street address');
  
-      return { ok: errors.length === 0, errors, normalizedPhone: phone };
+      return {
+        ok: errors.length === 0,
+        errors,
+        normalizedPhone: phone,
+        division,
+        city,
+        area,
+        divisionId: selectedLocationIds.divisionId,
+        districtId: selectedLocationIds.districtId,
+        upazilaId: areaMatch ? areaMatch.id : ''
+      };
     }
 
     async function initiateSSLCommerz(orderData) {
@@ -651,6 +991,13 @@
         return;
       }
 
+      if (locationInitPromise) {
+        try {
+          await locationInitPromise;
+        } catch (_) {
+        }
+      }
+
       const recentLock = getRecentOrderLock();
       if (recentLock && Date.now() - recentLock.created_at < 20000) {
         showToast('Please wait a few seconds before submitting again.');
@@ -670,7 +1017,6 @@
       if (totalAmount <= 0) {
         showToast('Cart total is invalid. Please re-add the product.');
         setButtonsDisabled(false);
-        renderSummary();
         return;
       }
  
@@ -683,8 +1029,13 @@
           email: document.getElementById('email').value.trim(),
           phone: '+880' + validation.normalizedPhone,
           address: document.getElementById('address').value.trim(),
-          district: document.getElementById('district').value.trim(),
-          city: document.getElementById('city').value.trim(),
+          district: validation.city,
+          division: validation.division,
+          city: validation.city,
+          area: validation.area,
+          division_id: validation.divisionId,
+          district_id: validation.districtId,
+          upazila_id: validation.upazilaId,
           postcode: document.getElementById('postal').value.trim() || '1000',
           country: 'Bangladesh'
         },
@@ -772,7 +1123,7 @@
  
     document.addEventListener('DOMContentLoaded', () => {
       if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
-      renderSummary();
+      locationInitPromise = setupLocationFields();
       prefillKnownCustomer();
       const statusNotice = getCheckoutStatusNotice();
       if (statusNotice) showToast(statusNotice);

@@ -6,20 +6,17 @@
   <title>Create Account - VELLEZA</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@400;500;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet" />
   <script src="https://unpkg.com/lucide@latest"></script>
-
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-
-  <link rel="stylesheet" href="auth-shared.css" />
+  <link rel="stylesheet" href="auth-shared.css?v=3" />
 </head>
-<body>
+<body class="auth-page auth-mode-signup" data-auth-initial="signup">
   <nav id="navbar">
     <div class="nav-left">
-      <a href="index.html" class="pill-btn">Home</a>
-      <button class="pill-btn" type="button" onclick="openPanel('contact-panel')">Contact</button>
+      <button onclick="openPanel('contact-panel')" class="contact-btn"><span class="contact-btn-mark">+</span><span>Contact Us</span></button>
     </div>
 
     <a href="index.html" class="nav-logo">VELLEZA</a>
@@ -28,7 +25,7 @@
       <div class="search-container">
         <button class="nav-btn search-toggle" aria-label="Search"><i data-lucide="search"></i></button>
         <div class="search-dropdown">
-          <input type="text" class="search-input" placeholder="Search products..." />
+          <input type="text" class="search-input" placeholder="Search" />
           <div class="search-results"></div>
         </div>
       </div>
@@ -43,46 +40,83 @@
   </nav>
 
   <main class="auth-wrapper">
-    <section class="auth-shell two-col">
-      <section class="brand-pane">
-        <p class="brand-kicker">Velleza Atelier</p>
-        <h1 class="brand-title">Create Your Account</h1>
-        <p class="brand-copy">Join the private VELLEZA client space for curated launches, order history, and priority support.</p>
+    <section class="auth-shell auth-shell-switcher">
+      <section class="form-stage">
+        <section class="form-pane form-card login-card" data-auth-card="login">
+          <div class="auth-mobile-switch" aria-label="Authentication switch">
+            <a href="login.html" class="auth-mobile-switch-btn is-active" data-auth-switch data-target-mode="login">Sign In</a>
+            <a href="signup.html" class="auth-mobile-switch-btn" data-auth-switch data-target-mode="signup">Sign Up</a>
+          </div>
+          <p class="form-head">Sign In</p>
+
+          <form id="login-form">
+            <div>
+              <label for="login-email">Email Address</label>
+              <input id="login-email" type="email" required autocomplete="email" />
+            </div>
+
+            <div>
+              <label for="login-password">Password</label>
+              <input id="login-password" type="password" required autocomplete="current-password" />
+            </div>
+
+            <button id="login-submit-btn" class="btn" type="submit">Sign In</button>
+          </form>
+
+          <div class="meta-row">
+            <a href="#" id="forgot-password">Forgot password?</a>
+            <a href="phone-login.html">Continue with phone</a>
+          </div>
+
+          <p id="login-status" class="status" aria-live="polite"></p>
+        </section>
+
+        <section class="form-pane form-card signup-card" data-auth-card="signup">
+          <div class="auth-mobile-switch" aria-label="Authentication switch">
+            <a href="login.html" class="auth-mobile-switch-btn" data-auth-switch data-target-mode="login">Sign In</a>
+            <a href="signup.html" class="auth-mobile-switch-btn is-active" data-auth-switch data-target-mode="signup">Sign Up</a>
+          </div>
+          <p class="form-head">Create Account</p>
+
+          <form id="signup-form">
+            <div>
+              <label for="signup-name">Full Name</label>
+              <input id="signup-name" type="text" required autocomplete="name" />
+            </div>
+
+            <div>
+              <label for="signup-phone">Phone Number</label>
+              <input id="signup-phone" type="tel" required autocomplete="tel" placeholder="+8801XXXXXXXXX" />
+            </div>
+
+            <div>
+              <label for="signup-email">Email Address</label>
+              <input id="signup-email" type="email" required autocomplete="email" />
+            </div>
+
+            <div>
+              <label for="signup-password">Password (Minimum 8 Characters)</label>
+              <input id="signup-password" type="password" required minlength="8" autocomplete="new-password" />
+            </div>
+
+            <button id="signup-submit-btn" class="btn" type="submit">Create Account</button>
+          </form>
+
+          <div class="meta-row">
+            <a href="phone-login.html">Phone login</a>
+          </div>
+
+          <p id="signup-status" class="status" aria-live="polite"></p>
+        </section>
       </section>
 
-      <section class="form-pane">
-        <p class="form-head">Sign Up</p>
-
-        <form id="signup-form">
-          <div>
-            <label for="name">Full Name</label>
-            <input id="name" type="text" required autocomplete="name" />
-          </div>
-
-          <div>
-            <label for="phone">Phone Number</label>
-            <input id="phone" type="tel" required autocomplete="tel" placeholder="+8801XXXXXXXXX" />
-          </div>
-
-          <div>
-            <label for="email">Email Address</label>
-            <input id="email" type="email" required autocomplete="email" />
-          </div>
-
-          <div>
-            <label for="password">Password (Minimum 8 Characters)</label>
-            <input id="password" type="password" required minlength="8" autocomplete="new-password" />
-          </div>
-
-          <button id="submit-btn" class="btn" type="submit">Create Account</button>
-        </form>
-
-        <div class="meta-row">
-          <span>Already have an account? <a href="login.html">Sign in</a></span>
-          <a href="phone-login.html">Phone login</a>
+      <section class="brand-pane">
+        <p class="brand-kicker">VELLEZA Access</p>
+        <h1 class="brand-title" data-auth-brand-title>Welcome Back!</h1>
+        <p class="brand-copy" data-auth-brand-copy>To keep connected with us please sign in with your personal information.</p>
+        <div class="brand-action">
+          <a href="login.html" class="brand-switch-btn" data-auth-switch data-target-mode="login">Sign In</a>
         </div>
-
-        <p id="status" class="status" aria-live="polite"></p>
       </section>
     </section>
   </main>
@@ -92,22 +126,25 @@
       <div class="footer-grid">
         <div>
           <p class="footer-col-heading">VELLEZA Boutiques</p>
-          <a href="#" class="footer-col-link">VELLEZA FOOTWEAR</a>
+          <a href="new-in.html?gender=men" class="footer-col-link">New In Men</a>
+          <a href="new-in.html?gender=women" class="footer-col-link">New In Women</a>
         </div>
         <div>
           <p class="footer-col-heading">Client Services</p>
-          <a href="#" class="footer-col-link">FAQ</a>
+          <a href="shipping-policy.html" class="footer-col-link">Shipping Policy</a>
+          <a href="refund-policy.html" class="footer-col-link">Refund & Returns</a>
         </div>
         <div>
-          <p class="footer-col-heading">The House of VELLEZA</p>
-          <a href="#" class="footer-col-link">Sustainability</a>
-          <a href="#" class="footer-col-link">Ethics &amp; Compliance</a>
-          <a href="#" class="footer-col-link">Careers</a>
+          <p class="footer-col-heading">The House</p>
+          <a href="women-section.html" class="footer-col-link">Women's Section</a>
+          <a href="men-section.html" class="footer-col-link">Men's Section</a>
+          <a href="cart.html" class="footer-col-link">Your Cart</a>
         </div>
         <div>
-          <p class="footer-col-heading">Legal Terms</p>
-          <a href="#" class="footer-col-link">Privacy Policy</a>
-          <a href="#" class="footer-col-link">Terms &amp; Conditions</a>
+          <p class="footer-col-heading">Legal</p>
+          <a href="privacy-policy.html" class="footer-col-link">Privacy Policy</a>
+          <a href="terms.html" class="footer-col-link">Terms &amp; Conditions</a>
+          <a href="refund-policy.html" class="footer-col-link">Refund Policy</a>
         </div>
       </div>
 
@@ -124,11 +161,11 @@
         </div>
 
         <div class="footer-social-links">
-          <a href="#" class="footer-social-link">Instagram</a>
-          <a href="#" class="footer-social-link">Facebook</a>
-          <a href="#" class="footer-social-link">X</a>
-          <a href="#" class="footer-social-link">TikTok</a>
-          <a href="#" class="footer-social-link">LinkedIn</a>
+          <a href="https://www.instagram.com" class="footer-social-link">Instagram</a>
+          <a href="https://www.facebook.com" class="footer-social-link">Facebook</a>
+          <a href="https://x.com" class="footer-social-link">X</a>
+          <a href="https://www.tiktok.com" class="footer-social-link">TikTok</a>
+          <a href="https://www.linkedin.com" class="footer-social-link">LinkedIn</a>
         </div>
       </div>
     </div>
@@ -139,18 +176,21 @@
     <p class="panel-label">Client Services</p>
     <h2 class="panel-title">Contact Us</h2>
     <div class="panel-rule"></div>
-
-    <div class="contact-row">
-      <div>
-        <a href="tel:+8801943869880">+880 1943 869 880</a>
-        <p>Monday - Sunday, 10 AM - 8 PM</p>
+    <div class="contact-list">
+      <div class="contact-row">
+        <span class="contact-row-icon">📞</span>
+        <div>
+          <a href="tel:+8801943869880">+880 1943 869 880</a>
+          <p>Monday - Sunday, 10 AM - 8 PM</p>
+        </div>
       </div>
-    </div>
 
-    <div class="contact-row">
-      <div>
-        <a href="#">WhatsApp Support</a>
-        <p>Monday - Sunday, 10 AM - 8 PM</p>
+      <div class="contact-row">
+        <span class="contact-row-icon">💬</span>
+        <div>
+          <a href="#">WhatsApp Support</a>
+          <p>Monday - Sunday, 10 AM - 8 PM</p>
+        </div>
       </div>
     </div>
   </div>
@@ -158,103 +198,25 @@
   <div id="menu-panel" class="panel">
     <button class="panel-close" onclick="closePanel('menu-panel')">&times;</button>
     <p class="panel-label">Navigation</p>
-    <div style="width:28px;height:1px;background:linear-gradient(90deg,var(--gold),transparent);margin-bottom:36px"></div>
 
     <ul class="menu-nav">
       <li><a href="index.html">Home</a></li>
-      <li><a href="women-section.html">Women</a></li>
-      <li><a href="men-section.html">Men</a></li>
-      <li><a href="cart.html">Cart</a></li>
-      <li><a href="login.html">Account</a></li>
+      <li><a href="men-section.html">Men's Section</a></li>
+      <li><a href="women-section.html">Women's Section</a></li>
+      <li><a href="new-in.html?gender=men">New In Men</a></li>
+      <li><a href="new-in.html?gender=women">New In Women</a></li>
     </ul>
 
     <ul class="menu-sub-nav">
-      <li><a href="#">Velleza Services</a></li>
-      <li><a href="#">World of Velleza</a></li>
-      <li><a href="#">Store Locator</a></li>
+      <li><a href="privacy-policy.html">Privacy Policy</a></li>
+      <li><a href="terms.html">Terms &amp; Conditions</a></li>
     </ul>
   </div>
 
   <div id="overlay" onclick="closePanels()"></div>
 
-  <script src="products.js"></script>
+  <script src="products.js?v=2"></script>
+  <script src="search-shared.js?v=4"></script>
   <script src="auth-shared.js"></script>
-
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyCcmnhjA05Xj3oHo8m3AS6EiOPXu-ewn0g",
-      authDomain: "vellega-auth.firebaseapp.com",
-      projectId: "vellega-auth",
-      storageBucket: "vellega-auth.firebasestorage.app",
-      messagingSenderId: "422298524460",
-      appId: "1:422298524460:web:c4bb023f1301bfe16bea89",
-      measurementId: "G-LHMJRCS07C"
-    };
-
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-    }
-
-    const auth = firebase.auth();
-    const db = firebase.firestore();
-
-    const form = document.getElementById("signup-form");
-    const statusEl = document.getElementById("status");
-    const submitBtn = document.getElementById("submit-btn");
-
-    function setStatus(message, type) {
-      statusEl.textContent = message;
-      statusEl.className = "status" + (type ? " " + type : "");
-    }
-
-    form.addEventListener("submit", async (event) => {
-      event.preventDefault();
-
-      const name = document.getElementById("name").value.trim();
-      const phone = document.getElementById("phone").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value;
-
-      if (password.length < 8) {
-        setStatus("Use at least 8 characters in your password.", "error");
-        return;
-      }
-
-      submitBtn.disabled = true;
-      submitBtn.textContent = "Creating...";
-      setStatus("Setting up your account...", "");
-
-      try {
-        const credential = await auth.createUserWithEmailAndPassword(email, password);
-        const user = credential.user;
-
-        await user.updateProfile({ displayName: name });
-
-        await db.collection("users").doc(user.uid).set({
-          name,
-          phone,
-          email,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        }, { merge: true });
-
-        try {
-          await user.sendEmailVerification();
-        } catch (verificationError) {
-          console.warn("Email verification could not be sent:", verificationError);
-        }
-
-        setStatus("Account created. Check your email for verification before logging in.", "success");
-        setTimeout(() => {
-          window.location.href = "login.html";
-        }, 1300);
-      } catch (error) {
-        setStatus(error.message, "error");
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = "Create Account";
-      }
-    });
-  </script>
 </body>
 </html>
-
