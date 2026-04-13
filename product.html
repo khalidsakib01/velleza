@@ -583,12 +583,20 @@
       }
 
       .purchase-row {
+        display: grid;
+        grid-template-columns: 1fr;
         gap: 10px;
       }
 
       .cta-btn,
       .secondary-btn {
+        width: 100%;
         flex: 1 1 100%;
+      }
+
+      .quantity-box {
+        width: 100%;
+        justify-content: space-between;
       }
 
       .search-dropdown {
