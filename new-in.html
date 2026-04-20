@@ -968,15 +968,20 @@
   <div id="overlay" onclick="closePanels()"></div>
 
   <script src="products.js?v=2"></script>
-  <script src="search-shared.js?v=4"></script>
+  <script src="search-shared.js?v=5"></script>
   <script>
     let currentCollection = 'women';
+    let currentType = 'all';
     let activeProduct = null;
     let activeView = 1;
     let selectedQuantity = 1;
 
     function getCurrentProducts() {
-      return products.filter((item) => item.collection === currentCollection);
+      return products.filter((item) => {
+        const collectionMatch = currentCollection === 'all' || item.collection === currentCollection;
+        const typeMatch = currentType === 'all' || item.type === currentType;
+        return collectionMatch && typeMatch;
+      });
     }
 
     function getPreviewDescription(product) {
@@ -1048,7 +1053,7 @@
       const grid = document.getElementById('selection-grid');
       const currentProducts = getCurrentProducts();
       const relatedProducts = activeProduct
-        ? currentProducts.filter((product) => product.type === activeProduct.type && product.name !== activeProduct.name)
+        ? currentProducts.filter((product) => product.name !== activeProduct.name)
         : currentProducts;
 
       grid.innerHTML = relatedProducts.map((product) => `
@@ -1101,12 +1106,23 @@
 
     function renderSelection() {
       const currentProducts = getCurrentProducts();
+      if (!currentProducts.length) {
+        document.getElementById('selection-grid').innerHTML = '';
+        return;
+      }
       setActiveProduct(currentProducts[0]?.name || '');
     }
 
     function setCollectionMeta() {
-      const isMen = currentCollection === 'men';
-      document.getElementById('selection-title').textContent = isMen ? 'New In Men' : 'New In Women';
+      const parts = [];
+      if (currentCollection !== 'all') {
+        parts.push(currentCollection === 'men' ? 'Men' : 'Women');
+      }
+      if (currentType !== 'all') {
+        parts.push(currentType === 'bags' ? 'Bags' : 'Shoes');
+      }
+
+      document.getElementById('selection-title').textContent = parts.length ? parts.join(' ') : 'New In';
     }
 
     function closeSearchDropdowns() {
@@ -1159,9 +1175,19 @@
         ? products.find((item) => item.name.toLowerCase() === requestedProduct.toLowerCase())
         : null;
 
-      currentCollection = params.get('gender') === 'men' ? 'men' : 'women';
+      const requestedGender = params.get('gender');
+      const requestedType = params.get('type');
+
+      currentCollection = requestedGender === 'men' || requestedGender === 'women' || requestedGender === 'all'
+        ? requestedGender
+        : 'women';
+      currentType = requestedType === 'bags' || requestedType === 'shoes' || requestedType === 'all'
+        ? requestedType
+        : 'all';
+
       if (matchedProduct) {
         currentCollection = matchedProduct.collection === 'men' ? 'men' : 'women';
+        currentType = matchedProduct.type || 'all';
       }
       setCollectionMeta();
       renderSelection();

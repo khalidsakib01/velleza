@@ -50,6 +50,9 @@
     'piece', 'pieces', 'product', 'products', 'item', 'items'
   ]);
 
+  const COLLECTION_TOKENS = new Set(['men', 'women']);
+  const TYPE_TOKENS = new Set(['bags', 'shoes']);
+
   function injectSharedSearchStyles() {
     if (document.getElementById('velleza-search-shared-style')) return;
 
@@ -107,6 +110,13 @@
         min-width: 0 !important;
       }
 
+      .search-result-item.search-intent-item,
+      .search-item.search-intent-item {
+        grid-template-columns: 1fr !important;
+        padding: 12px 14px !important;
+        background: #f7f2ea !important;
+      }
+
       .search-result-item:hover,
       .search-item:hover {
         background: #f4efe7 !important;
@@ -147,6 +157,24 @@
         white-space: normal !important;
       }
 
+      .search-intent-label {
+        font-family: 'Montserrat', sans-serif !important;
+        font-size: 9px !important;
+        line-height: 1.4 !important;
+        letter-spacing: 0.18em !important;
+        text-transform: uppercase !important;
+        color: #8c8477 !important;
+        margin-bottom: 5px !important;
+      }
+
+      .search-intent-name {
+        font-family: 'Cormorant Garamond', serif !important;
+        font-size: 18px !important;
+        line-height: 1.05 !important;
+        letter-spacing: 0.03em !important;
+        color: #171717 !important;
+      }
+
       body.mobile-view .search-dropdown,
       body.mobile-view #search-dropdown {
         position: fixed !important;
@@ -169,6 +197,12 @@
         grid-template-columns: 38px minmax(0, 1fr) !important;
         gap: 9px !important;
         padding: 9px 12px !important;
+      }
+
+      body.mobile-view .search-result-item.search-intent-item,
+      body.mobile-view .search-item.search-intent-item {
+        grid-template-columns: 1fr !important;
+        padding: 11px 12px !important;
       }
 
       body.mobile-view .search-result-item img,
@@ -253,6 +287,67 @@
     return `product.html?preview=2&product=${encodeURIComponent(product.name)}`;
   }
 
+  function parseSearchIntent(query) {
+    const queryNorm = normalizeText(query);
+    const queryTokens = toTokens(query);
+
+    if (!queryTokens.length) {
+      return {
+        query: queryNorm,
+        tokens: [],
+        collection: 'all',
+        type: 'all',
+        isBroad: false
+      };
+    }
+
+    const collection = queryTokens.includes('women')
+      ? 'women'
+      : queryTokens.includes('men')
+        ? 'men'
+        : 'all';
+
+    const type = queryTokens.includes('bags')
+      ? 'bags'
+      : queryTokens.includes('shoes')
+        ? 'shoes'
+        : 'all';
+
+    const nonFilterTokens = queryTokens.filter(token =>
+      !COLLECTION_TOKENS.has(token) && !TYPE_TOKENS.has(token)
+    );
+
+    return {
+      query: queryNorm,
+      tokens: queryTokens,
+      collection,
+      type,
+      isBroad: nonFilterTokens.length === 0 && (collection !== 'all' || type !== 'all')
+    };
+  }
+
+  function getIntentHeading(intent) {
+    if (!intent || !intent.isBroad) return '';
+
+    const parts = [];
+    if (intent.collection !== 'all') parts.push(intent.collection);
+    if (intent.type !== 'all') parts.push(intent.type);
+
+    return parts
+      .join(' ')
+      .split(' ')
+      .map(token => token.charAt(0).toUpperCase() + token.slice(1))
+      .join(' ');
+  }
+
+  function getIntentHref(intent) {
+    const params = new URLSearchParams();
+    params.set('gender', intent.collection || 'all');
+    params.set('type', intent.type || 'all');
+    params.set('search', intent.query || '');
+    return `new-in.html?${params.toString()}`;
+  }
+
   function getMatchStats(product, queryNorm, queryTokens) {
     const idx = buildIndex(product);
     const matchedTokenCount = queryTokens.filter(token =>
@@ -273,7 +368,8 @@
   function scoreProduct(product, queryNorm, queryTokens, options) {
     if (!queryNorm || !queryTokens.length) return 0;
 
-    const { idx, matchedTokenCount } = getMatchStats(product, queryNorm, queryTokens);
+    const stats = getMatchStats(product, queryNorm, queryTokens);
+    const idx = stats.idx;
     const collectionMatch = queryTokens.includes(idx.collection);
     const typeMatch = queryTokens.includes(idx.type);
     let score = 0;
@@ -292,7 +388,7 @@
     if (collectionMatch) score += 85;
     if (typeMatch) score += 80;
     if (collectionMatch && typeMatch) score += 120;
-    if (matchedTokenCount === queryTokens.length) score += 110;
+    if (stats.matchedTokenCount === queryTokens.length) score += 110;
 
     if (idx.name.startsWith(queryNorm)) score += 42;
     if (idx.name.includes(queryNorm) && queryNorm.length > 2) score += 60;
@@ -354,14 +450,24 @@
       return [];
     }
 
+    const intent = parseSearchIntent(trimmed);
     const matches = searchProducts(trimmed, { preferCollection: settings.preferCollection }).slice(0, settings.limit);
 
-    if (!matches.length) {
+    if (!matches.length && !intent.isBroad) {
       resultsEl.innerHTML = `<div style="padding:14px 16px;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#777">${settings.noResultsText}</div>`;
       return [];
     }
 
-    resultsEl.innerHTML = matches.map(product => `
+    const intentMarkup = intent.isBroad ? `
+      <a class="${settings.itemClass} search-intent-item" href="${getIntentHref(intent)}">
+        <div>
+          <div class="search-intent-label">View Collection</div>
+          <div class="search-intent-name">${getIntentHeading(intent)}</div>
+        </div>
+      </a>
+    ` : '';
+
+    resultsEl.innerHTML = intentMarkup + matches.map(product => `
       <a class="${settings.itemClass}" href="${getResultHref(product)}">
         <img src="${product.image}" alt="${product.name}" onerror="this.src='preview.jpg'">
         <div>
@@ -432,6 +538,12 @@
         if (event.key !== 'Enter') return;
         event.preventDefault();
 
+        const intent = parseSearchIntent(input.value);
+        if (intent.isBroad) {
+          window.location.href = getIntentHref(intent);
+          return;
+        }
+
         const bestMatch = findBestMatch(input.value, { preferCollection: settings.preferCollection });
         if (!bestMatch) {
           renderResults(input.value, results, settings);
@@ -455,10 +567,12 @@
   window.VellezaSearch = {
     normalizeText,
     searchProducts,
+    parseSearchIntent,
     renderResults,
     findBestMatch,
     initDropdownSearches,
     closeDropdowns,
-    getResultHref
+    getResultHref,
+    getIntentHref
   };
 })();
