@@ -6,9 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>VELLEZA - Luxury Fashion</title>
 
-  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@200;300;400;500&family=Playfair+Display:wght@400;500;700&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://unpkg.com/lucide@latest" defer></script>
 
   <meta name="description" content="VELLEZA - Luxury fashion, handbags, shoes and accessories for men and women.">
   <meta name="keywords" content="Velleza, fashion, luxury, handbags, shoes, men, women, accessories">
@@ -213,8 +212,18 @@
     .search-result-meta { font-size: 9px; letter-spacing: 0.1em; color: #999; margin-top: 2px; }
 
     #dual-hero { position: relative; height: 100vh; font-family: 'Playfair Display', serif; }
-    .hero-video-wrap { position: absolute; inset: 0; z-index: 10; overflow: hidden; }
-    .hero-video-wrap video { width: 100%; height: 120vh; object-fit: cover; }
+    .hero-video-wrap {
+      position: absolute; inset: 0; z-index: 10; overflow: hidden;
+      background:
+        radial-gradient(circle at center, rgba(255,255,255,0.04), transparent 48%),
+        linear-gradient(180deg, rgba(14,14,14,0.72), rgba(8,8,8,0.92));
+    }
+    .hero-video-wrap video {
+      width: 100%; height: 120vh; object-fit: cover;
+      opacity: 0;
+      transition: opacity .45s ease;
+    }
+    body.hero-video-ready .hero-video-wrap video { opacity: 1; }
 
     #video-dim-overlay {
       position: absolute; inset: 0;
@@ -412,6 +421,14 @@
     }
 
     .split-cta:hover { border-color: var(--gold); color: var(--gold-light); background: rgba(184,151,90,0.08); }
+
+    .categories-section,
+    .filter-strip,
+    .split-section,
+    .footer-section {
+      content-visibility: auto;
+      contain-intrinsic-size: 900px;
+    }
 
     .footer-section {
       background: #ffffff;
@@ -969,8 +986,8 @@
 
   <section id="dual-hero">
     <div class="hero-video-wrap">
-      <video id="hero-video" autoplay muted loop playsinline>
-        <source src="video1.mp4" type="video/mp4" />
+      <video id="hero-video" muted loop playsinline preload="none">
+        <source data-src="video1.mp4" type="video/mp4" />
       </video>
       <div id="video-dim-overlay"></div>
     </div>
@@ -1004,25 +1021,25 @@
 
       <div class="categories-grid">
         <a href="women-section.html#womens-bags" class="cat-card" data-aos="fade-up" data-aos-delay="0">
-          <img src="gucci1.png" alt="Women's Handbags">
+          <img src="gucci1.png" alt="Women's Handbags" loading="lazy" decoding="async">
           <div class="cat-border"></div>
           <div class="cat-label"><p>Women's Handbags</p></div>
         </a>
 
         <a href="women-section.html#womens-shoes-section" class="cat-card" data-aos="fade-up" data-aos-delay="80">
-          <img src="gucci2.png" alt="Women's Shoes">
+          <img src="gucci2.png" alt="Women's Shoes" loading="lazy" decoding="async">
           <div class="cat-border"></div>
           <div class="cat-label"><p>Women's Shoes</p></div>
         </a>
 
         <a href="men-section.html#mens-shoes" class="cat-card" data-aos="fade-up" data-aos-delay="160">
-          <img src="gucci3.png" alt="Men's Shoes">
+          <img src="gucci3.png" alt="Men's Shoes" loading="lazy" decoding="async">
           <div class="cat-border"></div>
           <div class="cat-label"><p>Men's Shoes</p></div>
         </a>
 
         <a href="men-section.html#mens-bags" class="cat-card" data-aos="fade-up" data-aos-delay="240">
-          <img src="gucci4.png" alt="Men's Bags">
+          <img src="gucci4.png" alt="Men's Bags" loading="lazy" decoding="async">
           <div class="cat-border"></div>
           <div class="cat-label"><p>Men's Bags</p></div>
         </a>
@@ -1046,7 +1063,7 @@
 
   <div class="split-section">
     <div class="split-block" data-aos="fade-right">
-      <img src="pic2.jpg" alt="New for Men">
+      <img src="pic2.jpg" alt="New for Men" loading="lazy" decoding="async">
       <div class="split-overlay"></div>
       <div class="split-text">
         <h3>New In for Men</h3>
@@ -1055,7 +1072,7 @@
     </div>
 
     <div class="split-block" data-aos="fade-left">
-      <img src="pic1.jpg" alt="New for Women">
+      <img src="pic1.jpg" alt="New for Women" loading="lazy" decoding="async">
       <div class="split-text">
         <h3>New In for Women</h3>
         <a href="new-in.html?gender=women" class="split-cta">Shop the Selection</a>
@@ -1092,14 +1109,14 @@
 
       <div class="footer-bottom-bar">
         <div class="footer-payment-icons">
-          <img src="Bkash.png" alt="bKash">
-          <img src="Nagad.png" alt="Nagad">
-          <img src="DBB.png" alt="Dutch-Bangla Bank">
-          <img src="visa.jpeg" alt="Visa">
-          <img src="mc.png" alt="Mastercard">
-          <img src="upay.png" alt="Upay">
-          <img src="city bank.png" alt="City Bank">
-          <img src="ucb.png" alt="UCB">
+          <img src="Bkash.png" alt="bKash" loading="lazy" decoding="async">
+          <img src="Nagad.png" alt="Nagad" loading="lazy" decoding="async">
+          <img src="DBB.png" alt="Dutch-Bangla Bank" loading="lazy" decoding="async">
+          <img src="visa.jpeg" alt="Visa" loading="lazy" decoding="async">
+          <img src="mc.png" alt="Mastercard" loading="lazy" decoding="async">
+          <img src="upay.png" alt="Upay" loading="lazy" decoding="async">
+          <img src="city bank.png" alt="City Bank" loading="lazy" decoding="async">
+          <img src="ucb.png" alt="UCB" loading="lazy" decoding="async">
         </div>
 
         <div class="footer-social-links">
@@ -1158,7 +1175,6 @@
 
   <div id="overlay" onclick="closePanels()"></div>
 
-  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
   <script src="products.js?v=2"></script>
   <script src="search-shared.js?v=5"></script>
 
@@ -1296,16 +1312,67 @@
     const progress = document.getElementById('video-progress');
     const tLeft = document.getElementById('video-time-left');
     const tRight = document.getElementById('video-time-right');
+    const heroVideoSource = video ? video.querySelector('source[data-src]') : null;
+    const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    const shouldReduceHeroMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const shouldSaveHeroData = Boolean(connection && (connection.saveData || /2g/.test(connection.effectiveType || '')));
+
+    function setVideoButtonState(isPlaying) {
+      centerBtn.textContent = isPlaying ? '||' : '>';
+      bottomBtn.textContent = isPlaying ? '||' : '>';
+    }
+
+    function primeHeroVideo(autoplay) {
+      if (!video || !heroVideoSource) return Promise.resolve();
+
+      if (video.dataset.loaded === 'true') {
+        if (autoplay && video.paused) {
+          return video.play().then(() => {
+            setVideoButtonState(true);
+          }).catch(() => {
+            setVideoButtonState(false);
+          });
+        }
+        return Promise.resolve();
+      }
+
+      heroVideoSource.src = heroVideoSource.dataset.src;
+      video.load();
+      video.dataset.loaded = 'true';
+
+      return new Promise(resolve => {
+        const onReady = () => {
+          document.body.classList.add('hero-video-ready');
+          if (autoplay) {
+            video.play().then(() => {
+              setVideoButtonState(true);
+              resolve();
+            }).catch(() => {
+              setVideoButtonState(false);
+              resolve();
+            });
+          } else {
+            setVideoButtonState(false);
+            resolve();
+          }
+        };
+
+        video.addEventListener('loadeddata', onReady, { once: true });
+      });
+    }
 
     function toggleVideoPlay() {
+      if (video.dataset.loaded !== 'true') {
+        primeHeroVideo(true);
+        return;
+      }
+
       if (video.paused) {
         video.play();
-        centerBtn.textContent = '❚❚';
-        bottomBtn.textContent = '❚❚';
+        setVideoButtonState(true);
       } else {
         video.pause();
-        centerBtn.textContent = '▶';
-        bottomBtn.textContent = '▶';
+        setVideoButtonState(false);
       }
     }
 
@@ -1345,6 +1412,9 @@
 
     video.addEventListener('timeupdate', updateTime);
     video.addEventListener('loadedmetadata', updateTime);
+    video.addEventListener('loadeddata', () => {
+      document.body.classList.add('hero-video-ready');
+    });
 
     centerBtn.onclick = toggleVideoPlay;
     bottomBtn.onclick = toggleVideoPlay;
@@ -1442,11 +1512,17 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      AOS.init({ duration: 1000, once: true, easing: 'ease-out-quart' });
       lucide.createIcons();
       applyMobileMode();
       updateCartCount();
       initSearchDropdowns();
+      if (shouldReduceHeroMotion || shouldSaveHeroData) {
+        setVideoButtonState(false);
+      } else if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(() => primeHeroVideo(true), { timeout: 1500 });
+      } else {
+        window.setTimeout(() => primeHeroVideo(true), 900);
+      }
       measureBrandTransition();
       window.addEventListener('scroll', requestBrandTransitionUpdate, { passive: true });
       window.addEventListener('resize', () => {

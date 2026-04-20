@@ -469,7 +469,7 @@
 
     resultsEl.innerHTML = intentMarkup + matches.map(product => `
       <a class="${settings.itemClass}" href="${getResultHref(product)}">
-        <img src="${product.image}" alt="${product.name}" onerror="this.src='preview.jpg'">
+        <img src="${product.image}" alt="${product.name}" loading="lazy" decoding="async" onerror="this.src='preview.jpg'">
         <div>
           <div class="${settings.nameClass}">${product.name}</div>
           <div class="${settings.metaClass}">${buildMeta(product)}</div>

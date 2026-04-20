@@ -6,7 +6,7 @@
   <title>New In | VELLEZA</title>
   <meta name="description" content="Shop the latest VELLEZA arrivals with a built-in product preview and quick add-to-cart flow." />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Montserrat:wght@300;400;500&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://unpkg.com/lucide@latest" defer></script>
   <style>
     :root {
       --gold: #b8975a;
@@ -236,6 +236,8 @@
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 16px;
+      content-visibility: auto;
+      contain-intrinsic-size: 1100px;
     }
 
     .selection-card {
@@ -902,14 +904,14 @@
 
     <div class="footer-bottom-bar">
       <div class="footer-payment-icons">
-        <img src="Bkash.png" alt="bKash">
-        <img src="Nagad.png" alt="Nagad">
-        <img src="DBB.png" alt="Dutch-Bangla Bank">
-        <img src="visa.jpeg" alt="Visa">
-        <img src="mc.png" alt="Mastercard">
-        <img src="upay.png" alt="Upay">
-        <img src="city bank.png" alt="City Bank">
-        <img src="ucb.png" alt="UCB">
+        <img src="Bkash.png" alt="bKash" loading="lazy" decoding="async">
+        <img src="Nagad.png" alt="Nagad" loading="lazy" decoding="async">
+        <img src="DBB.png" alt="Dutch-Bangla Bank" loading="lazy" decoding="async">
+        <img src="visa.jpeg" alt="Visa" loading="lazy" decoding="async">
+        <img src="mc.png" alt="Mastercard" loading="lazy" decoding="async">
+        <img src="upay.png" alt="Upay" loading="lazy" decoding="async">
+        <img src="city bank.png" alt="City Bank" loading="lazy" decoding="async">
+        <img src="ucb.png" alt="UCB" loading="lazy" decoding="async">
       </div>
       <div class="footer-social-links">
         <a href="https://www.instagram.com" class="footer-social-link">Instagram</a>

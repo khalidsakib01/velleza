@@ -7,7 +7,6 @@
  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest" defer></script>
  
@@ -333,6 +332,8 @@
       gap: 18px;
       background: transparent;
       margin: 0 48px 80px;
+      content-visibility: auto;
+      contain-intrinsic-size: 1200px;
     }
  
     .product-card {
@@ -1147,14 +1148,14 @@
     </div>
     <div class="footer-bottom">
       <div class="payment-icons">
-        <img src="Bkash.png" alt="bKash">
-        <img src="Nagad.png" alt="Nagad">
-        <img src="DBB.png" alt="Dutch-Bangla Bank">
-        <img src="visa.jpeg" alt="Visa">
-        <img src="mc.png" alt="Mastercard">
-        <img src="upay.png" alt="Upay">
-        <img src="city bank.png" alt="City Bank">
-        <img src="ucb.png" alt="UCB">
+        <img src="Bkash.png" alt="bKash" loading="lazy" decoding="async">
+        <img src="Nagad.png" alt="Nagad" loading="lazy" decoding="async">
+        <img src="DBB.png" alt="Dutch-Bangla Bank" loading="lazy" decoding="async">
+        <img src="visa.jpeg" alt="Visa" loading="lazy" decoding="async">
+        <img src="mc.png" alt="Mastercard" loading="lazy" decoding="async">
+        <img src="upay.png" alt="Upay" loading="lazy" decoding="async">
+        <img src="city bank.png" alt="City Bank" loading="lazy" decoding="async">
+        <img src="ucb.png" alt="UCB" loading="lazy" decoding="async">
       </div>
       <div class="social-links">
         <a href="https://www.instagram.com" class="social-link">Instagram</a>
@@ -1390,7 +1391,7 @@
  
       results.innerHTML = filtered.map(p => `
         <a href="product.html?product=${encodeURIComponent(p.name)}" class="search-item">
-          <img src="${p.image}" alt="${p.name}">
+          <img src="${p.image}" alt="${p.name}" loading="lazy" decoding="async">
           <div>
             <p class="search-item-name">${p.name}</p>
             <p class="search-item-price">${p.currency}${p.price}</p>
