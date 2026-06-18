@@ -1,5 +1,6 @@
 const axios = require('axios');
 const qs = require('qs');
+const catalogProducts = require('./products.js');
 
 const SSL_MODE = (process.env.SSL_MODE || 'sandbox').toLowerCase();
 const IS_LIVE_MODE = SSL_MODE === 'live';
@@ -76,6 +77,85 @@ function normalizeBody(body) {
   return body;
 }
 
+function text(value, maxLength = 120) {
+  return String(value || '').trim().slice(0, maxLength);
+}
+
+function getCatalogProduct(name) {
+  return catalogProducts.find((item) => item.name === name);
+}
+
+function normalizeProducts(products) {
+  if (!Array.isArray(products) || !products.length || products.length > 20) {
+    throw new Error('Invalid products.');
+  }
+
+  return products.map((item) => {
+    const catalogItem = getCatalogProduct(item && item.name);
+    if (!catalogItem) throw new Error('Unknown product.');
+
+    const quantity = Number.parseInt(item.quantity ?? item.qty ?? 1, 10);
+    if (!Number.isInteger(quantity) || quantity < 1 || quantity > 10) {
+      throw new Error('Invalid product quantity.');
+    }
+
+    return {
+      name: catalogItem.name,
+      quantity,
+      price: Number(catalogItem.price),
+      size: text(item.size, 20),
+      category: catalogItem.category || ''
+    };
+  });
+}
+
+function getCatalogTotal(products) {
+  return products.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+}
+
+function normalizeCustomer(customer) {
+  const clean = customer || {};
+  const normalized = {
+    name: text(clean.name, 80),
+    email: text(clean.email, 120),
+    phone: text(clean.phone, 24),
+    address: text(clean.address, 240),
+    division: text(clean.division, 60),
+    district: text(clean.district || clean.city, 60),
+    city: text(clean.city || clean.district, 60),
+    area: text(clean.area, 80),
+    postcode: text(clean.postcode || '1000', 12),
+    country: 'Bangladesh'
+  };
+
+  if (normalized.name.length < 2) throw new Error('Customer name is required.');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalized.email)) throw new Error('Valid customer email is required.');
+  if (!/^\+?8801[3-9]\d{8}$/.test(normalized.phone)) throw new Error('Valid Bangladesh phone is required.');
+  if (normalized.address.length < 10) throw new Error('Shipping address is required.');
+  if (!normalized.division || !normalized.city || !normalized.area) throw new Error('Complete shipping location is required.');
+
+  return normalized;
+}
+
+function normalizeOrderInput(body) {
+  const products = normalizeProducts(body.products);
+  const total = getCatalogTotal(products);
+  const requestedTotal = Number(body.total_amount);
+
+  if (!Number.isFinite(requestedTotal) || Math.abs(requestedTotal - total) > 0.01) {
+    throw new Error('Cart total does not match product catalog.');
+  }
+
+  return {
+    tran_id: text(body.tran_id, 40),
+    total_amount: total,
+    currency: body.currency === 'BDT' ? 'BDT' : 'BDT',
+    customer: normalizeCustomer(body.customer),
+    products,
+    note: text(body.note, 500)
+  };
+}
+
 async function validatePayment(valId) {
   const response = await axios.get(SSL_CONFIG.validate_url, {
     params: {
@@ -108,17 +188,24 @@ module.exports = async (req, res) => {
       });
     }
 
+    let orderInput;
+    try {
+      orderInput = normalizeOrderInput(body);
+    } catch (error) {
+      return res.status(400).json({ status: 'error', message: error.message });
+    }
+
     const {
       tran_id,
       total_amount,
-      currency = 'BDT',
+      currency,
       customer,
       products,
       note
-    } = body;
+    } = orderInput;
 
-    if (!tran_id || total_amount == null || Number.isNaN(Number(total_amount)) || !customer?.name) {
-      return res.status(400).json({ status: 'error', message: 'Missing required fields' });
+    if (!/^VLZ_\d{10,}$/.test(tran_id)) {
+      return res.status(400).json({ status: 'error', message: 'Invalid transaction ID.' });
     }
 
     const productDesc = (products || [])

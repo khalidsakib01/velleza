@@ -36,13 +36,17 @@
 
   function normalizeItems(products) {
     return (products || []).map((item) => ({
-      name: item.name || "Item",
-      quantity: Number.parseInt(item.quantity ?? item.qty ?? 1, 10) || 1,
+      name: String(item.name || "Item").trim().slice(0, 80),
+      quantity: Math.min(Math.max(Number.parseInt(item.quantity ?? item.qty ?? 1, 10) || 1, 1), 10),
       price: Number(item.price || 0),
-      size: item.size || "",
-      image: item.image || "",
-      category: item.category || ""
+      size: String(item.size || "").trim().slice(0, 20),
+      image: String(item.image || "").trim().slice(0, 160),
+      category: String(item.category || "").trim().slice(0, 80)
     }));
+  }
+
+  function text(value, maxLength) {
+    return String(value || "").trim().slice(0, maxLength);
   }
 
   function buildOrderRecord(orderData, overrides) {
@@ -65,17 +69,17 @@
       fulfillment_status: extra.fulfillment_status || "new",
       payment_method: paymentMethod,
       customer: {
-        name: extra.customer?.name || data.customer?.name || "",
-        email: extra.customer?.email || data.customer?.email || "",
-        phone: extra.customer?.phone || data.customer?.phone || "",
-        address: extra.customer?.address || data.customer?.address || "",
-        district: extra.customer?.district || data.customer?.district || "",
-        city: extra.customer?.city || data.customer?.city || "",
-        postcode: extra.customer?.postcode || data.customer?.postcode || "",
+        name: text(extra.customer?.name || data.customer?.name, 80),
+        email: text(extra.customer?.email || data.customer?.email, 120),
+        phone: text(extra.customer?.phone || data.customer?.phone, 24),
+        address: text(extra.customer?.address || data.customer?.address, 240),
+        district: text(extra.customer?.district || data.customer?.district, 60),
+        city: text(extra.customer?.city || data.customer?.city, 60),
+        postcode: text(extra.customer?.postcode || data.customer?.postcode, 12),
         country: extra.customer?.country || data.customer?.country || "Bangladesh"
       },
       products: items,
-      note: extra.note ?? data.note ?? "",
+      note: text(extra.note ?? data.note, 500),
       auth_user: storedUser ? {
         name: storedUser.name || "",
         email: storedUser.email || "",

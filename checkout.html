@@ -682,17 +682,20 @@
         const raw = JSON.parse(localStorage.getItem('cart') || '[]');
         if (!Array.isArray(raw)) return [];
         const catalog = Array.isArray(products) ? products : [];
-        return raw.map((item) => ({
-          ...(catalog.find((p) => p.name === item.name) || {}),
-          ...item,
-          name: item.name || 'Item',
-          price: Number(item.price ?? catalog.find((p) => p.name === item.name)?.price) || 0,
-          currency: item.currency || catalog.find((p) => p.name === item.name)?.currency || 'BDT',
-          size: item.size || '-',
-          image: item.image || catalog.find((p) => p.name === item.name)?.image || 'gucci1.png',
-          category: item.category || catalog.find((p) => p.name === item.name)?.category || '',
-          quantity: Number.parseInt(item.quantity ?? item.qty ?? 1, 10) || 1
-        }));
+        return raw.map((item) => {
+          const catalogItem = catalog.find((p) => p.name === item.name) || {};
+          const quantity = Math.min(Math.max(Number.parseInt(item.quantity ?? item.qty ?? 1, 10) || 1, 1), 10);
+          return {
+            ...item,
+            name: catalogItem.name || item.name || 'Item',
+            price: Number(catalogItem.price) || 0,
+            currency: catalogItem.currency || 'BDT',
+            size: item.size || '-',
+            image: catalogItem.image || item.image || 'gucci1.png',
+            category: catalogItem.category || item.category || '',
+            quantity
+          };
+        }).filter((item) => item.price > 0);
       } catch { return []; }
     }
  

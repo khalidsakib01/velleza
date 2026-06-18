@@ -11,12 +11,68 @@ service cloud.firestore {
       ];
     }
 
+    function validCustomer(customer) {
+      return customer is map
+        && customer.keys().hasAll(["name", "email", "phone", "address", "city", "country"])
+        && customer.name is string
+        && customer.name.size() >= 2
+        && customer.name.size() <= 80
+        && customer.email is string
+        && customer.email.matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")
+        && customer.phone is string
+        && customer.phone.matches("^\\+?8801[3-9][0-9]{8}$")
+        && customer.address is string
+        && customer.address.size() >= 10
+        && customer.address.size() <= 240
+        && customer.city is string
+        && customer.city.size() >= 2
+        && customer.city.size() <= 60
+        && customer.country == "Bangladesh";
+    }
+
+    function validOrderCreate(orderId) {
+      return request.resource.data.keys().hasOnly([
+          "tran_id",
+          "source",
+          "currency",
+          "total_amount",
+          "order_status",
+          "payment_status",
+          "fulfillment_status",
+          "payment_method",
+          "customer",
+          "products",
+          "note",
+          "auth_user",
+          "payment_details",
+          "created_at",
+          "updated_at"
+        ])
+        && request.resource.data.tran_id == orderId
+        && request.resource.data.tran_id.matches("^VLZ_[0-9]{10,}$")
+        && request.resource.data.source == "website"
+        && request.resource.data.currency == "BDT"
+        && request.resource.data.total_amount is number
+        && request.resource.data.total_amount > 0
+        && request.resource.data.total_amount <= 1000000
+        && request.resource.data.order_status in ["pending", "payment_pending", "confirmed"]
+        && request.resource.data.payment_status in ["pending", "pending_on_delivery"]
+        && request.resource.data.fulfillment_status in ["new", "awaiting_payment"]
+        && request.resource.data.payment_method in ["cod", "sslcommerz"]
+        && validCustomer(request.resource.data.customer)
+        && request.resource.data.products is list
+        && request.resource.data.products.size() > 0
+        && request.resource.data.products.size() <= 20
+        && request.resource.data.note is string
+        && request.resource.data.note.size() <= 500;
+    }
+
     match /users/{userId} {
       allow read, write: if signedIn() && request.auth.uid == userId;
     }
 
     match /orders/{orderId} {
-      allow create: if true;
+      allow create: if validOrderCreate(orderId);
       allow read: if isAdmin();
       allow update: if isAdmin();
       allow delete: if false;
