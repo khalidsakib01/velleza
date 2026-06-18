@@ -163,102 +163,34 @@
     .field input.error, .field select.error, .field textarea.error { border-color: var(--error); }
     .field .err-msg { font-size: 9px; letter-spacing: 0.1em; color: var(--error); margin-top: 5px; display: none; }
     .field.has-error .err-msg { display: block; }
-    .field select option { background: var(--smoke); }
-    .field textarea { resize: vertical; min-height: 80px; }
-
-    .smart-select {
-      position: relative;
-    }
-
-    .smart-select-input {
-      padding-right: 46px !important;
-      cursor: text;
-    }
-
-    .smart-select-toggle {
-      position: absolute;
-      top: 1px;
-      right: 1px;
-      width: 42px;
-      height: calc(100% - 2px);
-      border: none;
-      background: transparent;
-      color: rgba(245,240,232,0.72);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+    .field select {
       cursor: pointer;
-      transition: color .25s ease, transform .25s ease;
+      font-weight: 300;
+      background-image:
+        linear-gradient(45deg, transparent 50%, rgba(245,240,232,0.75) 50%),
+        linear-gradient(135deg, rgba(245,240,232,0.75) 50%, transparent 50%);
+      background-position:
+        calc(100% - 18px) 50%,
+        calc(100% - 12px) 50%;
+      background-size: 6px 6px, 6px 6px;
+      background-repeat: no-repeat;
+      padding-right: 40px;
     }
-
-    .smart-select-toggle svg {
-      width: 15px;
-      height: 15px;
-      stroke-width: 1.7;
+    .field select.is-placeholder {
+      color: rgba(245,240,232,0.36);
     }
-
-    .smart-select.open .smart-select-toggle {
-      color: var(--gold-light);
-      transform: rotate(180deg);
+    .field select:disabled {
+      color: rgba(245,240,232,0.36);
+      cursor: not-allowed;
     }
-
-    .smart-select-panel {
-      position: absolute;
-      top: calc(100% + 8px);
-      left: 0;
-      right: 0;
-      z-index: 40;
-      background: #141b1f;
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 12px;
-      box-shadow: 0 22px 50px rgba(0,0,0,0.42);
-      padding: 8px 0;
-      opacity: 0;
-      transform: translateY(6px);
-      pointer-events: none;
-      transition: opacity .2s ease, transform .2s ease;
-    }
-
-    .smart-select.open .smart-select-panel {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
-    }
-
-    .smart-select-list {
-      max-height: 240px;
-      overflow-y: auto;
-      padding: 0 8px;
-    }
-
-    .smart-select-option,
-    .smart-select-empty {
-      width: 100%;
-      border: none;
-      background: transparent;
+    .field select option {
+      background: var(--smoke);
       color: var(--ivory);
-      text-align: left;
-      padding: 12px 14px;
-      border-radius: 10px;
-      font-size: 11px;
-      letter-spacing: 0.03em;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px;
+      font-weight: 300;
     }
-
-    .smart-select-option {
-      cursor: pointer;
-      transition: background .18s ease, color .18s ease;
-    }
-
-    .smart-select-option:hover,
-    .smart-select-option.active {
-      background: rgba(255,255,255,0.05);
-      color: #ffffff;
-    }
-
-    .smart-select-empty {
-      color: rgba(245,240,232,0.42);
-      cursor: default;
-    }
+    .field textarea { resize: vertical; min-height: 80px; }
  
     .phone-wrap { display: flex; }
     .phone-prefix { padding: 12px 14px; background: var(--ash); border: 1px solid var(--ash); border-right: none; color: rgba(245,240,232,0.5); font-size: 12px; letter-spacing: 0.05em; white-space: nowrap; }
@@ -393,42 +325,18 @@
           <div class="form-row">
             <div class="field" id="field-division">
               <label for="division">Division *</label>
-              <div class="smart-select" data-select="division">
-                <input type="text" id="division" class="smart-select-input" autocomplete="off">
-                <button type="button" class="smart-select-toggle" data-toggle="division" aria-label="Open division options">
-                  <i data-lucide="chevron-down"></i>
-                </button>
-                <div class="smart-select-panel" id="division-panel">
-                  <div class="smart-select-list" id="division-list"></div>
-                </div>
-              </div>
+              <select id="division"></select>
               <p class="err-msg">Please select your division</p>
             </div>
             <div class="field" id="field-city">
-              <label for="city">City *</label>
-              <div class="smart-select" data-select="city">
-                <input type="text" id="city" class="smart-select-input" autocomplete="off">
-                <button type="button" class="smart-select-toggle" data-toggle="city" aria-label="Open city options">
-                  <i data-lucide="chevron-down"></i>
-                </button>
-                <div class="smart-select-panel" id="city-panel">
-                  <div class="smart-select-list" id="city-list"></div>
-                </div>
-              </div>
-              <p class="err-msg">Please select your city</p>
+              <label for="city">District *</label>
+              <select id="city"></select>
+              <p class="err-msg">Please select your district</p>
             </div>
           </div>
           <div class="field" id="field-area">
             <label for="area">Area *</label>
-            <div class="smart-select" data-select="area">
-              <input type="text" id="area" class="smart-select-input" autocomplete="off">
-              <button type="button" class="smart-select-toggle" data-toggle="area" aria-label="Open area options">
-                <i data-lucide="chevron-down"></i>
-              </button>
-              <div class="smart-select-panel" id="area-panel">
-                <div class="smart-select-list" id="area-list"></div>
-              </div>
-            </div>
+            <select id="area"></select>
             <p class="err-msg">Please select your area</p>
           </div>
           <div class="field form-row single" id="field-address">
@@ -493,11 +401,9 @@
     const orderButtons = document.querySelectorAll('.js-place-order');
     let isSubmittingOrder = false;
 
-    const LOCATION_API = 'https://bdapis.vercel.app/geo/v2.0';
     const locationCache = {
       divisions: [],
-      districts: [],
-      upazilasByDistrict: {}
+      districts: []
     };
     const selectedLocationIds = {
       divisionId: '',
@@ -570,8 +476,142 @@
       ],
       Bogura: [
         'Bogura Sadar', 'Gabtali', 'Nandigram', 'Sherpur', 'Shibganj'
+      ],
+      Faridpur: ['Alfadanga', 'Bhanga', 'Boalmari', 'Charbhadrasan', 'Faridpur Sadar', 'Madhukhali', 'Nagarkanda', 'Sadarpur', 'Saltha'],
+      Gopalganj: ['Gopalganj Sadar', 'Kashiani', 'Kotalipara', 'Muksudpur', 'Tungipara'],
+      Kishoreganj: ['Austagram', 'Bajitpur', 'Bhairab', 'Hossainpur', 'Itna', 'Karimganj', 'Katiadi', 'Kishoreganj Sadar', 'Kuliarchar', 'Mithamain', 'Nikli', 'Pakundia', 'Tarail'],
+      Madaripur: ['Kalkini', 'Madaripur Sadar', 'Rajoir', 'Shibchar', 'Dasar'],
+      Manikganj: ['Daulatpur', 'Ghior', 'Harirampur', 'Manikganj Sadar', 'Saturia', 'Shibalaya', 'Singair'],
+      Munshiganj: ['Gazaria', 'Lohajang', 'Munshiganj Sadar', 'Sirajdikhan', 'Sreenagar', 'Tongibari'],
+      Narsingdi: ['Belabo', 'Monohardi', 'Narsingdi Sadar', 'Palash', 'Raipura', 'Shibpur'],
+      Rajbari: ['Baliakandi', 'Goalanda', 'Kalukhali', 'Pangsha', 'Rajbari Sadar'],
+      Shariatpur: ['Bhedarganj', 'Damudya', 'Gosairhat', 'Jajira', 'Naria', 'Shariatpur Sadar', 'Zajira'],
+      Tangail: ['Basail', 'Bhuapur', 'Delduar', 'Dhanbari', 'Ghatail', 'Gopalpur', 'Kalihati', 'Madhupur', 'Mirzapur', 'Nagarpur', 'Sakhipur', 'Tangail Sadar'],
+      Bandarban: ['Alikadam', 'Bandarban Sadar', 'Lama', 'Naikhongchhari', 'Rowangchhari', 'Ruma', 'Thanchi'],
+      Brahmanbaria: ['Akhaura', 'Ashuganj', 'Bancharampur', 'Brahmanbaria Sadar', 'Kasba', 'Nabinagar', 'Nasirnagar', 'Sarail', 'Bijoynagar'],
+      Chandpur: ['Chandpur Sadar', 'Faridganj', 'Haimchar', 'Haziganj', 'Kachua', 'Matlab Dakshin', 'Matlab Uttar', 'Shahrasti'],
+      Feni: ['Chhagalnaiya', 'Daganbhuiyan', 'Feni Sadar', 'Fulgazi', 'Parshuram', 'Sonagazi'],
+      Khagrachhari: ['Dighinala', 'Guimara', 'Khagrachhari Sadar', 'Lakshmichhari', 'Mahalchhari', 'Manikchhari', 'Matiranga', 'Panchhari', 'Ramgarh'],
+      Lakshmipur: ['Kamalnagar', 'Lakshmipur Sadar', 'Raipur', 'Ramganj', 'Ramgati'],
+      Noakhali: ['Begumganj', 'Chatkhil', 'Companiganj', 'Hatiya', 'Kabirhat', 'Noakhali Sadar', 'Senbagh', 'Sonaimuri', 'Subarnachar'],
+      Rangamati: ['Baghaichhari', 'Barkal', 'Belaichhari', 'Juraichhari', 'Kaptai', 'Kawkhali', 'Langadu', 'Naniarchar', 'Rajasthali', 'Rangamati Sadar'],
+      Joypurhat: ['Akkelpur', 'Joypurhat Sadar', 'Kalai', 'Khetlal', 'Panchbibi'],
+      Naogaon: ['Atrai', 'Badalgachhi', 'Dhamoirhat', 'Manda', 'Mahadebpur', 'Naogaon Sadar', 'Niamatpur', 'Patnitala', 'Porsha', 'Raninagar', 'Sapahar'],
+      Natore: ['Bagatipara', 'Baraigram', 'Gurudaspur', 'Lalpur', 'Naldanga', 'Natore Sadar', 'Singra'],
+      'Chapai Nawabganj': ['Bholahat', 'Chapai Nawabganj Sadar', 'Gomastapur', 'Nachole', 'Shibganj'],
+      Pabna: ['Atgharia', 'Bera', 'Bhangura', 'Chatmohar', 'Faridpur', 'Ishwardi', 'Pabna Sadar', 'Santhia', 'Sujanagar'],
+      Sirajganj: ['Belkuchi', 'Chauhali', 'Kamarkhanda', 'Kazipur', 'Raiganj', 'Shahjadpur', 'Sirajganj Sadar', 'Tarash', 'Ullahpara'],
+      Bagerhat: ['Bagerhat Sadar', 'Chitalmari', 'Fakirhat', 'Kachua', 'Mollahat', 'Mongla', 'Morrelganj', 'Rampal', 'Sarankhola'],
+      Chuadanga: ['Alamdanga', 'Chuadanga Sadar', 'Damurhuda', 'Jibannagar'],
+      Jhenaidah: ['Harinakunda', 'Jhenaidah Sadar', 'Kaliganj', 'Kotchandpur', 'Maheshpur', 'Shailkupa'],
+      Kushtia: ['Bheramara', 'Daulatpur', 'Khoksa', 'Kumarkhali', 'Kushtia Sadar', 'Mirpur'],
+      Magura: ['Magura Sadar', 'Mohammadpur', 'Shalikha', 'Sreepur'],
+      Meherpur: ['Gangni', 'Meherpur Sadar', 'Mujibnagar'],
+      Narail: ['Kalia', 'Lohagara', 'Narail Sadar'],
+      Satkhira: ['Assasuni', 'Debhata', 'Kalaroa', 'Kaliganj', 'Satkhira Sadar', 'Shyamnagar', 'Tala'],
+      Barguna: ['Amtali', 'Bamna', 'Barguna Sadar', 'Betagi', 'Patharghata', 'Taltali'],
+      Bhola: ['Bhola Sadar', 'Borhanuddin', 'Char Fasson', 'Daulatkhan', 'Lalmohan', 'Manpura', 'Tazumuddin'],
+      Jhalokati: ['Jhalokati Sadar', 'Kathalia', 'Nalchity', 'Rajapur'],
+      Patuakhali: ['Bauphal', 'Dashmina', 'Dumki', 'Galachipa', 'Kalapara', 'Mirzaganj', 'Patuakhali Sadar', 'Rangabali'],
+      Pirojpur: ['Bhandaria', 'Kawkhali', 'Mathbaria', 'Nazirpur', 'Nesarabad', 'Pirojpur Sadar', 'Indurkani'],
+      Habiganj: ['Ajmiriganj', 'Bahubal', 'Baniachong', 'Chunarughat', 'Habiganj Sadar', 'Lakhai', 'Madhabpur', 'Nabiganj', 'Shayestaganj'],
+      Moulvibazar: ['Barlekha', 'Juri', 'Kamalganj', 'Kulaura', 'Moulvibazar Sadar', 'Rajnagar', 'Sreemangal'],
+      Sunamganj: ['Bishwamvarpur', 'Chhatak', 'Derai', 'Dharamapasha', 'Dowarabazar', 'Jagannathpur', 'Jamalganj', 'Sulla', 'Sunamganj Sadar', 'Tahirpur', 'Shantiganj', 'Madhyanagar'],
+      Dinajpur: ['Birampur', 'Birganj', 'Birol', 'Bochaganj', 'Chirirbandar', 'Dinajpur Sadar', 'Fulbari', 'Ghoraghat', 'Hakimpur', 'Kaharole', 'Khansama', 'Nawabganj', 'Parbatipur'],
+      Gaibandha: ['Fulchhari', 'Gaibandha Sadar', 'Gobindaganj', 'Palashbari', 'Sadullapur', 'Saghata', 'Sundarganj'],
+      Kurigram: ['Bhurungamari', 'Char Rajibpur', 'Chilmari', 'Kurigram Sadar', 'Nageshwari', 'Phulbari', 'Rajarhat', 'Raomari', 'Ulipur'],
+      Lalmonirhat: ['Aditmari', 'Hatibandha', 'Kaliganj', 'Lalmonirhat Sadar', 'Patgram'],
+      Nilphamari: ['Dimla', 'Domar', 'Jaldhaka', 'Kishoreganj', 'Nilphamari Sadar', 'Saidpur'],
+      Panchagarh: ['Atwari', 'Boda', 'Debiganj', 'Panchagarh Sadar', 'Tetulia'],
+      Thakurgaon: ['Baliadangi', 'Haripur', 'Pirganj', 'Ranisankail', 'Thakurgaon Sadar'],
+      Jamalpur: ['Bakshiganj', 'Dewanganj', 'Islampur', 'Jamalpur Sadar', 'Madarganj', 'Melandaha', 'Sarishabari'],
+      Netrokona: ['Atpara', 'Barhatta', 'Durgapur', 'Khaliajuri', 'Kalmakanda', 'Kendua', 'Madan', 'Mohanganj', 'Netrokona Sadar', 'Purbadhala'],
+      Sherpur: ['Jhenaigati', 'Nakla', 'Nalitabari', 'Sherpur Sadar', 'Sreebardi']
+    };
+
+    const FALLBACK_LOCATION_DATA = {
+      divisions: [
+        { id: 'Dhaka', name: 'Dhaka' },
+        { id: 'Chattogram', name: 'Chattogram' },
+        { id: 'Rajshahi', name: 'Rajshahi' },
+        { id: 'Khulna', name: 'Khulna' },
+        { id: 'Barishal', name: 'Barishal' },
+        { id: 'Sylhet', name: 'Sylhet' },
+        { id: 'Rangpur', name: 'Rangpur' },
+        { id: 'Mymensingh', name: 'Mymensingh' }
+      ],
+      districts: [
+        { id: 'Dhaka', name: 'Dhaka', division_id: 'Dhaka' },
+        { id: 'Faridpur', name: 'Faridpur', division_id: 'Dhaka' },
+        { id: 'Gazipur', name: 'Gazipur', division_id: 'Dhaka' },
+        { id: 'Gopalganj', name: 'Gopalganj', division_id: 'Dhaka' },
+        { id: 'Kishoreganj', name: 'Kishoreganj', division_id: 'Dhaka' },
+        { id: 'Madaripur', name: 'Madaripur', division_id: 'Dhaka' },
+        { id: 'Manikganj', name: 'Manikganj', division_id: 'Dhaka' },
+        { id: 'Munshiganj', name: 'Munshiganj', division_id: 'Dhaka' },
+        { id: 'Narayanganj', name: 'Narayanganj', division_id: 'Dhaka' },
+        { id: 'Narsingdi', name: 'Narsingdi', division_id: 'Dhaka' },
+        { id: 'Rajbari', name: 'Rajbari', division_id: 'Dhaka' },
+        { id: 'Shariatpur', name: 'Shariatpur', division_id: 'Dhaka' },
+        { id: 'Tangail', name: 'Tangail', division_id: 'Dhaka' },
+        { id: 'Bandarban', name: 'Bandarban', division_id: 'Chattogram' },
+        { id: 'Brahmanbaria', name: 'Brahmanbaria', division_id: 'Chattogram' },
+        { id: 'Chandpur', name: 'Chandpur', division_id: 'Chattogram' },
+        { id: 'Chattogram', name: 'Chattogram', division_id: 'Chattogram' },
+        { id: 'Cumilla', name: 'Cumilla', division_id: 'Chattogram' },
+        { id: "Cox's Bazar", name: "Cox's Bazar", division_id: 'Chattogram' },
+        { id: 'Feni', name: 'Feni', division_id: 'Chattogram' },
+        { id: 'Khagrachhari', name: 'Khagrachhari', division_id: 'Chattogram' },
+        { id: 'Lakshmipur', name: 'Lakshmipur', division_id: 'Chattogram' },
+        { id: 'Noakhali', name: 'Noakhali', division_id: 'Chattogram' },
+        { id: 'Rangamati', name: 'Rangamati', division_id: 'Chattogram' },
+        { id: 'Bogura', name: 'Bogura', division_id: 'Rajshahi' },
+        { id: 'Joypurhat', name: 'Joypurhat', division_id: 'Rajshahi' },
+        { id: 'Naogaon', name: 'Naogaon', division_id: 'Rajshahi' },
+        { id: 'Natore', name: 'Natore', division_id: 'Rajshahi' },
+        { id: 'Chapai Nawabganj', name: 'Chapai Nawabganj', division_id: 'Rajshahi' },
+        { id: 'Pabna', name: 'Pabna', division_id: 'Rajshahi' },
+        { id: 'Rajshahi', name: 'Rajshahi', division_id: 'Rajshahi' },
+        { id: 'Sirajganj', name: 'Sirajganj', division_id: 'Rajshahi' },
+        { id: 'Bagerhat', name: 'Bagerhat', division_id: 'Khulna' },
+        { id: 'Chuadanga', name: 'Chuadanga', division_id: 'Khulna' },
+        { id: 'Jashore', name: 'Jashore', division_id: 'Khulna' },
+        { id: 'Jhenaidah', name: 'Jhenaidah', division_id: 'Khulna' },
+        { id: 'Khulna', name: 'Khulna', division_id: 'Khulna' },
+        { id: 'Kushtia', name: 'Kushtia', division_id: 'Khulna' },
+        { id: 'Magura', name: 'Magura', division_id: 'Khulna' },
+        { id: 'Meherpur', name: 'Meherpur', division_id: 'Khulna' },
+        { id: 'Narail', name: 'Narail', division_id: 'Khulna' },
+        { id: 'Satkhira', name: 'Satkhira', division_id: 'Khulna' },
+        { id: 'Barguna', name: 'Barguna', division_id: 'Barishal' },
+        { id: 'Barishal', name: 'Barishal', division_id: 'Barishal' },
+        { id: 'Bhola', name: 'Bhola', division_id: 'Barishal' },
+        { id: 'Jhalokati', name: 'Jhalokati', division_id: 'Barishal' },
+        { id: 'Patuakhali', name: 'Patuakhali', division_id: 'Barishal' },
+        { id: 'Pirojpur', name: 'Pirojpur', division_id: 'Barishal' },
+        { id: 'Habiganj', name: 'Habiganj', division_id: 'Sylhet' },
+        { id: 'Moulvibazar', name: 'Moulvibazar', division_id: 'Sylhet' },
+        { id: 'Sunamganj', name: 'Sunamganj', division_id: 'Sylhet' },
+        { id: 'Sylhet', name: 'Sylhet', division_id: 'Sylhet' },
+        { id: 'Dinajpur', name: 'Dinajpur', division_id: 'Rangpur' },
+        { id: 'Gaibandha', name: 'Gaibandha', division_id: 'Rangpur' },
+        { id: 'Kurigram', name: 'Kurigram', division_id: 'Rangpur' },
+        { id: 'Lalmonirhat', name: 'Lalmonirhat', division_id: 'Rangpur' },
+        { id: 'Nilphamari', name: 'Nilphamari', division_id: 'Rangpur' },
+        { id: 'Panchagarh', name: 'Panchagarh', division_id: 'Rangpur' },
+        { id: 'Rangpur', name: 'Rangpur', division_id: 'Rangpur' },
+        { id: 'Thakurgaon', name: 'Thakurgaon', division_id: 'Rangpur' },
+        { id: 'Jamalpur', name: 'Jamalpur', division_id: 'Mymensingh' },
+        { id: 'Mymensingh', name: 'Mymensingh', division_id: 'Mymensingh' },
+        { id: 'Netrokona', name: 'Netrokona', division_id: 'Mymensingh' },
+        { id: 'Sherpur', name: 'Sherpur', division_id: 'Mymensingh' }
       ]
     };
+
+    function applyFallbackLocationData() {
+      locationCache.divisions = FALLBACK_LOCATION_DATA.divisions.slice();
+      locationCache.districts = FALLBACK_LOCATION_DATA.districts.slice();
+    }
  
     const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
       ? 'http://localhost:4000'
@@ -599,7 +639,44 @@
         return null;
       }
     }
- 
+
+    function safeParseJSON(value, fallback) {
+      try {
+        return JSON.parse(value);
+      } catch (_) {
+        return fallback;
+      }
+    }
+
+    function queueOrderLocally(orderData, overrides = {}) {
+      let record;
+      try {
+        record = window.VellezaOrderStore && typeof window.VellezaOrderStore.buildOrderRecord === 'function'
+          ? window.VellezaOrderStore.buildOrderRecord(orderData, overrides)
+          : null;
+      } catch (_) {
+        record = null;
+      }
+
+      if (!record) {
+        record = {
+          tran_id: overrides.tran_id || orderData?.tran_id || `VLZ_${Date.now()}`,
+          total_amount: Number(overrides.total_amount ?? orderData?.total_amount ?? 0),
+          currency: overrides.currency || orderData?.currency || 'BDT',
+          customer: orderData?.customer || {},
+          products: Array.isArray(orderData?.products) ? orderData.products : [],
+          payment_method: overrides.payment_method || orderData?.payment_method || 'sslcommerz',
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        };
+      }
+
+      const queuedOrders = safeParseJSON(localStorage.getItem('queued_orders') || '[]', []);
+      queuedOrders.unshift(record);
+      localStorage.setItem('queued_orders', JSON.stringify(queuedOrders.slice(0, 20)));
+      return record;
+    }
+
     function getCart() {
       try {
         const raw = JSON.parse(localStorage.getItem('cart') || '[]');
@@ -639,19 +716,29 @@
 
     async function saveOrderRecord(orderData, overrides = {}) {
       if (!window.VellezaOrderStore || typeof window.VellezaOrderStore.saveOrder !== 'function') {
-        throw new Error('Order storage is not available right now.');
+        return queueOrderLocally(orderData, overrides);
       }
 
-      return window.VellezaOrderStore.saveOrder(orderData, overrides);
+      try {
+        return await window.VellezaOrderStore.saveOrder(orderData, overrides);
+      } catch (error) {
+        console.warn('Remote order save failed, using local fallback:', error);
+        return queueOrderLocally(orderData, overrides);
+      }
     }
 
     async function saveOrderRecordWithTimeout(orderData, overrides = {}, timeoutMs = 6000) {
-      return Promise.race([
-        saveOrderRecord(orderData, overrides),
-        new Promise((_, reject) => {
-          setTimeout(() => reject(new Error('Order save timed out.')), timeoutMs);
-        })
-      ]);
+      try {
+        return await Promise.race([
+          saveOrderRecord(orderData, overrides),
+          new Promise((_, reject) => {
+            setTimeout(() => reject(new Error('Order save timed out.')), timeoutMs);
+          })
+        ]);
+      } catch (error) {
+        console.warn('Order save timed out, falling back to local queue:', error);
+        return queueOrderLocally(orderData, overrides);
+      }
     }
 
     function getRecentOrderLock() {
@@ -712,186 +799,95 @@
       input.classList.toggle('error', !isValid);
     }
 
-    async function fetchLocationJson(url) {
-      const response = await fetch(url);
-      if (!response.ok) throw new Error('Could not load location data.');
-      const payload = await response.json();
-      return Array.isArray(payload.data) ? payload.data : [];
-    }
-
     function buildAreaOptions(districtId, districtName) {
-      const apiAreas = locationCache.upazilasByDistrict[districtId] || [];
-      const overrideAreas = (DISTRICT_AREA_OVERRIDES[districtName] || []).map((name, index) => ({
-        id: `${districtId}-custom-${index}`,
-        name
-      }));
-      return [...overrideAreas, ...apiAreas].filter((option, index, list) => {
-        return list.findIndex(item => item.name.toLowerCase() === option.name.toLowerCase()) === index;
-      });
+      const knownAreas = DISTRICT_AREA_OVERRIDES[districtName] || [];
+      if (knownAreas.length) {
+        return knownAreas.map((name, index) => ({
+          id: `${districtId}-area-${index}`,
+          name
+        }));
+      }
+
+      return [
+        { id: `${districtId}-sadar`, name: `${districtName} Sadar` },
+        { id: `${districtId}-main`, name: 'Main Area' },
+        { id: `${districtId}-other`, name: 'Other' }
+      ];
     }
 
     async function setupLocationFields() {
-      const divisionInput = document.getElementById('division');
-      const cityInput = document.getElementById('city');
-      const areaInput = document.getElementById('area');
+      const divisionSelect = document.getElementById('division');
+      const districtSelect = document.getElementById('city');
+      const areaSelect = document.getElementById('area');
 
-      const selectState = {
-        division: { input: divisionInput, shell: divisionInput.closest('.smart-select'), list: document.getElementById('division-list'), options: [] },
-        city: { input: cityInput, shell: cityInput.closest('.smart-select'), list: document.getElementById('city-list'), options: [] },
-        area: { input: areaInput, shell: areaInput.closest('.smart-select'), list: document.getElementById('area-list'), options: [] }
-      };
-
-      let openKey = null;
-
-      function closeAllSelects() {
-        Object.values(selectState).forEach(state => state.shell.classList.remove('open'));
-        openKey = null;
+      function escapeHtml(value) {
+        return String(value)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
       }
 
-      function renderOptions(key) {
-        const state = selectState[key];
-        const query = state.input.value.trim().toLowerCase();
-        const filtered = state.options.filter(option => option.name.toLowerCase().includes(query));
+      function renderOptions(select, placeholder, options) {
+        select.innerHTML = [
+          `<option value="">${escapeHtml(placeholder)}</option>`,
+          ...options.map((option) => {
+            return `<option value="${escapeHtml(option.name)}" data-id="${escapeHtml(option.id)}">${escapeHtml(option.name)}</option>`;
+          })
+        ].join('');
+        select.disabled = options.length === 0 && select !== divisionSelect;
+        select.classList.add('is-placeholder');
+      }
 
-        if (!filtered.length) {
-          state.list.innerHTML = '<div class="smart-select-empty">No matching results</div>';
+      function selectedOptionId(select) {
+        return select.selectedOptions[0]?.dataset.id || '';
+      }
+
+      function resetDistricts() {
+        selectedLocationIds.districtId = '';
+        renderOptions(districtSelect, 'Select District', []);
+        renderOptions(areaSelect, 'Select Area', []);
+      }
+
+      function resetAreas() {
+        selectedLocationIds.districtId = '';
+        renderOptions(areaSelect, 'Select Area', []);
+      }
+
+      function handleDivisionChange() {
+        selectedLocationIds.divisionId = selectedOptionId(divisionSelect);
+        divisionSelect.classList.toggle('is-placeholder', !divisionSelect.value);
+        const districts = locationCache.districts.filter((district) => {
+          return district.division_id === selectedLocationIds.divisionId;
+        });
+        renderOptions(districtSelect, 'Select District', districts);
+        resetAreas();
+      }
+
+      function handleDistrictChange() {
+        selectedLocationIds.districtId = selectedOptionId(districtSelect);
+        districtSelect.classList.toggle('is-placeholder', !districtSelect.value);
+        if (!selectedLocationIds.districtId) {
+          renderOptions(areaSelect, 'Select Area', []);
           return;
         }
 
-        state.list.innerHTML = filtered.map(option => `
-          <button type="button" class="smart-select-option${state.input.value.trim() === option.name ? ' active' : ''}" data-id="${option.id}" data-value="${option.name}">
-            ${option.name}
-          </button>
-        `).join('');
-
-        state.list.querySelectorAll('.smart-select-option').forEach(button => {
-          button.addEventListener('click', () => {
-            state.input.value = button.dataset.value || '';
-            if (key === 'division') selectedLocationIds.divisionId = button.dataset.id || '';
-            if (key === 'city') selectedLocationIds.districtId = button.dataset.id || '';
-            state.input.dispatchEvent(new Event('change', { bubbles: true }));
-            closeAllSelects();
-          });
-        });
+        const areas = buildAreaOptions(selectedLocationIds.districtId, districtSelect.value);
+        renderOptions(areaSelect, 'Select Area', areas);
       }
 
-      function openSelect(key) {
-        if (openKey && openKey !== key) {
-          selectState[openKey].shell.classList.remove('open');
-        }
-        openKey = key;
-        selectState[key].shell.classList.add('open');
-        renderOptions(key);
-      }
-
-      function setOptions(key, options) {
-        selectState[key].options = options;
-        if (!options.some(option => option.name === selectState[key].input.value.trim())) {
-          selectState[key].input.value = '';
-        }
-        renderOptions(key);
-      }
-
-      async function updateCityOptions() {
-        const selectedDivisionId = selectedLocationIds.divisionId;
-        if (!selectedDivisionId) {
-          setOptions('city', []);
-          setOptions('area', []);
-          selectedLocationIds.districtId = '';
-          return;
-        }
-
-        const cities = locationCache.districts.filter(district => district.division_id === selectedDivisionId);
-        setOptions('city', cities.map(district => ({ id: district.id, name: district.name })));
-        await updateAreaOptions();
-      }
-
-      async function updateAreaOptions() {
-        const selectedDistrictId = selectedLocationIds.districtId;
-        if (!selectedDistrictId) {
-          setOptions('area', []);
-          return;
-        }
-
-        const districtName = cityInput.value.trim();
-        if (!locationCache.upazilasByDistrict[selectedDistrictId]) {
-          const upazilas = await fetchLocationJson(`${LOCATION_API}/upazilas/${selectedDistrictId}`);
-          locationCache.upazilasByDistrict[selectedDistrictId] = upazilas.map(item => ({ id: item.id, name: item.name }));
-        }
-
-        setOptions('area', buildAreaOptions(selectedDistrictId, districtName));
-      }
-
-      Object.entries(selectState).forEach(([key, state]) => {
-        state.input.addEventListener('focus', () => openSelect(key));
-        state.input.addEventListener('input', () => {
-          openSelect(key);
-          if (key === 'division') {
-            const match = selectState.division.options.find(option => option.name === state.input.value.trim());
-            selectedLocationIds.divisionId = match ? match.id : '';
-            selectedLocationIds.districtId = '';
-            cityInput.value = '';
-            areaInput.value = '';
-            updateCityOptions();
-          }
-          if (key === 'city') {
-            const match = selectState.city.options.find(option => option.name === state.input.value.trim());
-            selectedLocationIds.districtId = match ? match.id : '';
-            areaInput.value = '';
-            updateAreaOptions();
-          }
-          renderOptions(key);
-        });
-        state.input.addEventListener('change', () => {
-          if (key === 'division') {
-            const match = selectState.division.options.find(option => option.name === state.input.value.trim());
-            selectedLocationIds.divisionId = match ? match.id : '';
-            selectedLocationIds.districtId = '';
-            cityInput.value = '';
-            areaInput.value = '';
-            updateCityOptions();
-          }
-          if (key === 'city') {
-            const match = selectState.city.options.find(option => option.name === state.input.value.trim());
-            selectedLocationIds.districtId = match ? match.id : '';
-            areaInput.value = '';
-            updateAreaOptions();
-          }
-        });
-
-        const toggle = state.shell.querySelector('.smart-select-toggle');
-        toggle.addEventListener('click', event => {
-          event.preventDefault();
-          if (openKey === key) {
-            closeAllSelects();
-            state.input.blur();
-            return;
-          }
-          openSelect(key);
-          state.input.focus();
-        });
+      applyFallbackLocationData();
+      renderOptions(divisionSelect, 'Select Division', locationCache.divisions);
+      resetDistricts();
+      areaSelect.addEventListener('change', () => {
+        areaSelect.classList.toggle('is-placeholder', !areaSelect.value);
       });
 
-      document.addEventListener('click', event => {
-        if (!event.target.closest('.smart-select')) {
-          closeAllSelects();
-        }
-      });
-
-      try {
-        const [divisions, districts] = await Promise.all([
-          fetchLocationJson(`${LOCATION_API}/divisions`),
-          fetchLocationJson(`${LOCATION_API}/districts`)
-        ]);
-        locationCache.divisions = divisions;
-        locationCache.districts = districts;
-        setOptions('division', divisions.map(item => ({ id: item.id, name: item.name })));
-      } catch (error) {
-        console.error(error);
-        showToast('Could not load location list right now.');
-      }
+      divisionSelect.addEventListener('change', handleDivisionChange);
+      districtSelect.addEventListener('change', handleDistrictChange);
     }
- 
+
     function validateForm() {
       const name = document.getElementById('name').value.trim();
       const email = document.getElementById('email').value.trim();
@@ -919,18 +915,18 @@
       const phoneOk = phone.length === 10;
       setFieldState('phone', 'field-phone', phoneOk);
       if (!phoneOk) errors.push('phone number');
- 
-      const divisionOk = Boolean(divisionMatch);
+
+      const divisionOk = Boolean(divisionMatch) || division.length >= 2;
       setFieldState('division', 'field-division', divisionOk);
       if (!divisionOk) errors.push('division');
       selectedLocationIds.divisionId = divisionMatch ? divisionMatch.id : '';
 
-      const cityOk = Boolean(districtMatch);
+      const cityOk = Boolean(districtMatch) || city.length >= 2;
       setFieldState('city', 'field-city', cityOk);
       if (!cityOk) errors.push('city');
       selectedLocationIds.districtId = districtMatch ? districtMatch.id : '';
 
-      const areaOk = Boolean(areaMatch);
+      const areaOk = areaOptions.length ? Boolean(areaMatch) : area.length >= 2;
       setFieldState('area', 'field-area', areaOk);
       if (!areaOk) errors.push('area');
  
